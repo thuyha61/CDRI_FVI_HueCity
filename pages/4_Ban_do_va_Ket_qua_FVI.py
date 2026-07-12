@@ -323,6 +323,26 @@ else:
             """
             st.markdown(kpi_html, unsafe_allow_html=True)
 
+        # --- BIỂU ĐỒ DONUT TRẢI TOÀN CHIỀU RỘNG ---
+        st.markdown("<div class='sub-section-title'>Tỷ lệ phân loại các mức độ tổn thương thực tế</div>", unsafe_allow_html=True)
+        
+        pie_counts = map_df["Vulnerability"].value_counts()
+        ordered_levels = [lvl for val in ["Cao", "Tương đối cao", "Trung bình", "Thấp"] if (lvl := val) in pie_counts.index]
+        ordered_values = [pie_counts[lvl] for lvl in ordered_levels]
+        ordered_colors = [color_map_scheme[lvl] for lvl in ordered_levels]
+
+        fig_pie = go.Figure(data=[go.Pie(
+            labels=ordered_levels, values=ordered_values, hole=0.45,
+            marker=dict(colors=ordered_colors, line=dict(color='#ffffff', width=2)),
+            textinfo='label+percent', sort=False 
+        )])
+        
+        fig_pie.update_layout(
+            font_family="Roboto", margin=dict(l=20, r=20, t=20, b=20), height=380,
+            legend=dict(orientation="h", yanchor="bottom", y=-0.1, xanchor="center", x=0.5)
+        )
+        st.plotly_chart(fig_pie, use_container_width=True)
+
         # --- BỔ SUNG THEO YÊU CẦU: 3 CARDS MÀU ĐẶC TRƯNG CHO EXPOSURE, SENSITIVITY, ADAPTIVE ---
         st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
         
@@ -373,25 +393,6 @@ else:
         """
         st.markdown(components_kpi_html, unsafe_allow_html=True)
 
-        # --- BIỂU ĐỒ DONUT TRẢI TOÀN CHIỀU RỘNG ---
-        st.markdown("<div class='sub-section-title'>Tỷ lệ phân loại các mức độ tổn thương thực tế</div>", unsafe_allow_html=True)
-        
-        pie_counts = map_df["Vulnerability"].value_counts()
-        ordered_levels = [lvl for val in ["Cao", "Tương đối cao", "Trung bình", "Thấp"] if (lvl := val) in pie_counts.index]
-        ordered_values = [pie_counts[lvl] for lvl in ordered_levels]
-        ordered_colors = [color_map_scheme[lvl] for lvl in ordered_levels]
-
-        fig_pie = go.Figure(data=[go.Pie(
-            labels=ordered_levels, values=ordered_values, hole=0.45,
-            marker=dict(colors=ordered_colors, line=dict(color='#ffffff', width=2)),
-            textinfo='label+percent', sort=False 
-        )])
-        
-        fig_pie.update_layout(
-            font_family="Roboto", margin=dict(l=20, r=20, t=20, b=20), height=380,
-            legend=dict(orientation="h", yanchor="bottom", y=-0.1, xanchor="center", x=0.5)
-        )
-        st.plotly_chart(fig_pie, use_container_width=True)
 
     # ==========================================================
     # 📊 TAB 2: THỐNG KÊ MÔ TẢ THEO TỪNG LĨNH VỰC VÀ NHÓM CHỈ SỐ FVI
