@@ -141,9 +141,9 @@ with tab_theory:
     st.markdown('<div class="academic-paragraph">FVI được xây dựng trên ba nhóm thành phần chính:</div>', unsafe_allow_html=True)
     st.markdown("""
         <ul class="academic-list">
-            <li><b>Exposure</b> – phản ánh mức độ tiếp xúc của cơ sở với ngập lụt.</li>
-            <li><b>Sensitivity</b> – phản ánh những đặc điểm làm gia tăng mức độ ảnh hưởng khi xảy ra ngập.</li>
-            <li><b>Adaptive Capacity</b> – phản ánh khả năng chuẩn bị, ứng phó và phục hồi của cơ sở.</li>
+            <li><b>Độ phơi nhiễm - Exposure</b> – phản ánh mức độ tiếp xúc của cơ sở với ngập lụt.</li>
+            <li><b>Độ nhạy cảm - Sensitivity</b> – phản ánh những đặc điểm làm gia tăng mức độ ảnh hưởng khi xảy ra ngập.</li>
+            <li><b>Khả năng thích ứng - Adaptive Capacity</b> – phản ánh khả năng chuẩn bị, ứng phó và phục hồi của cơ sở.</li>
         </ul>
     """, unsafe_allow_html=True)
     
