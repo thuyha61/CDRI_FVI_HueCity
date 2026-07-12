@@ -78,18 +78,8 @@ with tab_cit_contact:
     
     # Định dạng APA tiêu chuẩn
     st.markdown("**Định dạng APA:**")
-    st.info("Nguyen, Q. P., & IWRP Technical Team. (2026). *Application of Principal Component Analysis (PCA) for Flood Vulnerability Index (FVI) Mapping in Hue City*. Institute of Water Resources Planning (IWRP) & CDRI Fellowship Programme.")
+    st.info("Nguyen, Q. P., Do, T.H., Dinh, X.H. & IWRP Technical Team. (2026). *Application of Principal Component Analysis (PCA) for Flood Vulnerability Index (FVI) Mapping in Hue City*. Institute of Water Resources Planning (IWRP) & CDRI Fellowship Programme.")
     
-    # Khung code BibTeX cho các nhà nghiên cứu dùng LaTeX
-    st.markdown("**Định dạng BibTeX:**")
-    st.code("""@misc{iwrp_hue_fvi_2026,
-  author        = {Nguyen, Quynh Phuong and IWRP Technical Team},
-  title        = {Application of Principal Component Analysis (PCA) for Flood Vulnerability Index (FVI) Mapping in Hue City},
-  year         = {2026},
-  publisher    = {Institute of Water Resources Planning (IWRP)},
-  howpublished = {Interactive Web Application},
-  note         = {Supported by CDRI Fellowship Programme 2025-2026}
-}""", language="latex")
 
     st.markdown('---')
     st.markdown('<div class="sub-section-title">Thông tin liên hệ chính thức</div>', unsafe_allow_html=True)
