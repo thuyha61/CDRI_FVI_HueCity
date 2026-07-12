@@ -74,7 +74,7 @@ st.markdown("""
         .kpi-container { 
             display: flex; 
             gap: 12px; 
-            margin-bottom: 25px; 
+            margin-bottom: 15px; 
         }
         .kpi-box { 
             flex: 1; 
@@ -323,10 +323,60 @@ else:
             """
             st.markdown(kpi_html, unsafe_allow_html=True)
 
+        # --- BỔ SUNG THEO YÊU CẦU: 3 CARDS MÀU ĐẶC TRƯNG CHO EXPOSURE, SENSITIVITY, ADAPTIVE ---
+        st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+        
+        # Tính toán giá trị trung bình cho phạm vi dữ liệu đang hiển thị hiện tại
+        if total_filtered > 0:
+            avg_exp = map_df["Exposure"].mean()
+            avg_sen = map_df["Sensitivity"].mean()
+            avg_ada = map_df["Adaptive"].mean()
+        else:
+            avg_exp, avg_sen, avg_ada = 0.0, 0.0, 0.0
+            
+        components_kpi_html = f"""
+        <div class="kpi-container">
+            <div class="kpi-box" style="background-color: #fff7ed; color: #7c2d12; border-left: 6px solid #ea580c; text-align: left; padding-left: 20px;">
+                <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; opacity: 0.7;">Cấu phần 1</div>
+                <div style="font-size: 16px; font-weight: 700; margin-top: 2px;">Độ phơi nhiễm (Exposure)</div>
+                <div style="font-size: 26px; font-weight: 800; margin: 4px 0;">{avg_exp:.2f} <span style="font-size: 14px; font-weight: 400; opacity:0.8;">(Mean)</span></div>
+                <div style="font-size: 11.5px; line-height: 1.4; border-top: 1px solid rgba(234,88,12,0.2); padding-top: 6px;">
+                    🎯 <b>Yếu tố quyết định chính:</b><br>
+                    • Cao độ nguy cơ ngập lụt tại chỗ<br>
+                    • Mức độ cô lập mạng lưới giao thông<br>
+                    • Khoảng cách không gian tới sông chính
+                </div>
+            </div>
+            <div class="kpi-box" style="background-color: #faf5ff; color: #581c87; border-left: 6px solid #8b5cf6; text-align: left; padding-left: 20px;">
+                <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; opacity: 0.7;">Cấu phần 2</div>
+                <div style="font-size: 16px; font-weight: 700; margin-top: 2px;">Độ nhạy cảm (Sensitivity)</div>
+                <div style="font-size: 26px; font-weight: 800; margin: 4px 0;">{avg_sen:.2f} <span style="font-size: 14px; font-weight: 400; opacity:0.8;">(Mean)</span></div>
+                <div style="font-size: 11.5px; line-height: 1.4; border-top: 1px solid rgba(139,92,246,0.2); padding-top: 6px;">
+                    🎯 <b>Yếu tố quyết định chính:</b><br>
+                    • Quy mô mật độ học sinh/bệnh nhân<br>
+                    • Chiều cao kết cấu xây dựng công trình<br>
+                    • Tuổi thọ hiện trạng vật liệu hạ tầng
+                </div>
+            </div>
+            <div class="kpi-box" style="background-color: #f0fdf4; color: #14532d; border-left: 6px solid #22c55e; text-align: left; padding-left: 20px;">
+                <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; opacity: 0.7;">Cấu phần 3</div>
+                <div style="font-size: 16px; font-weight: 700; margin-top: 2px;">Năng lực thích ứng (Adaptive)</div>
+                <div style="font-size: 26px; font-weight: 800; margin: 4px 0;">{avg_ada:.2f} <span style="font-size: 14px; font-weight: 400; opacity:0.8;">(Mean)</span></div>
+                <div style="font-size: 11.5px; line-height: 1.4; border-top: 1px solid rgba(34,197,94,0.2); padding-top: 6px;">
+                    🎯 <b>Yếu tố quyết định chính:</b><br>
+                    • Hệ thống ghe, thuyền sơ tán cứu hộ<br>
+                    • Máy phát điện & nguồn nước dự phòng<br>
+                    • Phương án diễn tập ứng phó tại chỗ
+                </div>
+            </div>
+        </div>
+        """
+        st.markdown(components_kpi_html, unsafe_allow_html=True)
+
         # --- BIỂU ĐỒ DONUT TRẢI TOÀN CHIỀU RỘNG ---
         st.markdown("<div class='sub-section-title'>Tỷ lệ phân loại các mức độ tổn thương thực tế</div>", unsafe_allow_html=True)
-        pie_counts = map_df["Vulnerability"].value_counts()
         
+        pie_counts = map_df["Vulnerability"].value_counts()
         ordered_levels = [lvl for val in ["Cao", "Tương đối cao", "Trung bình", "Thấp"] if (lvl := val) in pie_counts.index]
         ordered_values = [pie_counts[lvl] for lvl in ordered_levels]
         ordered_colors = [color_map_scheme[lvl] for lvl in ordered_levels]
@@ -394,39 +444,40 @@ else:
                 {"Thành phần cấu phần FVI": "Năng lực thích ứng (Adaptive)", "Biến số đầu vào": "Kế hoạch phương án ứng phó y tế chuyên ngành", "Đơn vị tính": "thang điểm (1-5)", "Trung bình (Mean)": "4.12", "Thấp nhất (Min)": "2.00", "Cao nhất (Max)": "5.00"}
             ])
             st.table(health_desc_df)
-            st.markdown('<div class="academic-quote"><p><b>Nhận xét đặc trưng Y tế:</b> Điểm nghẽn lớn nhất của ngành Y tế nằm ở thành phần Phơi nhiễm giao thông (Trung bình mạng lưới đường ngập lân cận lên tới 58.20%). Điều này chứng minh trạm y tế dễ bị cô lập đường tiếp cận cứu thương, đặt ra thách thức lớn cho chuỗi vận hành cứu hộ khẩn cấp y tế đô thị.</p></div>', unsafe_allow_html=True)
-
+            st.markdown('<div class="academic-quote"><p><b>Nhận xét đặc trưng Y tế:</b> Điểm nghẽn lớn nhất của ngành Y tế nằm ở thành phần Phơi nhiễm giao thông (Trung bình mạng lưới đường ngập lân cận lên tới 58.20%). Điều này chứng minh trạm y tế dễ bị cô lập đường tiếp cận cứu thương, đặt ra thách thức lớn cho chuỗi vận hành cứu hộ khẩn cấp y tế đô thị.</p></div>', unsafe_allow_html=True)    
 
     # ==========================================================
-    # 🔍 TAB 3: TRA CỨU CHI TIẾT TỪNG CƠ SỞ (LỌC LĨNH VỰC -> CHỌN ĐỊA CHỈ)
+    # 🔍 TAB 3: TRA CỨU CHI TIẾT TỪNG CƠ SỞ DỰA TRÊN ĐỊA CHỈ (ADDRESS)
     # ==========================================================
     with tab_detail_facility:
         st.markdown('<div class="sub-section-title">Tra cứu chi tiết từng cơ sở hạ tầng thiết yếu</div>', unsafe_allow_html=True)
         
-        # Tạo 2 cột để đặt hộp chọn Lĩnh vực và hộp chọn Địa chỉ song song
-        col_sel1, col_desc2 = st.columns(2)
-        
+        col_sel1, col_sel2 = st.columns(2)
         with col_sel1:
-            # Bước 1: Cho người dùng chọn Lĩnh vực hoạt động
             sel_tab3_sector = st.selectbox(
                 "Bước 1: Chọn lĩnh vực hoạt động:",
                 ["Y tế", "Giáo dục"],
                 key="t4_tab3_sector_selector_unique"
             )
             
-        # Lọc nhanh dữ liệu phụ thuộc vào lĩnh vực vừa chọn
+        # Lọc dữ liệu theo lĩnh vực trước để phục vụ cho Bước 2
         filtered_tab3_df = df[df["TypeofOrg"] == sel_tab3_sector]
         
-        with col_desc2:
-            # Bước 2: Danh sách địa chỉ tự động thay đổi theo lĩnh vực ở Bước 1
+        with col_sel2:
             sel_address = st.selectbox(
                 "Bước 2: Chọn địa chỉ cơ sở cần tra cứu:", 
                 filtered_tab3_df["Address"].unique(), 
                 key="t4_tab3_facility_address_selector_unique"
             )
         
-        # Trích xuất hàng dữ liệu dựa trên địa chỉ được người dùng lựa chọn cuối cùng
-        row_facility = filtered_tab3_df[filtered_tab3_df["Address"] == sel_address].iloc[0]
+        # ĐOẠN ĐÃ SỬA LỖI AN TOÀN: Kiểm tra bất đồng bộ trước khi trích xuất dòng dữ liệu bằng .iloc[0]
+        final_filtered_rows = filtered_tab3_df[filtered_tab3_df["Address"] == sel_address]
+        
+        if final_filtered_rows.empty:
+            # Ngăn chặn lỗi single positional indexer is out-of-bounds, dừng luồng chạy tạm thời để widget đồng bộ
+            st.stop()
+            
+        row_facility = final_filtered_rows.iloc[0]
         
         col_info1, col_info2 = st.columns(2)
         with col_info1:
@@ -437,7 +488,7 @@ else:
                 * **Lĩnh vực hoạt động:** {row_facility['TypeofOrg']}
                 * **Phường hành chính:** Phường {row_facility['Commune']}
                 * **Xếp hạng mức độ dễ tổn thương:** **{row_facility['Vulnerability']}**
-                * **Quy mô nhân lực (Nhân viên):** {row_facility['NoOfStaff']} người
+                * **Quy mô nhân lực (Nhên viên):** {row_facility['NoOfStaff']} người
                 * **Quy mô đối tượng phục vụ:** {row_facility['NoOfClients']} người
                 * **Chiều cao nền nhà so với lòng đường:** {row_facility['HeightFromTheRoad']} m
             """)
