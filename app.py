@@ -20,7 +20,7 @@ with col_logo1:
     else:
         st.markdown("<div style='text-align:center; font-weight:700; color:#475569; font-size:16px;'>IWRP</div>", unsafe_allow_html=True)
 with col_logo2:
-    if os.path.exists("assets/cdri_logo.png"):
+    if os.path.exists("assets/cdri.jpg"):
         st.image("assets/cdri.jpg", use_container_width=True)
     else:
         st.markdown("<div style='text-align:center; font-weight:700; color:#475569; font-size:16px;'>CDRI</div>", unsafe_allow_html=True)
