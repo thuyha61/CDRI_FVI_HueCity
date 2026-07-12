@@ -396,19 +396,37 @@ else:
             st.table(health_desc_df)
             st.markdown('<div class="academic-quote"><p><b>Nhận xét đặc trưng Y tế:</b> Điểm nghẽn lớn nhất của ngành Y tế nằm ở thành phần Phơi nhiễm giao thông (Trung bình mạng lưới đường ngập lân cận lên tới 58.20%). Điều này chứng minh trạm y tế dễ bị cô lập đường tiếp cận cứu thương, đặt ra thách thức lớn cho chuỗi vận hành cứu hộ khẩn cấp y tế đô thị.</p></div>', unsafe_allow_html=True)
 
+
     # ==========================================================
-    # 🔍 TAB 3: TRA CỨU CHI TIẾT TỪNG CƠ SỞ DỰA TRÊN ĐẠI CHỈ (ADDRESS)
+    # 🔍 TAB 3: TRA CỨU CHI TIẾT TỪNG CƠ SỞ (LỌC LĨNH VỰC -> CHỌN ĐỊA CHỈ)
     # ==========================================================
     with tab_detail_facility:
         st.markdown('<div class="sub-section-title">Tra cứu chi tiết từng cơ sở hạ tầng thiết yếu</div>', unsafe_allow_html=True)
         
-        sel_address = st.selectbox(
-            "Chọn địa chỉ cơ sở cần tra cứu rủi ro:", 
-            df["Address"].unique(), 
-            key="t4_tab3_facility_address_selector_unique"
-        )
+        # Tạo 2 cột để đặt hộp chọn Lĩnh vực và hộp chọn Địa chỉ song song
+        col_sel1, col_desc2 = st.columns(2)
         
-        row_facility = df[df["Address"] == sel_address].iloc[0]
+        with col_sel1:
+            # Bước 1: Cho người dùng chọn Lĩnh vực hoạt động
+            sel_tab3_sector = st.selectbox(
+                "Bước 1: Chọn lĩnh vực hoạt động:",
+                ["Y tế", "Giáo dục"],
+                key="t4_tab3_sector_selector_unique"
+            )
+            
+        # Lọc nhanh dữ liệu phụ thuộc vào lĩnh vực vừa chọn
+        filtered_tab3_df = df[df["TypeofOrg"] == sel_tab3_sector]
+        
+        with col_desc2:
+            # Bước 2: Danh sách địa chỉ tự động thay đổi theo lĩnh vực ở Bước 1
+            sel_address = st.selectbox(
+                "Bước 2: Chọn địa chỉ cơ sở cần tra cứu:", 
+                filtered_tab3_df["Address"].unique(), 
+                key="t4_tab3_facility_address_selector_unique"
+            )
+        
+        # Trích xuất hàng dữ liệu dựa trên địa chỉ được người dùng lựa chọn cuối cùng
+        row_facility = filtered_tab3_df[filtered_tab3_df["Address"] == sel_address].iloc[0]
         
         col_info1, col_info2 = st.columns(2)
         with col_info1:
