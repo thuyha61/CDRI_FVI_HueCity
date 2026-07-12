@@ -22,8 +22,8 @@ else:
         "TRA CỨU CHI TIẾT TỪNG CƠ SỞ"
     ])
     
-    # ==========================================================
-    # TẦNG HIỂN THỊ 1: BẢN ĐỒ TƯƠNG TÁC ĐA LỚP (ĐÃ CẬP NHẬT CHUẨN GEOJSON)
+# ==========================================================
+    # TẦNG HIỂN THỊ 1: BẢN ĐỒ TƯƠNG TÁC ĐA LỚP & KPI ĐỔI MÀU ĐỘNG
     # ==========================================================
     with tab_map:
         # Bộ lọc nâng cao chia thành 4 cột song song gọn gàng
@@ -63,11 +63,10 @@ else:
                 with open(geojson_path, "r", encoding="utf-8") as f:
                     geojson_data = json.load(f)
                 
-                # Khắc phục thuật toán Plotly: Bắt buộc nhúng thuộc tính 'id' trùng khớp với tên xã trơn để ánh xạ bản đồ màu
+                # Ánh xạ thuộc tính 'id' trùng khớp với tên xã trơn trong GeoJSON để định vị
                 for feature in geojson_data['features']:
                     feature['id'] = feature['properties']['tenXa_shor']
                 
-                # Tạo danh sách các xã và gán giá trị z giả lập để giữ màu nền mờ ổn định
                 commune_names = [f['properties']['tenXa_shor'] for f in geojson_data['features']]
                 
                 # Vẽ lớp vùng phủ màu có ranh giới phân xã lên bản đồ nền
@@ -75,13 +74,13 @@ else:
                     geojson=geojson_data,
                     locations=commune_names,
                     z=[1] * len(commune_names),
-                    colorscale=[[0, 'rgba(69, 123, 157, 0.15)'], [1, 'rgba(69, 123, 157, 0.15)']], # Màu nền xanh ngọc mờ đồng nhất
+                    colorscale=[[0, 'rgba(69, 123, 157, 0.12)'], [1, 'rgba(69, 123, 157, 0.12)']], 
                     showscale=False,
-                    marker_line_color="#1d3557",  # Đường ranh giới xã màu xanh đậm sắc nét
-                    marker_line_width=2.0,        # Độ dày nét vẽ ranh giới hành chính
+                    marker_line_color="#1d3557",  
+                    marker_line_width=2.0,        
                     name="Lớp ranh giới hành chính",
                     customdata=commune_names,
-                    hovertemplate="<b>Phường/Xã: %{customdata}</b><extra></customdata></extra>" # Hiển thị tên xã đời thường khi rê chuột vào vùng trống
+                    hovertemplate="<b>Phường/Xã: %{customdata}</b><extra></extra>" 
                 ))
             except Exception as e:
                 st.error(f"Lỗi hệ thống khi xử lý ánh xạ dữ liệu AOI_Hue.geojson: {e}")
@@ -91,7 +90,7 @@ else:
         # --- TẦNG KHÔNG GIAN 2: ĐIỂM TRẠM CƠ SỞ HẠ TẦNG THEO TỪNG LỚP CHỈ SỐ LỰA CHỌN ---
         color_map_scheme = {"Cao": "#ef4444", "Tương đối cao": "#f97316", "Trung bình": "#eab308", "Thấp": "#22c55e"}
         
-        # Chuẩn hóa chuỗi văn bản Popup Hover bằng tiếng Việt thuần túy, loại bỏ hoàn toàn tên biến gốc
+        # Chuẩn hóa chuỗi văn bản Popup Hover bằng tiếng Việt thuần túy
         hover_texts = []
         for idx, row in map_df.iterrows():
             text_block = (
@@ -107,10 +106,10 @@ else:
             )
             hover_texts.append(text_block)
 
-        # Phân nhánh logic dựng điểm Marker dựa vào nhu cầu xem bản đồ của chị Hà
+        # Phân nhánh logic dựng điểm Marker dựa vào nhu cầu xem bản đồ
         if sel_indicator == "Tổng hợp FVI":
-            # Hiển thị dạng phân loại màu định tính (4 màu tương ứng 4 cấp độ tổn thương rủi ro)
-            for val_level, color_hex in color_map_scheme.items():
+            # Hiển thị dạng phân loại màu định tính (Theo đúng thứ tự Đỏ - Cam - Vàng - Xanh)
+            for val_level in ["Cao", "Tương đối cao", "Trung bình", "Thấp"]:
                 level_df = map_df[map_df["Vulnerability"] == val_level]
                 level_texts = [hover_texts[i] for i, r in enumerate(map_df.index) if map_df.loc[r, "Vulnerability"] == val_level]
                 
@@ -118,13 +117,13 @@ else:
                     lat=level_df["CoordY"],
                     lon=level_df["CoordX"],
                     mode='markers',
-                    marker=dict(size=13, color=color_hex, opacity=0.95),
+                    marker=dict(size=13, color=color_map_scheme[val_level], opacity=0.95),
                     text=level_texts,
                     hoverinfo='text',
-                    name=f"Cấp rủi ro: {val_level}"
+                    name=f"Tổn thương: {val_level}"
                 ))
         else:
-            # Hiển thị dải màu gradient liên tục khoa học cho từng lớp cấu phần chuyên sâu
+            # Hiển thị dải màu gradient liên tục cho từng lớp cấu phần chuyên sâu
             indicator_mapping = {
                 "Độ phơi nhiễm (Exposure)": ("Exposure", px.colors.sequential.OrRd, "Dải màu hiểm họa ngập"),
                 "Độ nhạy cảm (Sensitivity)": ("Sensitivity", px.colors.sequential.Purples, "Dải màu độ nhạy kết cấu"),
@@ -154,10 +153,10 @@ else:
                 name=sel_indicator
             ))
 
-        # 5. Cấu hình hệ thống tọa độ trung tâm đô thị Huế và kiểu nền có màu sinh động
+        # Thiết lập nền bản đồ có màu Open Street Map
         fig_complex.update_layout(
             mapbox=dict(
-                style="open-street-map", # Giữ bản đồ nền có màu sắc địa vật rõ nét
+                style="open-street-map",
                 center=dict(lat=df["CoordY"].mean() if not df.empty else 16.46, lon=df["CoordX"].mean() if not df.empty else 107.60),
                 zoom=12.0
             ),
@@ -173,31 +172,130 @@ else:
         )
         st.plotly_chart(fig_complex, use_container_width=True)
         
-        # Thống kê nhanh dạng KPI Cards bên dưới bản đồ
-        st.markdown("<div class='sub-section-title'>Chỉ số tổng hợp toàn khu vực nghiên cứu</div>", unsafe_allow_html=True)
-        col_kpi1, col_kpi2, col_kpi3, col_kpi4, col_kpi5 = st.columns(5)
-        col_kpi1.metric("Cơ sở đánh giá", len(df), "Trường học + Y tế")
-        col_kpi2.metric("Mức CAO", len(df[df["Vulnerability"] == "Cao"]), "Cần ưu tiên gấp")
-        col_kpi3.metric("Mức TƯƠNG ĐỐI CAO", len(df[df["Vulnerability"] == "Tương đối cao"]), "Kế hoạch ngắn hạn")
-        col_kpi4.metric("Mức TRUNG BÌNH", len(df[df["Vulnerability"] == "Trung bình"]), "Theo dõi định kỳ")
-        col_kpi5.metric("Mức THẤP", len(df[df["Vulnerability"] == "Thấp"]), "An toàn tốt")
+        # --- KHU VỰC THỐNG KÊ KPI ĐỔI MÀU ĐỘNG ---
+        st.markdown("<div class='sub-section-title'>Chỉ số tổng hợp theo phạm vi lựa chọn</div>", unsafe_allow_html=True)
+        st.markdown("""
+            <style>
+                .kpi-container { display: flex; gap: 12px; margin-bottom: 25px; }
+                .kpi-box { flex: 1; padding: 15px; border-radius: 8px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+                .kpi-title { font-size: 13px; font-weight: 500; margin-bottom: 4px; }
+                .kpi-value { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
+                .kpi-subtitle { font-size: 11px; opacity: 0.8; }
+            </style>
+        """, unsafe_allow_html=True)
         
-        # Biểu đồ phân phối Histogram và Pie Chart phụ trợ giữ nguyên
-        col_hist1, col_hist2 = st.columns(2)
-        with col_hist1:
-            st.markdown("<div class='sub-section-title'>Histogram phân bố điểm Chỉ số FVI</div>", unsafe_allow_html=True)
-            fig_hist = px.histogram(
-                df, x="FVI", color="TypeofOrg", nbins=12,
-                labels={"FVI": "Điểm FVI", "count": "Tần suất"},
-                color_discrete_sequence=px.colors.qualitative.Safe
-            )
-            fig_hist.update_layout(font_family="Roboto", legend_title="Ngành")
-            st.plotly_chart(fig_hist, use_container_width=True)
-        with col_hist2:
-            st.markdown("<div class='sub-section-title'>Tỷ lệ phân loại các mức độ tổn thương</div>", unsafe_allow_html=True)
-            fig_pie = px.pie(df, names="Vulnerability", color="Vulnerability", color_discrete_map=color_map_scheme, hole=0.4)
-            fig_pie.update_layout(font_family="Roboto")
-            st.plotly_chart(fig_pie, use_container_width=True)
+        total_filtered = len(map_df)
+
+        if sel_indicator == "Tổng hợp FVI":
+            count_cao = len(map_df[map_df["Vulnerability"] == "Cao"])
+            count_kha = len(map_df[map_df["Vulnerability"] == "Tương đối cao"])
+            count_tb  = len(map_df[map_df["Vulnerability"] == "Trung bình"])
+            count_thap = len(map_df[map_df["Vulnerability"] == "Thấp"])
+
+            kpi_html = f"""
+            <div class="kpi-container">
+                <div class="kpi-box" style="background-color: #f1f5f9; color: #1e293b; border-top: 4px solid #94a3b8;">
+                    <div class="kpi-title">Cơ sở hiển thị</div>
+                    <div class="kpi-value">{total_filtered}</div>
+                    <div class="kpi-subtitle">Tổng số: {len(df)}</div>
+                </div>
+                <div class="kpi-box" style="background-color: #fef2f2; color: #991b1b; border-top: 4px solid #ef4444;">
+                    <div class="kpi-title">Mức CAO</div>
+                    <div class="kpi-value">{count_cao}</div>
+                    <div class="kpi-subtitle">Ưu tiên khẩn cấp</div>
+                </div>
+                <div class="kpi-box" style="background-color: #fff7ed; color: #c2410c; border-top: 4px solid #f97316;">
+                    <div class="kpi-title">TƯƠNG ĐỐI CAO</div>
+                    <div class="kpi-value">{count_kha}</div>
+                    <div class="kpi-subtitle">Kế hoạch ngắn hạn</div>
+                </div>
+                <div class="kpi-box" style="background-color: #fefce8; color: #854d0e; border-top: 4px solid #eab308;">
+                    <div class="kpi-title">Mức TRUNG BÌNH</div>
+                    <div class="kpi-value">{count_tb}</div>
+                    <div class="kpi-subtitle">Theo dõi định kỳ</div>
+                </div>
+                <div class="kpi-box" style="background-color: #f0fdf4; color: #166534; border-top: 4px solid #22c55e;">
+                    <div class="kpi-title">Mức THẤP</div>
+                    <div class="kpi-value">{count_thap}</div>
+                    <div class="kpi-subtitle">Cấu trúc an toàn</div>
+                </div>
+            </div>
+            """
+            st.markdown(kpi_html, unsafe_allow_html=True)
+            
+        else:
+            indicator_col_mapping = {
+                "Độ phơi nhiễm (Exposure)": ("Exposure", "#ffedd5", "#9a3412", "#f97316"),    
+                "Độ nhạy cảm (Sensitivity)": ("Sensitivity", "#f3e8ff", "#6b21a8", "#a855f7"), 
+                "Năng lực thích ứng (Adaptive)": ("Adaptive", "#dcfce7", "#166534", "#22c55e")   
+            }
+            target_col, bg_style, text_color, border_color = indicator_col_mapping[sel_indicator]
+            
+            if total_filtered > 0:
+                avg_val = map_df[target_col].mean()
+                max_val = map_df[target_col].max()
+                min_val = map_df[target_col].min()
+            else:
+                avg_val, max_val, min_val = 0.0, 0.0, 0.0
+
+            kpi_html = f"""
+            <div class="kpi-container">
+                <div class="kpi-box" style="background-color: #f1f5f9; color: #1e293b; border-top: 4px solid #94a3b8;">
+                    <div class="kpi-title">Cơ sở hiển thị</div>
+                    <div class="kpi-value">{total_filtered}</div>
+                    <div class="kpi-subtitle">Tổng số: {len(df)}</div>
+                </div>
+                <div class="kpi-box" style="background-color: {bg_style}; color: {text_color}; border-top: 4px solid {border_color};">
+                    <div class="kpi-title">Điểm Trung bình</div>
+                    <div class="kpi-value">{avg_val:.2f}</div>
+                    <div class="kpi-subtitle">Phạm vi đã lọc</div>
+                </div>
+                <div class="kpi-box" style="background-color: {bg_style}; color: {text_color}; border-top: 4px solid {border_color};">
+                    <div class="kpi-title">Điểm Cao nhất</div>
+                    <div class="kpi-value">{max_val:.2f}</div>
+                    <div class="kpi-subtitle">Nguy cơ đỉnh điểm</div>
+                </div>
+                <div class="kpi-box" style="background-color: {bg_style}; color: {text_color}; border-top: 4px solid {border_color};">
+                    <div class="kpi-title">Điểm Thấp nhất</div>
+                    <div class="kpi-value">{min_val:.2f}</div>
+                    <div class="kpi-subtitle">Mức đáy ghi nhận</div>
+                </div>
+                <div class="kpi-box" style="background-color: #f8fafc; color: #475569; border-top: 4px solid #cbd5e1;">
+                    <div class="kpi-title">Lớp kích hoạt</div>
+                    <div class="kpi-value" style="font-size: 15px; padding-top: 8px;">{sel_indicator.split(' ')[0]}</div>
+                    <div class="kpi-subtitle">Dữ liệu bản đồ số</div>
+                </div>
+            </div>
+            """
+            st.markdown(kpi_html, unsafe_allow_html=True)
+
+        # --- BIỂU ĐỒ DONUT (ĐÃ SẮP XẾP ĐÚNG THỨ TỰ THIÊN TAI VÀ TRẢI RỘNG TOÀN CHIỀU RỘNG) ---
+        st.markdown("<div class='sub-section-title'>Tỷ lệ phân loại các mức độ tổn thương thực tế</div>", unsafe_allow_html=True)
+        
+        # Đếm số lượng của tập dữ liệu đã lọc để vẽ biểu đồ hình bánh
+        pie_counts = map_df["Vulnerability"].value_counts()
+        
+        # ĐỊNH HƯỚNG THỨ TỰ CỐ ĐỊNH: Đảm bảo thứ tự hiển thị luôn tuân thủ mạch logic khoa học
+        ordered_levels = [lvl for val in ["Cao", "Tương đối cao", "Trung bình", "Thấp"] if (lvl := val) in pie_counts.index]
+        ordered_values = [pie_counts[lvl] for lvl in ordered_levels]
+        ordered_colors = [color_map_scheme[lvl] for lvl in ordered_levels]
+
+        fig_pie = go.Figure(data=[go.Pie(
+            labels=ordered_levels,
+            values=ordered_values,
+            hole=0.45,
+            marker=dict(colors=ordered_colors, line=dict(color='#ffffff', width=2)),
+            textinfo='label+percent',
+            sort=False # Vô hiệu hóa tính năng tự động sắp xếp lớn bé của Plotly để ép theo thứ tự mảng tự định nghĩa
+        )])
+        
+        fig_pie.update_layout(
+            font_family="Roboto",
+            margin=dict(l=20, r=20, t=20, b=20),
+            height=380,
+            legend=dict(orientation="h", yanchor="bottom", y=-0.1, xanchor="center", x=0.5)
+        )
+        st.plotly_chart(fig_pie, use_container_width=True)
 
     # ==========================================================
     # TẦNG HIỂN THỊ 2: THỐNG KÊ MÔ TẢ (TAB DESCRIPTIVE) - GIỮ NGUYÊN
