@@ -275,28 +275,43 @@ with tab_viendam:
     compare_df = pd.DataFrame([
     {
         "Tiêu chí": "Độ phân giải không gian", 
-        "Bản đồ diện rộng (Ví dụ: SPADE)": "Thô (90 m)", 
-        "Phương pháp Tích hợp Học máy (Dự án đề xuất)": "Cao (10 m)"
+        "Bản đồ thủy lực (SPADE)": "Thô (90 m)", 
+        "Viễn thám + Học máy": "Cao (10 m)"
+    },
+    {
+        "Tiêu chí": "Năm xây dựng", 
+        "Bản đồ thủy lực (SPADE)": "2016", 
+        "Viễn thám + Học máy": "2026"
+    },
+    {
+        "Tiêu chí": "Cung cấp thông tin ngập", 
+        "Bản đồ thủy lực (SPADE)": "Có", 
+        "Viễn thám + Học máy": "Có"
+    },
+    {
+        "Tiêu chí": "Cung cấp thông tin độ cao và thời gian ngập", 
+        "Bản đồ thủy lực (SPADE)": "Có", 
+        "Viễn thám + Học máy": "Không"
     },
     {
         "Tiêu chí": "Nguồn ảnh đầu vào", 
-        "Bản đồ diện rộng (Ví dụ: SPADE)": "Quang học / Mô hình thủy văn", 
-        "Phương pháp Tích hợp Học máy (Dự án đề xuất)": "Tích hợp đa nguồn (Radar + DEM + Khí tượng)"
+        "Bản đồ thủy lực (SPADE)": "Thủy văn, khí tượng, địa hình, mặt cắt (phức tạp)", 
+        "Viễn thám + Học máy": "Tích hợp đa nguồn miễn phí (Radar + DEM + Khí tượng)"
     },
     {
         "Tiêu chí": "Hiệu quả tại khu vực đô thị", 
-        "Bản đồ diện rộng (Ví dụ: SPADE)": "Rất thấp (Không bắt được túi ngập nhỏ)", 
-        "Phương pháp Tích hợp Học máy (Dự án đề xuất)": "Cao (Thuật toán lọc nhiễu cấu trúc công trình)"
+        "Bản đồ thủy lực (SPADE)": "Rất thấp", 
+        "Viễn thám + Học máy": "Cao hơn"
     },
     {
-        "Tiêu chí": "Chi phí dữ liệu đầu vào", 
-        "Bản đồ diện rộng (Ví dụ: SPADE)": "Thấp (Dữ liệu sẵn có)", 
-        "Phương pháp Tích hợp Học máy (Dự án đề xuất)": "Tối ưu (Ảnh mở, khai thác hiệu năng thuật toán)"
+        "Tiêu chí": "Chi phí cập nhật", 
+        "Bản đồ thủy lực (SPADE)": "Cao", 
+        "Viễn thám + Học máy": "Thấp (Ảnh mở, khai thác hiệu năng thuật toán)"
     },
     {
         "Tiêu chí": "Độ phức tạp tính toán", 
-        "Bản đồ diện rộng (Ví dụ: SPADE)": "Thấp (Tra cứu có sẵn)", 
-        "Phương pháp Tích hợp Học máy (Dự án đề xuất)": "Trung bình - Cao (Đảm bảo độ chính xác học thuật)"
+        "Bản đồ thủy lực (SPADE)": "Cao", 
+        "Viễn thám + Học máy": "Trung bình - Cao (Đảm bảo độ chính xác học thuật)"
     }
     ])
     st.table(compare_df)
