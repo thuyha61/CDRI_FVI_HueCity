@@ -160,43 +160,43 @@ with tab_theory:
 # ==========================================
 # TAB 2: XÂY DỰNG CHỈ SỐ FVI
 # ==========================================
+# ==========================================
+# TAB 2: XÂY DỰNG CHỈ SỐ FVI (ĐÃ TÁCH BIỆT RÕ RÀNG)
+# ==========================================
 with tab_workflow:
     st.markdown('<div class="sub-section-title">Giới thiệu tổng quan</div>', unsafe_allow_html=True)
     st.markdown('<div class="academic-paragraph">Chỉ số tổn thương lũ (Flood Vulnerability Index – FVI) được xây dựng nhằm lượng hóa mức độ tổn thương của từng trường học và cơ sở y tế trước nguy cơ ngập lụt. Khác với các chỉ số được tính toán ở cấp xã, phường hoặc trên các ô lưới không gian, FVI trong nghiên cứu này được xây dựng ở cấp từng cơ sở, cho phép phản ánh sự khác biệt về điều kiện hạ tầng, quy mô hoạt động và năng lực ứng phó của từng đơn vị.</div>', unsafe_allow_html=True)
-    st.markdown('<div class="academic-paragraph">Quy trình xây dựng FVI được thiết kế theo sáu bước nhằm đảm bảo tính minh bạch, khả năng lặp lại và có thể mở rộng cho các nghiên cứu tương tự.</div>', unsafe_allow_html=True)
-    
-    st.markdown('<div class="sub-section-title">Quy trình 6 bước xây dựng Chỉ số FVI cấp cơ sở</div>', unsafe_allow_html=True)
-    
-    # Sử dụng component Sequence để trực quan hóa sơ đồ workflow tuyến tính
-    st.markdown('<div class="academic-paragraph">Mô hình diễn tiến quy trình kỹ thuật:</div>', unsafe_allow_html=True)
-    
-    st.markdown("""
-    <Sequence>
-      <Step title="Bước 1. Xác định phạm vi đánh giá" subtitle="Đơn vị phân tích độc lập">
-        Nghiên cứu tập trung vào các cơ sở hạ tầng thiết yếu gồm trường học và cơ sở y tế thuộc 5 phường trung tâm thành phố Huế. Mỗi đơn vị được xem như một đối tượng phân tích độc lập với đặc điểm riêng về vị trí, cơ sở vật chất, quy mô và năng lực ứng phó nhằm hỗ trợ trực tiếp việc xác định thứ tự ưu tiên đầu tư.
-      </Step>
-      <Step title="Bước 2. Lựa chọn bộ chỉ số" subtitle="Chuyên biệt hóa theo ngành">
-        Hệ thống chỉ số dựa trên khung IPCC, tổng quan nghiên cứu quốc tế và đặc điểm y tế/giáo dục Việt Nam. Xây dựng hai bộ chỉ số riêng biệt cho Giáo dục và Y tế để phản ánh đúng yêu cầu vận hành. Áp dụng phân tích tương quan Pearson để loại bỏ biến trùng lặp thông tin.
-      </Step>
-      <Step title="Bước 3. Tổng hợp và tích hợp dữ liệu" subtitle="Cơ sở dữ liệu đa nguồn">
-        Thu thập dữ liệu đa nguồn gồm dữ liệu không gian, ảnh vệ tinh Sentinel-1, số liệu thống kê và phiếu điều tra thực địa. Toàn bộ thông tin được đồng bộ về cùng hệ quy chiếu không gian và liên kết thông qua mã định danh duy nhất của từng cơ sở.
-      </Step>
-      <Step title="Bước 4. Tiền xử lý dữ liệu" subtitle="Kiểm soát hướng tác động">
-        Kiểm tra dữ liệu thiếu và giá trị ngoại lệ, mã hóa biến định tính. Các biến làm tăng tổn thương (độ sâu lũ, quy mô học sinh) giữ chiều thuận. Các biến tăng khả năng chống chịu (máy phát điện, kế hoạch ứng phó) quy đổi theo chiều nghịch để đảm bảo tính nhất quán.
-      </Step>
-      <Step title="Bước 5. Chuẩn hóa dữ liệu" subtitle="Phương pháp Z-score">
-        Loại bỏ ảnh hưởng của sự khác biệt đơn vị đo (mét, số người, năm, biến nhị phân) đưa về cùng thang đo chuẩn thông qua việc chuyển đổi dựa trên giá trị trung bình và độ lệch chuẩn của mẫu.
-      </Step>
-      <Step title="Bước 6. Xác định trọng số và tính toán FVI" subtitle="Thuật toán PCA & Jenks Natural Breaks">
-        Áp dụng phân tích thành phần chính PCA để xác định trọng số từ cấu trúc thống kê nhằm loại bỏ tính chủ quan. Sau khi tính điểm tổng hợp tuyến tính FVI, áp dụng thuật toán Jenks Natural Breaks để phân loại các cơ sở thành 4 cấp độ tổn thương: Thấp, Trung bình, Tương đối cao và Cao.
-      </Step>
-    </Sequence>
-    """, unsafe_allow_html=True)
+    st.markdown('<div class="academic-paragraph">Quy trình xây dựng FVI được thiết kế theo sáu bước độc lập nhằm đảm bảo tính minh bạch, khả năng lặp lại và có thể mở rộng cho các nghiên cứu tương tự.</div>', unsafe_allow_html=True)
     
     st.markdown('---')
-    st.markdown('<div class="sub-section-title">Bố cục ma trận bộ chỉ số và nguồn dữ liệu đầu vào</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-title" style="font-size: 22px; border-bottom: 2px solid #457b9d;">CHI TIẾT 6 BƯỚC TRIỂN KHAI KỸ THUẬT</div>', unsafe_allow_html=True)
     
-    # Bảng số lượng chỉ số phân bổ
+    # --- BƯỚC 1 ---
+    st.markdown('<div class="sub-section-title" style="color: #1d3557;">📍 Bước 1. Xác định phạm vi đánh giá</div>', unsafe_allow_html=True)
+    st.markdown("""
+    <div class="academic-paragraph">
+        Bước đầu tiên của quá trình xây dựng FVI là xác định rõ đối tượng và phạm vi đánh giá. Nghiên cứu tập trung vào các cơ sở cơ sở hạ tầng thiết yếu, bao gồm trường học và cơ sở y tế thuộc năm phường trung tâm thành phố Huế.
+    </div>
+    <div class="academic-paragraph">
+        Khác với nhiều nghiên cứu đánh giá ở cấp đơn vị hành chính, đơn vị phân tích trong nghiên cứu này là <b>từng cơ sở</b>. Mỗi trường học hoặc cơ sở y tế được xem như một đơn vị độc lập với tập hợp các đặc điểm riêng về vị trí, điều kiện cơ sở vật chất, quy mô phục vụ và năng lực ứng phó. Cách tiếp cận này giúp phản ánh chính xác hơn sự khác biệt về mức độ tổn thương giữa các cơ sở, đồng thời hỗ trợ trực tiếp cho việc xác định thứ tự ưu tiên trong đầu tư và quản lý.
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # --- BƯỚC 2 ---
+    st.markdown('<div class="sub-section-title" style="color: #1d3557;">📍 Bước 2. Lựa chọn bộ chỉ số chuyên biệt</div>', unsafe_allow_html=True)
+    st.markdown("""
+    <div class="academic-paragraph">
+        Hệ thống chỉ số được lựa chọn dựa trên ba cơ sở: (i) khung lý thuyết của IPCC về đánh giá rủi ro thiên tai; (ii) tổng quan các nghiên cứu về chỉ số tổn thương do lũ; và (iii) đặc điểm hoạt động của hệ thống giáo dục và y tế tại Việt Nam.
+    </div>
+    <div class="academic-paragraph">
+        Thay vì sử dụng một bộ chỉ số chung cho nhiều loại hình hạ tầng, nghiên cứu xây dựng hai bộ chỉ số riêng cho lĩnh vực giáo dục và lĩnh vực y tế nhằm phản ánh đúng yêu cầu vận hành và khả năng chống chịu của từng nhóm đối tượng.
+    </div>
+    <div class="academic-paragraph">
+        Sau khi tổng hợp danh mục chỉ số ban đầu, các biến được rà soát để loại bỏ những biến trùng lặp thông tin hoặc có chất lượng dữ liệu không đảm bảo. Phân tích tương quan Pearson được sử dụng để nhận diện các cặp biến có mức tương quan cao, trong khi mức độ đầy đủ và khả năng thu thập dữ liệu cũng được xem xét nhằm đảm bảo tính khả thi của bộ chỉ số cuối cùng.
+    </div>
+    """, unsafe_allow_html=True)
+
+    # Chèn bảng phân bổ ma trận chỉ số ngay dưới Bước 2 để minh họa trực quan
     indicator_df = pd.DataFrame([
         {"Thành phần cấu phần": "Exposure (Độ phơi nhiễm)", "Ngành Giáo dục (Trường học)": "Tính toán từ mô hình viễn thám", "Ngành Y tế (Cơ sở y tế)": "Tính toán từ mô hình viễn thám", "Nguồn dữ liệu tích hợp": "Bản đồ ngập từ Sentinel-1 và hệ thống GIS"},
         {"Thành phần cấu phần": "Sensitivity (Độ nhạy cảm)", "Ngành Giáo dục (Trường học)": "Quy mô học sinh, tuổi công trình, điểm sơ tán", "Ngành Y tế (Cơ sở y tế)": "Quy mô giường bệnh, nhân lực, thiết bị đặc thù", "Nguồn dữ liệu tích hợp": "Số liệu thống kê và Khảo sát thực địa"},
@@ -204,14 +204,60 @@ with tab_workflow:
     ])
     st.table(indicator_df)
     
-    st.markdown('<div class="sub-section-title">Công thức toán học áp dụng trong mô hình toán</div>', unsafe_allow_html=True)
-    st.latex(r"Z_i = \frac{x_i - \bar{x}}{\sigma}")
-    st.latex(r"FVI = \sum_{i=1}^{n} w_i Z_i")
+    # --- BƯỚC 3 ---
+    st.markdown('<div class="sub-section-title" style="color: #1d3557;">📍 Bước 3. Tổng hợp và tích hợp dữ liệu đa nguồn</div>', unsafe_allow_html=True)
+    st.markdown("""
+    <div class="academic-paragraph">
+        Dữ liệu phục vụ xây dựng FVI được thu thập từ nhiều nguồn khác nhau, bao gồm ảnh viễn thám, dữ liệu không gian, số liệu thống kê và khảo sát thực địa.
+    </div>
+    <div class="academic-paragraph">
+        Các nguồn dữ liệu có sự khác biệt về định dạng, độ phân giải và đơn vị đo. Do đó, toàn bộ dữ liệu được chuẩn hóa về cùng hệ quy chiếu không gian và liên kết thông qua mã định danh của từng cơ sở. Quá trình này tạo thành một cơ sở dữ liệu thống nhất, trong đó mỗi trường học hoặc cơ sở y tế được mô tả bằng đầy đủ các biến thuộc ba nhóm thành phần của FVI.
+    </div>
+    """, unsafe_allow_html=True)
     
-    st.markdown('<div class="sub-section-title">Kết quả và ý nghĩa của quy trình xây dựng FVI</div>', unsafe_allow_html=True)
-    st.markdown('<div class="academic-paragraph">Sau khi hoàn thành sáu bước xử lý, nghiên cứu xây dựng được Chỉ số tổn thương lũ cho toàn bộ 31 cơ sở giáo dục và y tế trong khu vực nghiên cứu. Bộ chỉ số này không chỉ phản ánh mức độ tổn thương tổng hợp mà còn cho phép phân tích riêng từng thành phần Độ phơi nhiễm (Exposure), Độ nhạy cảm (Sensitivity) và Năng lực thích ứng (Adaptive Capacity), giúp nhận diện nguyên nhân dẫn đến mức độ tổn thương của từng cơ sở.</div>', unsafe_allow_html=True)
-    st.markdown('<div class="academic-paragraph">Kết quả FVI là đầu vào cho các phân tích ở các trang tiếp theo, bao gồm bản đồ tổn thương, so sánh giữa các cơ sở và đề xuất các giải pháp ưu tiên nhằm nâng cao khả năng chống chịu của hệ thống giáo dục và y tế trước nguy cơ ngập lụt.</div>', unsafe_allow_html=True)
+    # --- BƯỚC 4 ---
+    st.markdown('<div class="sub-section-title" style="color: #1d3557;">📍 Bước 4. Tiền xử lý dữ liệu và kiểm soát hướng tác động</div>', unsafe_allow_html=True)
+    st.markdown("""
+    <div class="academic-paragraph">
+        Trước khi tính toán chỉ số, các biến đầu vào được kiểm tra nhằm đảm bảo tính nhất quán và phù hợp với phân tích thống kê. Quá trình tiền xử lý bao gồm: kiểm tra dữ liệu thiếu và giá trị ngoại lệ; xác định chiều tác động của từng chỉ số; mã hóa các biến định tính; chuẩn hóa cấu trúc dữ liệu giữa các nguồn.
+    </div>
+    <div class="academic-paragraph">
+        Đối với các biến có tác động làm gia tăng mức độ tổn thương (ví dụ: độ sâu ngập hoặc quy mô đối tượng phục vụ), giá trị được giữ theo chiều thuận. Ngược lại, các biến phản ánh khả năng chống chịu (ví dụ: máy phát điện dự phòng, trang thiết bị ứng cứu hoặc kế hoạch ứng phó) được quy đổi theo chiều nghịch để đảm bảo tính nhất quán trong quá trình tổng hợp chỉ số.
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # --- BƯỚC 5 ---
+    st.markdown('<div class="sub-section-title" style="color: #1d3557;">📍 Bước 5. Chuẩn hóa dữ liệu bằng phương pháp Z-score</div>', unsafe_allow_html=True)
+    st.markdown("""
+    <div class="academic-paragraph">
+        Các biến đầu vào của FVI có đơn vị đo và phạm vi giá trị rất khác nhau, bao gồm mét, số người, năm xây dựng, khoảng cách và các biến nhị phân. Vì vậy, việc chuẩn hóa dữ liệu là cần thiết nhằm loại bỏ ảnh hưởng của đơn vị đo và đưa các biến về cùng một thang đo.
+    </div>
+    <div class="academic-paragraph">
+        Nghiên cứu sử dụng phương pháp chuẩn hóa Z-score, trong đó mỗi giá trị được chuyển đổi dựa trên giá trị trung bình và độ lệch chuẩn của mẫu. Sau chuẩn hóa, các biến có giá trị trung bình bằng 0 và độ lệch chuẩn bằng 1, tạo điều kiện thuận lợi cho việc so sánh và tính toán trọng số.
+    </div>
+    """, unsafe_allow_html=True)
+    st.latex(r"Z_i = \frac{x_i - \bar{x}}{\sigma}")
+    
+    # --- BƯỚC 6 ---
+    st.markdown('<div class="sub-section-title" style="color: #1d3557;">📍 Bước 6. Xác định trọng số PCA và tính toán tổng hợp FVI</div>', unsafe_allow_html=True)
+    st.markdown("""
+    <div class="academic-paragraph">
+        Sau khi chuẩn hóa bằng Z-score, các biến đầu vào được đưa vào phân tích Thành phần chính (PCA) để xác định hệ số tải và trọng số tương ứng ($w_i$). Các trọng số này được sử dụng để tính Chỉ số tổn thương lũ (FVI) theo phương pháp tổng hợp tuyến tính.
+    </div>
+    """, unsafe_allow_html=True)
+    st.latex(r"FVI = \sum_{i=1}^{n} w_i Z_i")
+    st.markdown("""
+    <div class="academic-paragraph">
+        Sau khi tính toán điểm FVI, các cơ sở được phân thành bốn mức độ tổn thương gồm: <b>Thấp, Trung bình, Tương đối cao và Cao</b>. Việc phân nhóm được thực hiện bằng phương pháp Jenks Natural Breaks (Phân loại đứt gãy tự nhiên) nhằm tối đa hóa sự khác biệt giữa các nhóm và tối thiểu hóa sự khác biệt trong cùng một nhóm.
+    </div>
+    <div class="academic-paragraph">
+        Nhờ đó, kết quả phân loại phản ánh tốt hơn đặc điểm phân bố thực tế của dữ liệu không gian, hỗ trợ trực quan hóa bản đồ và xác định chính xác các cơ sở cần ưu tiên cao nhất trong quản lý rủi ro thiên tai.
+    </div>
+    """, unsafe_allow_html=True)
 
+    st.markdown('---')
+    st.markdown('<div class="sub-section-title">Kết quả và ý nghĩa của quy trình</div>', unsafe_allow_html=True)
+    st.markdown('<div class="academic-paragraph">Sau khi hoàn thành sáu bước xử lý biệt lập này, nghiên cứu xây dựng được Chỉ số tổn thương lũ cho toàn bộ 31 cơ sở giáo dục và y tế trong khu vực nghiên cứu. Bộ chỉ số này không chỉ phản ánh mức độ tổn thương tổng hợp mà còn cho phép phân tích riêng từng thành phần Độ phơi nhiễm (Exposure), Độ nhạy cảm (Sensitivity) và Năng lực thích ứng (Adaptive Capacity), giúp nhận diện nguyên nhân gốc rễ dẫn đến mức độ tổn thương của từng cơ sở cụ thể.</div>', unsafe_allow_html=True)
 # ==========================================
 # TAB 3: BẢN ĐỒ NGẬP BẰNG VIỄN THÁM
 # ==========================================
