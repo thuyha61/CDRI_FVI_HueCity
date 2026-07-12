@@ -8,6 +8,23 @@ inject_custom_css()
 # Tùy biến CSS nội bộ cho Trang 3 nhằm khắc phục lỗi màu chữ Markdown bị tối
 st.markdown("""
     <style>
+      
+        /* Ép tiêu đề của tất cả các Tab cho phép xuống dòng và căn giữa */
+        div[data-baseweb="tab-list"] button [data-testid="stMarkdownContainer"] p {
+            white-space: normal !important;
+            text-align: center !important;
+            line-height: 1.3 !important;
+            word-break: break-word !important;
+        }
+        
+        /* Cố định chiều cao tối thiểu cho tab để không bị lệch nếu có tab 1 dòng, tab 2 dòng */
+        div[data-baseweb="tab-list"] button {
+            min-height: 60px !important;
+            height: auto !important;
+            padding-top: 8px !important;
+            padding-bottom: 8px !important;
+        }
+
         /* Tiêu đề chính và tiêu đề phụ */
         .section-title {
             color: #1d3557;
@@ -83,6 +100,7 @@ st.markdown("""
             .academic-quote p {
                 color: #f1f5f9;
             }
+            
         }
     </style>
 """, unsafe_allow_html=True)
