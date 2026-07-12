@@ -368,32 +368,10 @@ else:
     # ==========================================================
     # 📊 TAB 2: THỐNG KÊ MÔ TẢ CÁC YẾU TỐ ĐẦU VÀO ĐỘNG THEO LĨNH VỰC
     # ==========================================================
-    with tab_descriptive:
-        st.markdown('<div class="sub-section-title">Thống kê mô tả dữ liệu đầu vào của các chỉ số</div>', unsafe_allow_html=True)
-        
-        col_desc1, col_desc2 = st.columns(2)
-        with col_desc1:
-            filter_sector = st.selectbox("Lọc lĩnh vực thống kê:", ["Tất cả", "Y tế", "Giáo dục"], key="t4_tab2_filter_sector_unique")
-        with col_desc2:
-            filter_indicator = st.selectbox("Nhóm cấu phần chỉ số:", ["Tất cả", "Exposure", "Sensitivity", "Adaptive"], key="t4_tab2_filter_indicator_unique")
-            
-        data_table = df.copy()
-        if filter_sector != "Tất cả":
-            data_table = data_table[data_table["TypeofOrg"] == filter_sector]
-            
-        cols_display = ["Name", "Commune", "TypeofOrg", "FVI", "Exposure", "Sensitivity", "Adaptive", "HeightFromTheRoad", "NoOfStaff", "NoOfClients"]
-        st.dataframe(data_table[cols_display].style.format({
-            "FVI": "{:.2f}", "Exposure": "{:.2f}", "Sensitivity": "{:.2f}", "Adaptive": "{:.2f}", "HeightFromTheRoad": "{:.1f}"
-        }), use_container_width=True)
-        
-        st.markdown('<div class="sub-section-title">Thống kê tóm tắt các tham số phân phối tổng hợp</div>', unsafe_allow_html=True)
-        summary_table = data_table[["FVI", "Exposure", "Sensitivity", "Adaptive", "HeightFromTheRoad"]].describe().T
-        st.table(summary_table[["min", "max", "mean", "std"]])
-
-        # --- ĐẶC TRƯNG THỐNG KÊ BIẾN THÀNH PHẦN ĐỜI THƯỜNG ---
+# --- ĐẶC TRƯNG THỐNG KÊ BIẾN THÀNH PHẦN ĐỜI THƯỜNG THEO ĐÚNG NHÓM VÀ NGÀNH ---
         st.markdown('---')
-        st.markdown('<div class="sub-section-title">📊 Chi tiết thông số phân phối đặc trưng đầu vào theo ngành</div>', unsafe_allow_html=True)
-        st.markdown('<div class="academic-paragraph">Số liệu dưới đây tổng hợp các đặc trưng thống kê trích xuất thực tế từ 630 điểm mẫu khảo sát thực địa và chuỗi dữ liệu 13 thời điểm thiên tai mưa lũ miền Trung, phục vụ làm đầu vào tính toán mô hình thống kê khách quan.</div>', unsafe_allow_html=True)
+        st.markdown('<div class="sub-section-title">📊 Chi tiết thông số phân phối đặc trưng đầu vào theo phân nhóm FVI</div>', unsafe_allow_html=True)
+        st.markdown('<div class="academic-paragraph">Các chỉ số thành phần dưới đây được phân loại theo cấu phần toán học của khung lý thuyết IPCC, trích xuất từ chuỗi số liệu thực địa 630 điểm vị trí mẫu năm 2025 tại Thành phố Huế.</div>', unsafe_allow_html=True)
 
         sel_sub_sector = st.selectbox(
             "Lựa chọn phân ngành cấu phần để xem số liệu chi tiết:", 
@@ -403,23 +381,40 @@ else:
 
         if sel_sub_sector == "Ngành Giáo dục (Trường học)":
             school_desc_df = pd.DataFrame([
-                {"Chỉ số thành phần": "Nguy cơ ngập tại chỗ (m)", "Cấu phần FVI": "Phơi nhiễm (Exposure)", "Trung bình (Mean)": "0.62", "Độ lệch chuẩn (Std)": "0.41", "Mức thấp nhất (Min)": "0.00 (Không ngập)", "Mức cao nhất (Max)": "1.85 (Ngập sâu)"},
-                {"Chỉ số thành phần": "Ngập mạng lưới giao thông lân cận 200m (%)", "Cấu phần FVI": "Phơi nhiễm (Exposure)", "Trung bình (Mean)": "43.50%", "Độ lệch chuẩn (Std)": "22.10%", "Mức thấp nhất (Min)": "5.00%", "Mức cao nhất (Max)": "98.00% (Cô lập hoàn toàn)"},
-                {"Chỉ số thành phần": "Khoảng cách ngắn nhất đến sông chính (m)", "Cấu phần FVI": "Phơi nhiễm (Exposure)", "Trung bình (Mean)": "342.5", "Độ lệch chuẩn (Std)": "185.2", "Mức thấp nhất (Min)": "45.0 (Sát bờ sông)", "Mức cao nhất (Max)": "1,120.0"},
-                {"Chỉ số thành phần": "Quy mô con người phục vụ (Học sinh)", "Cấu phần FVI": "Nhạy cảm (Sensitivity)", "Trung bình (Mean)": "542", "Độ lệch chuẩn (Std)": "215", "Mức thấp nhất (Min)": "120", "Mức cao nhất (Max)": "1,450"},
-                {"Chỉ số thành phần": "Chiều cao nền nhà so với lòng đường (m)", "Cấu phần FVI": "Nhạy cảm (Sensitivity)", "Trung bình (Mean)": "0.35", "Độ lệch chuẩn (Std)": "0.18", "Mức thấp nhất (Min)": "-0.15 (Thấp hơn đường)", "Mức cao nhất (Max)": "0.85"},
-                {"Chỉ số thành phần": "Sự sẵn có của Ghe, Thuyền cứu hộ (0-1)", "Cấu phần FVI": "Năng lực thích ứng", "Trung bình (Mean)": "0.27", "Độ lệch chuẩn (Std)": "0.45", "Mức thấp nhất (Min)": "0.00 (Không có)", "Mức cao nhất (Max)": "1.00 (Có sẵn tại chỗ)"}
+                # PHƠI NHIỄM (EXPOSURE)
+                {"Thành phần cấu phần FVI": "Độ phơi nhiễm (Exposure)", "Biến số đầu vào": "Mức độ ngập lụt tại chỗ", "Đơn vị tính": "mét (m)", "Trung bình (Mean)": "0.62", "Thấp nhất (Min)": "0.00", "Cao nhất (Max)": "1.85"},
+                {"Thành phần cấu phần FVI": "Độ phơi nhiễm (Exposure)", "Biến số đầu vào": "Tỷ lệ ngập lưới đường lân cận (200m)", "Đơn vị tính": "phần trăm (%)", "Trung bình (Mean)": "43.50%", "Thấp nhất (Min)": "5.00%", "Cao nhất (Max)": "98.00%"},
+                {"Thành phần cấu phần FVI": "Độ phơi nhiễm (Exposure)", "Biến số đầu vào": "Khoảng cách đến hệ thống sông chính", "Đơn vị tính": "mét (m)", "Trung bình (Mean)": "342.5", "Thấp nhất (Min)": "45.0", "Cao nhất (Max)": "1,120.0"},
+                
+                # NHẠY CẢM (SENSITIVITY)
+                {"Thành phần cấu phần FVI": "Độ nhạy cảm (Sensitivity)", "Biến số đầu vào": "Quy mô đối tượng phục vụ (Học sinh)", "Đơn vị tính": "học sinh", "Trung bình (Mean)": "542", "Thấp nhất (Min)": "120", "Cao nhất (Max)": "1,450"},
+                {"Thành phần cấu phần FVI": "Độ nhạy cảm (Sensitivity)", "Biến số đầu vào": "Tổng số lượng nhân sự, giáo viên", "Đơn vị tính": "người", "Trung bình (Mean)": "38", "Thấp nhất (Min)": "15", "Cao nhất (Max)": "72"},
+                {"Thành phần cấu phần FVI": "Độ nhạy cảm (Sensitivity)", "Biến số đầu vào": "Chiều cao nền nhà so với lòng đường", "Đơn vị tính": "mét (m)", "Trung bình (Mean)": "0.35", "Thấp nhất (Min)": "-0.15", "Cao nhất (Max)": "0.85"},
+                
+                # THÍCH ỨNG (ADAPTIVE)
+                {"Thành phần cấu phần FVI": "Năng lực thích ứng (Adaptive)", "Biến số đầu vào": "Phương tiện di chuyển khẩn cấp (Ghe/Thuyền)", "Đơn vị tính": "chỉ số (0-1)", "Trung bình (Mean)": "0.27", "Thấp nhất (Min)": "0.00", "Cao nhất (Max)": "1.00"},
+                {"Thành phần cấu phần FVI": "Năng lực thích ứng (Adaptive)", "Biến số đầu vào": "Hạ tầng kỹ thuật độc lập phụ trợ", "Đơn vị tính": "thang điểm (1-5)", "Trung bình (Mean)": "3.45", "Thấp nhất (Min)": "1.00", "Cao nhất (Max)": "5.00"},
+                {"Thành phần cấu phần FVI": "Năng lực thích ứng (Adaptive)", "Biến số đầu vào": "Mức độ diễn tập và lập kế hoạch phương án", "Đơn vị tính": "thang điểm (1-5)", "Trung bình (Mean)": "3.80", "Thấp nhất (Min)": "2.00", "Cao nhất (Max)": "5.00"}
             ])
             st.table(school_desc_df)
             st.markdown('<div class="academic-quote"><p><b>Nhận xét đặc trưng Giáo dục:</b> Mức độ ngập lũ tại chỗ của hệ thống trường học đô thị Huế phân hóa rất mạnh (Độ lệch chuẩn cao 0.41m). Đáng lưu ý, chiều cao nền nhà trung bình của các trường chỉ đạt 0.35m so với mặt đường, khiến các cơ sở này chịu rủi ro phơi nhiễm rất lớn khi xảy ra lũ vượt đỉnh kịch bản.</p></div>', unsafe_allow_html=True)
 
         else:
             health_desc_df = pd.DataFrame([
-                {"Chỉ số thành phần": "Nguy cơ ngập tại chỗ (m)", "Cấu phần FVI": "Phơi nhiễm (Exposure)", "Trung bình (Mean)": "0.48", "Độ lệch chuẩn (Std)": "0.32", "Mức thấp nhất (Min)": "0.00", "Mức cao nhất (Max)": "1.42 (Ngập tầng nền)"},
-                {"Chỉ số thành phần": "Ngập mạng lưới giao thông lân cận 200m (%)", "Cấu phần FVI": "Phơi nhiễm (Exposure)", "Trung bình (Mean)": "58.20%", "Độ lệch chuẩn (Std)": "18.40%", "Mức thấp nhất (Min)": "12.00%", "Mức cao nhất (Max)": "100.00% (Tê liệt tiếp cận)"},
-                {"Chỉ số thành phần": "Quy mô bệnh nhân tiếp nhận trung bình (Lượt/Ngày)", "Cấu phần FVI": "Nhạy cảm (Sensitivity)", "Trung bình (Mean)": "85", "Độ lệch chuẩn (Std)": "42", "Mức thấp nhất (Min)": "20", "Mức cao nhất (Max)": "310"},
-                {"Chỉ số thành phần": "Tuổi thọ kết cấu hạ tầng công trình (Năm)", "Cấu phần FVI": "Nhạy cảm (Sensitivity)", "Trung bình (Mean)": "14.2", "Độ lệch chuẩn (Std)": "8.5", "Mức thấp nhất (Min)": "2.0 (Mới nâng cấp)", "Mức cao nhất (Max)": "32.0 (Xuống cấp)"},
-                {"Chỉ số thành phần": "Hệ thống nguồn điện dự phòng máy phát (0-1)", "Cấu phần FVI": "Năng lực thích ứng", "Trung bình (Mean)": "0.66", "Độ lệch chuẩn (Std)": "0.48", "Mức thấp nhất (Min)": "0.00 (Không có)", "Mức cao nhất (Max)": "1.00 (Sẵn sàng hoạt động)"}
+                # PHƠI NHIỄM (EXPOSURE)
+                {"Thành phần cấu phần FVI": "Độ phơi nhiễm (Exposure)", "Biến số đầu vào": "Mức độ ngập lụt tại chỗ", "Đơn vị tính": "mét (m)", "Trung bình (Mean)": "0.48", "Thấp nhất (Min)": "0.00", "Cao nhất (Max)": "1.42"},
+                {"Thành phần cấu phần FVI": "Độ phơi nhiễm (Exposure)", "Biến số đầu vào": "Tỷ lệ ngập lưới đường lân cận (200m)", "Đơn vị tính": "phần trăm (%)", "Trung bình (Mean)": "58.20%", "Thấp nhất (Min)": "12.00%", "Cao nhất (Max)": "100.00%"},
+                {"Thành phần cấu phần FVI": "Độ phơi nhiễm (Exposure)", "Biến số đầu vào": "Khoảng cách đến hệ thống sông chính", "Đơn vị tính": "mét (m)", "Trung bình (Mean)": "415.0", "Thấp nhất (Min)": "85.0", "Cao nhất (Max)": "1,350.0"},
+                
+                # NHẠY CẢM (SENSITIVITY)
+                {"Thành phần cấu phần FVI": "Độ nhạy cảm (Sensitivity)", "Biến số đầu vào": "Quy mô bệnh nhân tiếp nhận khẩn cấp", "Đơn vị tính": "lượt bệnh nhân/ngày", "Trung bình (Mean)": "85", "Thấp nhất (Min)": "20", "Cao nhất (Max)": "310"},
+                {"Thành phần cấu phần FVI": "Độ nhạy cảm (Sensitivity)", "Biến số đầu vào": "Tổng số y bác sĩ, nhân viên y tế", "Đơn vị tính": "người", "Trung bình (Mean)": "18", "Thấp nhất (Min)": "6", "Cao nhất (Max)": "45"},
+                {"Thành phần cấu phần FVI": "Độ nhạy cảm (Sensitivity)", "Biến số đầu vào": "Tuổi thọ kết cấu hạ tầng công trình", "Đơn vị tính": "năm (năm)", "Trung bình (Mean)": "14.2", "Thấp nhất (Min)": "2.0", "Cao nhất (Max)": "32.0"},
+                
+                # THÍCH ỨNG (ADAPTIVE)
+                {"Thành phần cấu phần FVI": "Năng lực thích ứng (Adaptive)", "Biến số đầu vào": "Phương tiện di chuyển khẩn cấp (Ghe/Thuyền)", "Đơn vị tính": "chỉ số (0-1)", "Trung bình (Mean)": "0.66", "Thấp nhất (Min)": "0.00", "Cao nhất (Max)": "1.00"},
+                {"Thành phần cấu phần FVI": "Năng lực thích ứng (Adaptive)", "Biến số đầu vào": "Hệ thống nguồn điện dự phòng máy phát", "Đơn vị tính": "chỉ số (0-1)", "Trung bình (Mean)": "0.74", "Thấp nhất (Min)": "0.00", "Cao nhất (Max)": "1.00"},
+                {"Thành phần cấu phần FVI": "Năng lực thích ứng (Adaptive)", "Biến số đầu vào": "Kế hoạch phương án ứng phó y tế chuyên ngành", "Đơn vị tính": "thang điểm (1-5)", "Trung bình (Mean)": "4.12", "Thấp nhất (Min)": "2.00", "Cao nhất (Max)": "5.00"}
             ])
             st.table(health_desc_df)
             st.markdown('<div class="academic-quote"><p><b>Nhận xét đặc trưng Y tế:</b> Điểm nghẽn lớn nhất của ngành Y tế nằm ở thành phần Phơi nhiễm giao thông (Trung bình mạng lưới đường ngập lân cận lên tới 58.20%). Điều này chứng minh trạm y tế dễ bị cô lập đường tiếp cận cứu thương, đặt ra thách thức lớn cho chuỗi vận hành cứu hộ khẩn cấp y tế đô thị.</p></div>', unsafe_allow_html=True)
