@@ -42,7 +42,7 @@ with tab_partners:
     """, unsafe_allow_html=True)
     
     st.markdown('<div class="sub-section-title">Nhóm chuyên gia thực hiện dự án</div>', unsafe_allow_html=True)
-    col_per1, col_per2, col_per3 = st.columns(3)
+    col_per1, col_per2 = st.columns(2)
     
     with col_per1:
         st.markdown("""
@@ -67,5 +67,5 @@ with tab_partners:
         * **Đơn vị thực hiện chủ trì:** Viện Quy hoạch Thủy lợi (IWRP)
         * **Đại diện nhóm nghiên cứu:** Nguyễn Quỳnh Phương
         * **Địa điểm trụ sở công tác:** Thành phố Hà Nội, Việt Nam
-        * **Thời điểm cập nhật dữ liệu tự động:** <b>Ngày 12 tháng 07 năm 2026</b>
+        * **Thời điểm cập nhật dữ liệu tự động:** Ngày 12 tháng 07 năm 2026
     """)
