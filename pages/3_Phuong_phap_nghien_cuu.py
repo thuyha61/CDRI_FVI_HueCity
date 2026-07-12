@@ -106,7 +106,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # --- GIỚI THIỆU TRANG ---
-st.markdown('<div class="section-title">TRANG 3 – PHƯƠNG PHÁP NGHIÊN CỨU</div>', unsafe_allow_html=True)
+st.markdown('<div class="section-title">PHƯƠNG PHÁP NGHIÊN CỨU</div>', unsafe_allow_html=True)
 st.markdown('<div class="academic-paragraph">Phương pháp nghiên cứu được xây dựng nhằm đánh giá mức độ tổn thương do ngập lụt đối với các cơ sở hạ tầng thiết yếu tại thành phố Huế thông qua việc tích hợp dữ liệu viễn thám, hệ thống thông tin địa lý (GIS), khảo sát thực địa và phân tích thống kê. Thay vì chỉ đánh giá mức độ ngập, nghiên cứu phát triển Chỉ số tổn thương lũ (Flood Vulnerability Index – FVI) ở cấp từng cơ sở, cho phép xem xét đồng thời mức độ phơi nhiễm, đặc điểm dễ bị tổn thương và năng lực thích ứng của từng trường học và cơ sở y tế.</div>', unsafe_allow_html=True)
 st.markdown('<div class="academic-paragraph">Toàn bộ quy trình nghiên cứu được thiết kế theo hướng minh bạch, có khả năng lặp lại và có thể mở rộng cho các khu vực hoặc loại hình hạ tầng khác.</div>', unsafe_allow_html=True)
 
