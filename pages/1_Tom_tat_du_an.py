@@ -79,7 +79,12 @@ st.markdown("""
 # Các cột truy cập nhanh
 col_quick1, col_quick2, col_quick3 = st.columns(3)
 with col_quick1:
-    st.info("🗺️ Khám phá bản đồ tương tác")
+            # Sử dụng st.markdown thay vì st.info để có thể chèn link clickable
+            st.markdown("""
+                <div style="background-color: #e0f2fe; padding: 10px; border-radius: 5px; border-left: 5px solid #0284c7;">
+                    🗺️ <b><a href="https://cdri-fvi-huecity2026.streamlit.app/Ban_do_va_Ket_qua_FVI" target="_blank" style="text-decoration: none; color: #0369a1;">Khám phá bản đồ tương tác tại đây</a></b>
+                </div>
+            """, unsafe_allow_html=True)
 with col_quick2:
     st.warning("📄 Báo cáo nghiên cứu (Cập nhật sau khi nghiệm thu)")
 with col_quick3:
