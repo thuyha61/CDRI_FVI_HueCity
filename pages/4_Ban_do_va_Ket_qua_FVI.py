@@ -344,8 +344,26 @@ else:
         st.plotly_chart(fig_pie, use_container_width=True)
 
     # ==========================================================
-    # 📊 ĐÃ ĐƯA VỀ ĐÚNG VỊ TRÍ: TAB 2 - THỐNG KÊ MÔ TẢ CÁC YẾU TỐ ĐẦU VÀO
+    # 📊 TAB 2: THỐNG KÊ MÔ TẢ CÁC YẾU TỐ ĐẦU VÀO ĐỘNG THEO LĨNH VỰC
     # ==========================================================
+    with tab_descriptive:
+        st.markdown('<div class="sub-section-title">Thống kê mô tả dữ liệu đầu vào của các chỉ số</div>', unsafe_allow_html=True)
+        
+        col_desc1, col_desc2 = st.columns(2)
+        with col_desc1:
+            filter_sector = st.selectbox("Lọc lĩnh vực thống kê:", ["Tất cả", "Y tế", "Giáo dục"], key="t4_tab2_filter_sector_unique")
+        with col_desc2:
+            filter_indicator = st.selectbox("Nhóm cấu phần chỉ số:", ["Tất cả", "Exposure", "Sensitivity", "Adaptive"], key="t4_tab2_filter_indicator_unique")
+            
+        data_table = df.copy()
+        if filter_sector != "Tất cả":
+            data_table = data_table[data_table["TypeofOrg"] == filter_sector]
+            
+        cols_display = ["Name", "Commune", "TypeofOrg", "FVI", "Exposure", "Sensitivity", "Adaptive", "HeightFromTheRoad", "NoOfStaff", "NoOfClients"]
+        st.dataframe(data_table[cols_display].style.format({
+            "FVI": "{:.2f}", "Exposure": "{:.2f}", "Sensitivity": "{:.2f}", "Adaptive": "{:.2f}", "HeightFromTheRoad": "{:.1f}"
+        }), use_container_width=True)
+        
         st.markdown('<div class="sub-section-title">Thống kê tóm tắt các tham số phân phối tổng hợp</div>', unsafe_allow_html=True)
         summary_table = data_table[["FVI", "Exposure", "Sensitivity", "Adaptive", "HeightFromTheRoad"]].describe().T
         st.table(summary_table[["min", "max", "mean", "std"]])
@@ -400,7 +418,6 @@ else:
             ])
             st.table(health_desc_df)
             st.markdown('<div class="academic-quote"><p><b>Nhận xét đặc trưng Y tế:</b> Điểm nghẽn lớn nhất của ngành Y tế nằm ở thành phần Phơi nhiễm giao thông (Trung bình mạng lưới đường ngập lân cận lên tới 58.20%). Điều này chứng minh trạm y tế dễ bị cô lập đường tiếp cận cứu thương, đặt ra thách thức lớn cho chuỗi vận hành cứu hộ khẩn cấp y tế đô thị.</p></div>', unsafe_allow_html=True)
-
     # ==========================================================
     # 🔍 TAB 3: TRA CỨU CHI TIẾT TỪNG CƠ SỞ (TAB DETAIL)
     # ==========================================================
