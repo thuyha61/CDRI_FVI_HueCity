@@ -273,6 +273,36 @@ with tab_viendam:
             <li><b>Tối ưu hóa chi phí đầu tư dữ liệu:</b> Dữ liệu ảnh radar Sentinel-1 thuộc kho tài nguyên mở quốc tế. Việc khai thác nguồn ảnh này giúp giảm thiểu tối đa chi phí mua bản quyền ảnh thương mại đắt đỏ, tạo điều kiện thuận lợi cho việc cập nhật định kỳ mà không phụ thuộc vào ngân sách lớn.</li>
         </ul>
     """, unsafe_allow_html=True)
+
+    st.markdown('<div class="sub-section-title">Bảng so sánh các phương pháp xác định vùng ngập viễn thám</div>', unsafe_allow_html=True)
+    compare_df = pd.DataFrame([
+    {
+        "Tiêu chí": "Độ phân giải không gian", 
+        "Bản đồ diện rộng (Ví dụ: SPADE)": "Thô (90 m)", 
+        "Phương pháp Tích hợp Học máy (Dự án đề xuất)": "Cao (10 m)"
+    },
+    {
+        "Tiêu chí": "Nguồn ảnh đầu vào", 
+        "Bản đồ diện rộng (Ví dụ: SPADE)": "Quang học / Mô hình thủy văn", 
+        "Phương pháp Tích hợp Học máy (Dự án đề xuất)": "Tích hợp đa nguồn (Radar + DEM + Khí tượng)"
+    },
+    {
+        "Tiêu chí": "Hiệu quả tại khu vực đô thị", 
+        "Bản đồ diện rộng (Ví dụ: SPADE)": "Rất thấp (Không bắt được túi ngập nhỏ)", 
+        "Phương pháp Tích hợp Học máy (Dự án đề xuất)": "Cao (Thuật toán lọc nhiễu cấu trúc công trình)"
+    },
+    {
+        "Tiêu chí": "Chi phí dữ liệu đầu vào", 
+        "Bản đồ diện rộng (Ví dụ: SPADE)": "Thấp (Dữ liệu sẵn có)", 
+        "Phương pháp Tích hợp Học máy (Dự án đề xuất)": "Tối ưu (Ảnh mở, khai thác hiệu năng thuật toán)"
+    },
+    {
+        "Tiêu chí": "Độ phức tạp tính toán", 
+        "Bản đồ diện rộng (Ví dụ: SPADE)": "Thấp (Tra cứu có sẵn)", 
+        "Phương pháp Tích hợp Học máy (Dự án đề xuất)": "Trung bình - Cao (Đảm bảo độ chính xác học thuật)"
+    }
+    ])
+    st.table(compare_df)
     
     st.markdown('<div class="sub-section-title">Bảng so sánh các phương pháp xác định vùng ngập viễn thám</div>', unsafe_allow_html=True)
     compare_df = pd.DataFrame([
@@ -353,12 +383,6 @@ with tab_viendam:
             <li>Tại khu vực đô thị lõi, mô hình đạt tỷ lệ <b>Recall = 100%</b>, khẳng định toàn bộ các vùng ngập thực tế nằm trong tập dữ liệu kiểm định đều được thuật toán nhận diện thành công, không xảy ra hiện tượng bỏ sót túi rủi ro.</li>
             <li>Chỉ số F1-score đạt <b>0.89</b> thể hiện sự cân bằng tối ưu giữa độ chính xác và khả năng tách lọc vùng ngập trong điều kiện môi trường đô thị có mật độ nhiễu vật lý cao từ các công trình xây dựng. Kết quả này chứng minh mô hình hoàn toàn đáp ứng đầy đủ tiêu chuẩn khoa học để làm dữ liệu đầu vào trích xuất rủi ro cấp công trình.</li>
         </ul>
-    """, unsafe_allow_html=True)
-    
-    st.markdown("""
-    <div class="academic-quote">
-        <p><b>Gợi ý giao diện Web:</b> Tích hợp hình ảnh Ma trận nhầm lẫn - Confusion Matrix Heatmap và biểu đồ đối chiếu giữa ảnh thực địa Ground Truth và bản đồ dự đoán Prediction của mô hình ngay dưới bảng số liệu này.</p>
-    </div>
     """, unsafe_allow_html=True)
     
     st.markdown('<div class="sub-section-title">7. Xây dựng bản đồ ngập theo các kịch bản lũ và trích xuất chỉ số độ phơi nhiễm</div>', unsafe_allow_html=True)
