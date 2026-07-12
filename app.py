@@ -1,4 +1,3 @@
-```python:app.py
 import streamlit as st
 from utils import inject_custom_css
 import os
