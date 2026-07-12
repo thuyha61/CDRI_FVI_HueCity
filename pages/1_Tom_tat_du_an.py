@@ -7,6 +7,63 @@ inject_custom_css()
 
 # Banner tiêu đề chính của dự án CDRI Fellowship
 st.markdown("""
+    <style>
+        .hero-banner {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            padding: 30px;
+            border-radius: 12px;
+            border-left: 8px solid #1d3557;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            margin-bottom: 25px;
+        }
+        .hero-title-vn {
+            color: #1d3557;
+            font-size: 26px;
+            font-weight: 700;
+            line-height: 1.4;
+            margin-bottom: 10px;
+        }
+        .hero-title-en {
+            color: #457b9d;
+            font-size: 20px;
+            font-style: italic;
+            font-weight: 500;
+            line-height: 1.4;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 15px;
+        }
+        .hero-meta {
+            color: #2b2d42;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+        .hero-meta b {
+            color: #1d3557;
+        }
+        
+        /* Đảm bảo hiển thị tốt trên cả giao diện Tối (Dark Mode) của Streamlit */
+        @media (prefers-color-scheme: dark) {
+            .hero-banner {
+                background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+                border-left-color: #38bdf8;
+            }
+            .hero-title-vn {
+                color: #f8fafc;
+            }
+            .hero-title-en {
+                color: #38bdf8;
+                border-bottom-color: #334155;
+            }
+            .hero-meta {
+                color: #cbd5e1;
+            }
+            .hero-meta b {
+                color: #38bdf8;
+            }
+        }
+    </style>
+
     <div class="hero-banner">
         <div class="hero-title-vn">Bản đồ rủi ro ngập lụt theo ngành nhằm tăng cường ứng phó và thích ứng với biến đổi khí hậu tại Thành phố Huế</div>
         <div class="hero-title-en">Sectoral Flood Risk Mapping to Enhance Climate Change Response and Adaptation in Hue City, Vietnam</div>
