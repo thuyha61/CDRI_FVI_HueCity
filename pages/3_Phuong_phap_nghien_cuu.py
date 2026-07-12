@@ -257,7 +257,7 @@ with tab_workflow:
 
     st.markdown('---')
     st.markdown('<div class="sub-section-title">Kết quả và ý nghĩa của quy trình</div>', unsafe_allow_html=True)
-    st.markdown('<div class="academic-paragraph">Sau khi hoàn thành sáu bước xử lý biệt lập này, nghiên cứu xây dựng được Chỉ số tổn thương lũ cho toàn bộ 31 cơ sở giáo dục và y tế trong khu vực nghiên cứu. Bộ chỉ số này không chỉ phản ánh mức độ tổn thương tổng hợp mà còn cho phép phân tích riêng từng thành phần Độ phơi nhiễm (Exposure), Độ nhạy cảm (Sensitivity) và Năng lực thích ứng (Adaptive Capacity), giúp nhận diện nguyên nhân gốc rễ dẫn đến mức độ tổn thương của từng cơ sở cụ thể.</div>', unsafe_allow_html=True)
+    st.markdown('<div class="academic-paragraph">Sau khi hoàn thành sáu bước xử lý biệt lập này, nghiên cứu xây dựng được Chỉ số tổn thương lũ cho toàn bộ 32 cơ sở giáo dục và y tế trong khu vực nghiên cứu. Bộ chỉ số này không chỉ phản ánh mức độ tổn thương tổng hợp mà còn cho phép phân tích riêng từng thành phần Độ phơi nhiễm (Exposure), Độ nhạy cảm (Sensitivity) và Năng lực thích ứng (Adaptive Capacity), giúp nhận diện nguyên nhân gốc rễ dẫn đến mức độ tổn thương của từng cơ sở cụ thể.</div>', unsafe_allow_html=True)
 # ==========================================
 # TAB 3: BẢN ĐỒ NGẬP BẰNG VIỄN THÁM
 # ==========================================
