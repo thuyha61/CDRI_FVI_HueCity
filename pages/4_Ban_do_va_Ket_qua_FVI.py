@@ -6,43 +6,43 @@ import json
 import os
 from utils import inject_custom_css, load_project_data
 
-# 1. Khởi tạo cấu hình giao diện
+# 1. Khởi tạo cấu hình giao diện nền
 inject_custom_css()
 df = load_project_data()
 
 st.markdown('<div class="section-title">Bản đồ tính dễ bị tổn thương do lũ lụt</div>', unsafe_allow_html=True)
 
-# 2. Kiểm tra điều kiện dữ liệu trước khi khởi tạo các Tab
+# 2. Kiểm tra điều kiện dữ liệu trước khi dựng các Tab
 if df.empty:
     st.warning("Dữ liệu trống, không thể hiển thị kết quả phân tích.")
 else:
-    # ĐÚNG: Khởi tạo st.tabs ở đây để biến tab_map, tab_descriptive có hiệu lực bên dưới
     tab_map, tab_descriptive, tab_detail_facility = st.tabs([
         "BẢN ĐỒ TƯƠNG TÁC & TỔNG QUAN KẾT QUẢ",
         "THỐNG KÊ DỮ LIỆU ĐẦU VÀO",
         "TRA CỨU CHI TIẾT TỪNG CƠ SỞ"
     ])
     
-    # ==========================================
-    # TẦNG HIỂN THỊ 1: BẢN ĐỒ TƯƠNG TÁC ĐA LỚP
-    # ==========================================
+    # ==========================================================
+    # TẦNG HIỂN THỊ 1: BẢN ĐỒ TƯƠNG TÁC ĐA LỚP (ĐÃ CẬP NHẬT CHUẨN GEOJSON)
+    # ==========================================================
     with tab_map:
-        # Bộ lọc nâng cao 4 cột song song
+        # Bộ lọc nâng cao chia thành 4 cột song song gọn gàng
         col_f1, col_f2, col_f3, col_f4 = st.columns(4)
         with col_f1:
-            sel_sector = st.selectbox("Lĩnh vực:", ["Tất cả", "Y tế", "Giáo dục"], key="map_sec")
+            sel_sector = st.selectbox("Lĩnh vực hạ tầng:", ["Tất cả", "Y tế", "Giáo dục"], key="map_sec")
         with col_f2:
             sel_vul = st.selectbox("Mức độ tổn thương:", ["Tất cả", "Cao", "Tương đối cao", "Trung bình", "Thấp"], key="map_vul")
         with col_f3:
             sel_comm = st.selectbox("Phường nghiên cứu:", ["Tất cả", "Thuận Hòa", "Phú Xuân", "Vỹ Dạ", "Mỹ Thượng", "Dương Nỗ"], key="map_comm")
         with col_f4:
+            # Hộp chọn chuyển đổi linh hoạt các tầng bản đồ chuyên sâu
             sel_indicator = st.selectbox(
                 "Hiển thị lớp chỉ số:", 
                 ["Tổng hợp FVI", "Độ phơi nhiễm (Exposure)", "Độ nhạy cảm (Sensitivity)", "Năng lực thích ứng (Adaptive)"],
                 key="map_ind"
             )
             
-        # Áp dụng bộ lọc vào bảng dữ liệu bản đồ
+        # Áp dụng bộ lọc người dùng chọn vào DataFrame điểm trạm
         map_df = df.copy()
         if sel_sector != "Tất cả":
             map_df = map_df[map_df["TypeofOrg"] == sel_sector]
@@ -51,54 +51,65 @@ else:
         if sel_comm != "Tất cả":
             map_df = map_df[map_df["Commune"] == sel_comm]
 
-        st.markdown("<div class='sub-section-title'>Bản đồ không gian tích hợp ranh giới nghiên cứu và các lớp chỉ số</div>", unsafe_allow_html=True)
+        st.markdown("<div class='sub-section-title'>Bản đồ số tích hợp ranh giới xã/phường và phân lớp chỉ số ô nhiễm/rủi ro</div>", unsafe_allow_html=True)
 
-        # Tạo đối tượng đồ họa bản đồ đa tầng go.Figure
+        # Khởi tạo đối tượng đồ họa bản đồ go.Figure đa tầng
         fig_complex = go.Figure()
 
-        # Lớp ranh giới không gian nghiên cứu (AOI_Hue.geojson)
-        geojson_path = "AOI_Hue.geojson"
+        # --- TẦNG KHÔNG GIAN 1: RANH GIỚI PHÂN VÙNG PHƯỜNG HÀNH CHÍNH (GEOJSON) ---
+        geojson_path = "data/AOI_Hue.geojson"
         if os.path.exists(geojson_path):
             try:
                 with open(geojson_path, "r", encoding="utf-8") as f:
                     geojson_data = json.load(f)
                 
+                # Khắc phục thuật toán Plotly: Bắt buộc nhúng thuộc tính 'id' trùng khớp với tên xã trơn để ánh xạ bản đồ màu
+                for feature in geojson_data['features']:
+                    feature['id'] = feature['properties']['tenXa_shor']
+                
+                # Tạo danh sách các xã và gán giá trị z giả lập để giữ màu nền mờ ổn định
+                commune_names = [f['properties']['tenXa_shor'] for f in geojson_data['features']]
+                
+                # Vẽ lớp vùng phủ màu có ranh giới phân xã lên bản đồ nền
                 fig_complex.add_trace(go.Choroplethmapbox(
                     geojson=geojson_data,
-                    locations=[0] * len(geojson_data['features']),
-                    z=[1] * len(geojson_data['features']),
-                    colorscale=[[0, 'rgba(69, 123, 157, 0.12)'], [1, 'rgba(69, 123, 157, 0.12)']],
+                    locations=commune_names,
+                    z=[1] * len(commune_names),
+                    colorscale=[[0, 'rgba(69, 123, 157, 0.15)'], [1, 'rgba(69, 123, 157, 0.15)']], # Màu nền xanh ngọc mờ đồng nhất
                     showscale=False,
-                    marker_line_color="#1d3557",
-                    marker_line_width=2.5,
-                    name="Ranh giới khu vực nghiên cứu (AOI)",
-                    hoverinfo="skip"
+                    marker_line_color="#1d3557",  # Đường ranh giới xã màu xanh đậm sắc nét
+                    marker_line_width=2.0,        # Độ dày nét vẽ ranh giới hành chính
+                    name="Lớp ranh giới hành chính",
+                    customdata=commune_names,
+                    hovertemplate="<b>Phường/Xã: %{customdata}</b><extra></customdata></extra>" # Hiển thị tên xã đời thường khi rê chuột vào vùng trống
                 ))
             except Exception as e:
-                st.error(f"Lỗi cấu trúc khi đọc file AOI_Hue.geojson: {e}")
+                st.error(f"Lỗi hệ thống khi xử lý ánh xạ dữ liệu AOI_Hue.geojson: {e}")
         else:
-            st.warning("Không tìm thấy tệp không gian AOI_Hue.geojson trong thư mục gốc.")
+            st.warning("Không tìm thấy tệp không gian data/AOI_Hue.geojson trong cấu trúc thư mục.")
 
-        # Thiết lập màu sắc cố định cho FVI tổng hợp
+        # --- TẦNG KHÔNG GIAN 2: ĐIỂM TRẠM CƠ SỞ HẠ TẦNG THEO TỪNG LỚP CHỈ SỐ LỰA CHỌN ---
         color_map_scheme = {"Cao": "#ef4444", "Tương đối cao": "#f97316", "Trung bình": "#eab308", "Thấp": "#22c55e"}
         
-        # Đồng bộ hóa văn bản nội dung Hover tiếng Việt
+        # Chuẩn hóa chuỗi văn bản Popup Hover bằng tiếng Việt thuần túy, loại bỏ hoàn toàn tên biến gốc
         hover_texts = []
         for idx, row in map_df.iterrows():
             text_block = (
                 f"<b>{row['Name']}</b><br>"
                 f"📍 Địa chỉ: {row['Address']}<br>"
-                f"🏢 Lĩnh vực: {row['TypeofOrg']} | Phường: {row['Commune']}<br>"
-                f"⚠️ Mức độ tổn thương FVI: <b>{row['Vulnerability']}</b><br>"
-                f"📊 Điểm FVI tổng hợp: {row['FVI']:.2f}<br>"
-                f"🔍 Độ phơi nhiễm (Exposure): {row['Exposure']:.2f}<br>"
-                f"📉 Độ nhạy cảm (Sensitivity): {row['Sensitivity']:.2f}<br>"
-                f"🛡️ Năng lực thích ứng (Adaptive): {row['Adaptive']:.2f}"
+                f"🏢 Ngành: {row['TypeofOrg']} | Phường: {row['Commune']}<br>"
+                f"⚠️ Phân cấp tổn thương FVI: <b>{row['Vulnerability']}</b><br>"
+                f"──────────────────────────<br>"
+                f"📊 Chỉ số FVI tổng hợp: {row['FVI']:.2f}<br>"
+                f"🔍 Chỉ số Phơi nhiễm (Exposure): {row['Exposure']:.2f}<br>"
+                f"📉 Chỉ số Nhạy cảm (Sensitivity): {row['Sensitivity']:.2f}<br>"
+                f"🛡️ Năng lực Thích ứng (Adaptive): {row['Adaptive']:.2f}"
             )
             hover_texts.append(text_block)
 
-        # Phân nhánh logic vẽ điểm dựa trên lớp bản đồ được chọn
+        # Phân nhánh logic dựng điểm Marker dựa vào nhu cầu xem bản đồ của chị Hà
         if sel_indicator == "Tổng hợp FVI":
+            # Hiển thị dạng phân loại màu định tính (4 màu tương ứng 4 cấp độ tổn thương rủi ro)
             for val_level, color_hex in color_map_scheme.items():
                 level_df = map_df[map_df["Vulnerability"] == val_level]
                 level_texts = [hover_texts[i] for i, r in enumerate(map_df.index) if map_df.loc[r, "Vulnerability"] == val_level]
@@ -107,18 +118,19 @@ else:
                     lat=level_df["CoordY"],
                     lon=level_df["CoordX"],
                     mode='markers',
-                    marker=dict(size=13, color=color_hex, opacity=0.9),
+                    marker=dict(size=13, color=color_hex, opacity=0.95),
                     text=level_texts,
                     hoverinfo='text',
-                    name=f"Tổn thương: {val_level}"
+                    name=f"Cấp rủi ro: {val_level}"
                 ))
         else:
+            # Hiển thị dải màu gradient liên tục khoa học cho từng lớp cấu phần chuyên sâu
             indicator_mapping = {
-                "Độ phơi nhiễm (Exposure)": ("Exposure", px.colors.sequential.OrRd),
-                "Độ nhạy cảm (Sensitivity)": ("Sensitivity", px.colors.sequential.Purples),
-                "Năng lực thích ứng (Adaptive)": ("Adaptive", px.colors.sequential.YlGn)
+                "Độ phơi nhiễm (Exposure)": ("Exposure", px.colors.sequential.OrRd, "Dải màu hiểm họa ngập"),
+                "Độ nhạy cảm (Sensitivity)": ("Sensitivity", px.colors.sequential.Purples, "Dải màu độ nhạy kết cấu"),
+                "Năng lực thích ứng (Adaptive)": ("Adaptive", px.colors.sequential.YlGn, "Dải màu năng lực tự vệ")
             }
-            target_col, target_scale = indicator_mapping[sel_indicator]
+            target_col, target_scale, colorbar_title = indicator_mapping[sel_indicator]
             
             fig_complex.add_trace(go.Scattermapbox(
                 lat=map_df["CoordY"],
@@ -129,10 +141,12 @@ else:
                     color=map_df[target_col],
                     colorscale=target_scale,
                     showscale=True,
+                    opacity=0.95,
                     colorbar=dict(
-                        title=dict(text=sel_indicator, font=dict(size=11)),
-                        thickness=15,
-                        x=0.96
+                        title=dict(text=colorbar_title, font=dict(size=12)),
+                        thickness=18,
+                        x=0.96,
+                        len=0.7
                     )
                 ),
                 text=hover_texts,
@@ -140,18 +154,18 @@ else:
                 name=sel_indicator
             ))
 
-        # Cấu hình Layout nền bản đồ Open Street Map
+        # 5. Cấu hình hệ thống tọa độ trung tâm đô thị Huế và kiểu nền có màu sinh động
         fig_complex.update_layout(
             mapbox=dict(
-                style="open-street-map",
-                center=dict(lat=df["CoordY"].mean(), lon=df["CoordX"].mean()),
-                zoom=12.2
+                style="open-street-map", # Giữ bản đồ nền có màu sắc địa vật rõ nét
+                center=dict(lat=df["CoordY"].mean() if not df.empty else 16.46, lon=df["CoordX"].mean() if not df.empty else 107.60),
+                zoom=12.0
             ),
-            margin={"r":0, "t":10, "l":0, "b":0},
-            height=530,
+            margin={"r":0, "t":15, "l":0, "b":0},
+            height=540,
             font_family="Roboto",
             legend=dict(
-                title="Phân loại rủi ro chính",
+                title="Bảng chú giải rủi ro",
                 yanchor="top", y=0.98,
                 xanchor="left", x=0.02,
                 bgcolor="rgba(255, 255, 255, 0.85)"
@@ -168,7 +182,7 @@ else:
         col_kpi4.metric("Mức TRUNG BÌNH", len(df[df["Vulnerability"] == "Trung bình"]), "Theo dõi định kỳ")
         col_kpi5.metric("Mức THẤP", len(df[df["Vulnerability"] == "Thấp"]), "An toàn tốt")
         
-        # Hai biểu đồ phân phối Histogram và Pie Chart phụ trợ
+        # Biểu đồ phân phối Histogram và Pie Chart phụ trợ giữ nguyên
         col_hist1, col_hist2 = st.columns(2)
         with col_hist1:
             st.markdown("<div class='sub-section-title'>Histogram phân bố điểm Chỉ số FVI</div>", unsafe_allow_html=True)
@@ -185,9 +199,9 @@ else:
             fig_pie.update_layout(font_family="Roboto")
             st.plotly_chart(fig_pie, use_container_width=True)
 
-    # ==========================================
-    # TẦNG HIỂN THỊ 2: THỐNG KÊ MÔ TẢ (TAB DESCRIPTIVE)
-    # ==========================================
+    # ==========================================================
+    # TẦNG HIỂN THỊ 2: THỐNG KÊ MÔ TẢ (TAB DESCRIPTIVE) - GIỮ NGUYÊN
+    # ==========================================================
     with tab_descriptive:
         st.markdown('<div class="sub-section-title">Thống kê mô tả dữ liệu đầu vào của các chỉ số</div>', unsafe_allow_html=True)
         col_desc1, col_desc2 = st.columns(2)
@@ -209,9 +223,9 @@ else:
         summary_table = data_table[["FVI", "Exposure", "Sensitivity", "Adaptive", "HeightFromTheRoad"]].describe().T
         st.table(summary_table[["min", "max", "mean", "std"]])
 
-    # ==========================================
-    # TẦNG HIỂN THỊ 3: TRA CỨU CHI TIẾT TỪNG CƠ SỞ (TAB DETAIL)
-    # ==========================================
+    # ==========================================================
+    # TẦNG HIỂN THỊ 3: TRA CỨU CHI TIẾT TỪNG CƠ SỞ (TAB DETAIL) - GIỮ NGUYÊN
+    # ==========================================================
     with tab_detail_facility:
         st.markdown('<div class="sub-section-title">Tra cứu chi tiết từng cơ sở hạ tầng thiết yếu</div>', unsafe_allow_html=True)
         sel_facility = st.selectbox("Chọn tên cơ sở cần tra cứu rủi ro:", df["Name"].unique())
