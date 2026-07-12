@@ -425,16 +425,16 @@ with tab_weights_pca:
             "Ngành Y tế (Trạm y tế / Bệnh viện)": "60.48% | Ngập đường lân cận (bán kính 200m)"
         },
         {
-            "Hợp phần FVI": "Exposure (Độ phơi nhiễm lũ)",
+            "Hợp phần FVI": ",
             "Thành phần chính": "Yếu tố cốt lõi 2",
             "Ngành Giáo dục (Trường học)": "24.24% | Ngập đường lân cận (bán kính 200m)",
             "Ngành Y tế (Trạm y tế / Bệnh viện)": "27.33% | Khoảng cách hình học tới sông chính"
         },
         {
-            "Hợp phần FVI": "MỨC ĐỘ GIẢI THÍCH TÍCH LŨY",
+            <b>"Hợp phần FVI": "MỨC ĐỘ GIẢI THÍCH TÍCH LŨY",
             "Thành phần chính": "Tổng hợp mô hình",
             "Ngành Giáo dục (Trường học)": "81.60% (Đủ độ tin cậy khoa học)",
-            "Ngành Y tế (Trạm y tế / Bệnh viện)": "87.80% (Giải thích trọn vẹn đặc trưng)"
+            "Ngành Y tế (Trạm y tế / Bệnh viện)": "87.80% (Giải thích trọn vẹn đặc trưng)"</b>
         },
         
         # --- ĐỘ NHẠY CẢM (SENSITIVITY) ---
@@ -445,16 +445,16 @@ with tab_weights_pca:
             "Ngành Y tế (Trạm y tế / Bệnh viện)": "37.50% | Vai trò cứu trợ & Quy mô bệnh nhân"
         },
         {
-            "Hợp phần FVI": "Sensitivity (Độ nhạy cảm)",
+            "Hợp phần FVI": ,
             "Thành phần chính": "Yếu tố cốt lõi 2",
             "Ngành Giáo dục (Trường học)": "24.40% | Quy mô con người (Học sinh & Giáo viên)",
             "Ngành Y tế (Trạm y tế / Bệnh viện)": "28.67% | Mức độ xuống cấp theo tuổi công trình"
         },
         {
-            "Hợp phần FVI": "MỨC ĐỘ GIẢI THÍCH TÍCH LŨY",
+            <b>"Hợp phần FVI": "MỨC ĐỘ GIẢI THÍCH TÍCH LŨY",
             "Thành phần chính": "Tổng hợp mô hình",
             "Ngành Giáo dục (Trường học)": "75.60% (Ưu tiên áp lực nhân sinh)",
-            "Ngành Y tế (Trạm y tế / Bệnh viện)": "66.17% (Kết hợp hạ tầng và tải bệnh nhân)"
+            "Ngành Y tế (Trạm y tế / Bệnh viện)": "66.17% (Kết hợp hạ tầng và tải bệnh nhân)"</b>
         },
         
         # --- NĂNG LỰC THÍCH ỨNG (ADAPTIVITY) ---
@@ -465,22 +465,22 @@ with tab_weights_pca:
             "Ngành Y tế (Trạm y tế / Bệnh viện)": "53.91% | Phương tiện đường thủy khẩn cấp (Ghe/Thuyền)"
         },
         {
-            "Hợp phần FVI": "Adaptivity (Năng lực thích ứng)",
+            "Hợp phần FVI": ,
             "Thành phần chính": "Yếu tố cốt lõi 2",
             "Ngành Giáo dục (Trường học)": "16.76% | Tính chủ động lập kế hoạch & Diễn tập",
             "Ngành Y tế (Trạm y tế / Bệnh viện)": "16.76% | Lập phương án tổ chức ứng phó y tế"
         },
         {
-            "Hợp phần FVI": "Adaptivity (Năng lực thích ứng)",
+            "Hợp phần FVI":,
             "Thành phần chính": "Yếu tố cốt lõi 3",
             "Ngành Giáo dục (Trường học)": "12.73% | Độ kiên cố của hệ thống hạ tầng kỹ thuật",
             "Ngành Y tế (Trạm y tế / Bệnh viện)": "12.73% | Nguồn điện và nước sạch dự phòng độc lập"
         },
         {
-            "Hợp phần FVI": "MỨC ĐỘ GIẢI THÍCH TÍCH LŨY",
+            <b>"Hợp phần FVI": "MỨC ĐỘ GIẢI THÍCH TÍCH LŨY",
             "Thành phần chính": "Tổng hợp mô hình",
             "Ngành Giáo dục (Trường học)": "83.40% (Đầy đủ cấu phần giải pháp)",
-            "Ngành Y tế (Trạm y tế / Bệnh viện)": "83.40% (Đảm bảo chuỗi y tế không đứt gãy)"
+            "Ngành Y tế (Trạm y tế / Bệnh viện)": "83.40% (Đảm bảo chuỗi y tế không đứt gãy)" </b>
         }
     ])
     
