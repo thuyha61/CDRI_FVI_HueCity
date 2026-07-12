@@ -21,7 +21,7 @@ with col_logo1:
         st.markdown("<div style='text-align:center; font-weight:700; color:#475569; font-size:16px;'>IWRP</div>", unsafe_allow_html=True)
 with col_logo2:
     if os.path.exists("assets/cdri_logo.png"):
-        st.image("assets/cdri_logo.png", use_container_width=True)
+        st.image("assets/cdri_logo.jpg", use_container_width=True)
     else:
         st.markdown("<div style='text-align:center; font-weight:700; color:#475569; font-size:16px;'>CDRI</div>", unsafe_allow_html=True)
 
