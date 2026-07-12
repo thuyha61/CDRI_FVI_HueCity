@@ -112,7 +112,7 @@ st.markdown('<div class="academic-paragraph">Toàn bộ quy trình nghiên cứu
 
 # Khởi tạo các Tab phương pháp luận chính
 tab_theory, tab_workflow, tab_viendam, tab_weights_pca = st.tabs([
-    "🔹 KHUNG LÝ THUYẾT & HỆ THỐNG CHỈ SỐ FVI",
+    "🔹 KHUNG LÝ THUYẾT & <br><br> HỆ THỐNG CHỈ SỐ FVI",
     "🔹 CÁC BƯỚC XÂY DỰNG CHỈ SỐ TỔN THƯƠNG LŨ (FVI)",
     "🔹 BẢN ĐỒ NGẬP BẰNG VIỄN THÁM VÀ HỌC MÁY",
     "🔹 XÁC ĐỊNH TRỌNG SỐ VÀ XÂY DỰNG CHỈ SỐ FVI"
