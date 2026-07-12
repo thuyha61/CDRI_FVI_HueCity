@@ -160,9 +160,6 @@ with tab_theory:
 # ==========================================
 # TAB 2: XÂY DỰNG CHỈ SỐ FVI
 # ==========================================
-# ==========================================
-# TAB 2: XÂY DỰNG CHỈ SỐ FVI (ĐÃ TÁCH BIỆT RÕ RÀNG)
-# ==========================================
 with tab_workflow:
     st.markdown('<div class="sub-section-title">Giới thiệu tổng quan</div>', unsafe_allow_html=True)
     st.markdown('<div class="academic-paragraph">Chỉ số tổn thương lũ (Flood Vulnerability Index – FVI) được xây dựng nhằm lượng hóa mức độ tổn thương của từng trường học và cơ sở y tế trước nguy cơ ngập lụt. Khác với các chỉ số được tính toán ở cấp xã, phường hoặc trên các ô lưới không gian, FVI trong nghiên cứu này được xây dựng ở cấp từng cơ sở, cho phép phản ánh sự khác biệt về điều kiện hạ tầng, quy mô hoạt động và năng lực ứng phó của từng đơn vị.</div>', unsafe_allow_html=True)
@@ -306,14 +303,33 @@ with tab_viendam:
     
     st.markdown('<div class="sub-section-title">Bảng so sánh các phương pháp xác định vùng ngập viễn thám</div>', unsafe_allow_html=True)
     compare_df = pd.DataFrame([
-        {"Tiêu chí": "Độ phân giải không gian", "Bản đồ diện rộng (Ví dụ: SPADE)": "Thô (90 m)", "Phương pháp Phân ngưỡng (Thresholding)": "Trung bình (10 m - 20 m)", "Phương pháp Tích hợp Học máy (Dự án đề xuất)": "Cao (10 m)"},
-        {"Tiêu chí": "Nguồn ảnh đầu vào", "Bản đồ diện rộng (Ví dụ: SPADE)": "Quang học / Mô hình thủy văn", "Phương pháp Phân ngưỡng (Thresholding)": "Radar đơn lẻ", "Phương pháp Tích hợp Học máy (Dự án đề xuất)": "Tích hợp đa nguồn (Radar + DEM + Khí tượng)"},
-        {"Tiêu chí": "Hiệu quả tại khu vực đô thị", "Bản đồ diện rộng (Ví dụ: SPADE)": "Rất thấp (Không bắt được túi ngập nhỏ)", "Phương pháp Phân ngưỡng (Thresholding)": "Thấp (Bị nhiễu bởi phản xạ bề mặt bê tông)", "Phương pháp Tích hợp Học máy (Dự án đề xuất)": "Cao (Thuật toán lọc nhiễu cấu trúc công trình)"},
-        {"Tiêu chí": "Chi phí dữ liệu đầu vào", "Bản đồ diện rộng (Ví dụ: SPADE)": "Thấp (Dữ liệu sẵn có)", "Phương pháp Phân ngưỡng (Thresholding)": "Thấp (Ảnh mở)", "Phương pháp Tích hợp Học máy (Dự án đề xuất)": "Tối ưu (Ảnh mở, khai thác hiệu năng thuật toán)"},
-        {"Tiêu chí": "Độ phức tạp tính toán", "Bản đồ diện rộng (Ví dụ: SPADE)": "Thấp (Tra cứu có sẵn)", "Phương pháp Phân ngưỡng (Thresholding)": "Đơn giản (Dễ sai lệch vùng giáp ranh)", "Phương pháp Tích hợp Học máy (Dự án đề xuất)": "Trung bình - Cao (Đảm bảo độ chính xác học thuật)"}
+    {
+        "Tiêu chí": "Độ phân giải không gian", 
+        "Bản đồ diện rộng (Ví dụ: SPADE)": "Thô (90 m)", 
+        "Phương pháp Tích hợp Học máy (Dự án đề xuất)": "Cao (10 m)"
+    },
+    {
+        "Tiêu chí": "Nguồn ảnh đầu vào", 
+        "Bản đồ diện rộng (Ví dụ: SPADE)": "Quang học / Mô hình thủy văn", 
+        "Phương pháp Tích hợp Học máy (Dự án đề xuất)": "Tích hợp đa nguồn (Radar + DEM + Khí tượng)"
+    },
+    {
+        "Tiêu chí": "Hiệu quả tại khu vực đô thị", 
+        "Bản đồ diện rộng (Ví dụ: SPADE)": "Rất thấp (Không bắt được túi ngập nhỏ)", 
+        "Phương pháp Tích hợp Học máy (Dự án đề xuất)": "Cao (Thuật toán lọc nhiễu cấu trúc công trình)"
+    },
+    {
+        "Tiêu chí": "Chi phí dữ liệu đầu vào", 
+        "Bản đồ diện rộng (Ví dụ: SPADE)": "Thấp (Dữ liệu sẵn có)", 
+        "Phương pháp Tích hợp Học máy (Dự án đề xuất)": "Tối ưu (Ảnh mở, khai thác hiệu năng thuật toán)"
+    },
+    {
+        "Tiêu chí": "Độ phức tạp tính toán", 
+        "Bản đồ diện rộng (Ví dụ: SPADE)": "Thấp (Tra cứu có sẵn)", 
+        "Phương pháp Tích hợp Học máy (Dự án đề xuất)": "Trung bình - Cao (Đảm bảo độ chính xác học thuật)"
+    }
     ])
-    st.table(compare_df)
-    
+    st.table(compare_df)   
     st.markdown('---')
     st.markdown('<div class="sub-section-title">3. Quy trình triển khai hệ thống (Workflow)</div>', unsafe_allow_html=True)
     st.markdown('<div class="academic-paragraph">Quy trình công nghệ từ khai thác dữ liệu thô đến trích xuất chỉ số phơi nhiễm được vận hành theo sơ đồ tuyến tính 7 bước:</div>', unsafe_allow_html=True)
