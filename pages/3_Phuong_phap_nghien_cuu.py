@@ -405,80 +405,93 @@ with tab_viendam:
 # ==========================================
 with tab_weights_pca:
     st.markdown('<div class="sub-section-title">Giới thiệu cấu phần</div>', unsafe_allow_html=True)
-    st.markdown('<div class="academic-paragraph">Đây là một phần trong bước 6 của nghiên cứu. Sau khi chuẩn hóa dữ liệu, nghiên cứu sử dụng Phân tích thành phần chính (Principal Component Analysis – PCA) để xác định trọng số cho các chỉ số thành phần của Chỉ số tổn thương lũ (Flood Vulnerability Index – FVI) đối với từng ngành.</div>', unsafe_allow_html=True)
-    st.markdown('<div class="academic-paragraph">PCA xác định trọng số dựa trên cấu trúc thống kê của dữ liệu khảo sát, qua đó giảm tính chủ quan và hạn chế ảnh hưởng của hiện tượng đa cộng tuyến giữa các chỉ số. Trọng số cuối cùng của từng chỉ số thành phần ($w_i$) được tính toán bằng cách kết hợp hệ số tải (loadings) của các thành phần chính được giữ lại với tỷ lệ phương sai giải thích tương ứng của chúng.</div>', unsafe_allow_html=True)
+    st.markdown('<div class="academic-paragraph">Sau khi chuẩn hóa dữ liệu, nghiên cứu áp dụng phương pháp Phân tích Thành phần chính (PCA) để tự động hóa việc tính toán trọng số cho Chỉ số tổn thương lũ (FVI). Mô hình toán xác định tầm quan trọng của từng yếu tố dựa hoàn toàn trên cấu trúc thống kê khách quan của dữ liệu khảo sát thực tế, loại bỏ sự chủ quan và hiện tượng trùng lặp thông tin giữa các chỉ số đầu vào.</div>', unsafe_allow_html=True)
     
-    st.markdown('<div class="academic-paragraph">Sau khi xác định trọng số, điểm FVI được tính theo phương pháp tổng hợp tuyến tính:</div>', unsafe_allow_html=True)
+    st.markdown('<div class="academic-paragraph">Công thức tích hợp tuyến tính để thiết lập chỉ số FVI cuối cùng:</div>', unsafe_allow_html=True)
     st.latex(r"FVI = \sum_{i=1}^{n} w_i Z_i")
-    st.markdown('<div class="academic-paragraph">Trong đó: Z_i là giá trị chuẩn hóa của chỉ số thứ i; w_i là trọng số được xác định từ kết quả PCA.</div>', unsafe_allow_html=True)
+    st.markdown('<div class="academic-paragraph">Trong đó: Z_i là giá trị thực tế sau khi đã đưa về cùng thang đo chuẩn; w_i là trọng số tầm quan trọng được mô hình PCA xác định.</div>', unsafe_allow_html=True)
     
-    st.markdown('<div class="sub-section-title">Kết quả phân tích PCA cho hệ thống trường học</div>', unsafe_allow_html=True)
-    st.markdown('<div class="academic-paragraph">Phân tích PCA được thực hiện riêng cho ba nhóm chỉ số Độ phơi nhiễm (Exposure), Độ nhạy cảm (Sensitivity) và Năng lực thích ứng (Adaptive Capacity) của 22 trường học nhằm lựa chọn các thành phần chính tối ưu và xác định trọng số.</div>', unsafe_allow_html=True)
-    
-    st.markdown('<div class="sub-section-title">Bảng tổng hợp kết quả phân tích PCA cho hệ thống Trường học</div>', unsafe_allow_html=True)
-    
-    # Cập nhật dữ liệu bảng PCA dựa trên số liệu phân tích thực tế mới
-    pca_school_df = pd.DataFrame([
-        # EXPOSURE
-        {"Nhóm chỉ số": "Exposure (Phơi nhiễm)", "Thành phần chính": "PC1", "Phương sai (%)": "57.36%", "Biến số chi phối (Loading)": "flood_val (0.961)", "Ý nghĩa khoa học": "Mức độ ngập lũ trực tiếp tại vị trí công trình trường học"},
-        {"Nhóm chỉ số": "Exposure (Phơi nhiễm)", "Thành phần chính": "PC2", "Phương sai (%)": "24.24%", "Biến số chi phối (Loading)": "flood_val_200m (0.956)", "Ý nghĩa khoa học": "Mức độ ngập lụt của mạng lưới giao thông lân cận trong bán kính 200m"},
-        {"Nhóm chỉ số": "Exposure Tích lũy (Lựa chọn)", "Thành phần chính": "PC1 + PC2", "Phương sai (%)": "81.60%", "Biến số chi phối (Loading)": "Tổng phương sai giải thích của 2 PC đầu", "Ý nghĩa khoa học": "Giải thích phần lớn đặc trưng phơi nhiễm không gian (PC3 giải thích 18.40% còn lại bị loại)"},
-        
-        # SENSITIVITY
-        {"Nhóm chỉ số": "Sensitivity (Độ nhạy cảm)", "Thành phần chính": "PC1", "Phương sai (%)": "51.20%", "Biến số chi phối (Loading)": "AssignedFloodShelter (0.935)", "Ý nghĩa khoa học": "Vai trò của trường học khi được chỉ định làm điểm sơ tán lũ cho cộng đồng"},
-        {"Nhóm chỉ số": "Sensitivity (Độ nhạy cảm)", "Thành phần chính": "PC2", "Phương sai (%)": "24.40%", "Biến số chi phối (Loading)": "NoOfStaff (0.723), NoOfClients (0.635)", "Ý nghĩa khoa học": "Quy mô hoạt động bao gồm tổng số lượng nhân sự và học sinh chịu ảnh hưởng"},
-        {"Nhóm chỉ số": "Sensitivity Tích lũy (Lựa chọn)", "Thành phần chính": "PC1 + PC2", "Phương sai (%)": "75.60%", "Biến số chi phối (Loading)": "Tổng phương sai giải thích của 2 PC đầu", "Ý nghĩa khoa học": "Phản ánh áp lực nhân sinh và vai trò xã hội của hạ tầng (PC3 giải thích 17.21% còn lại bị loại)"},
-        
-        # ADAPTIVITY
-        {"Nhóm chỉ số": "Adaptive Capacity (Thích ứng)", "Thành phần chính": "PC1", "Phương sai (%)": "53.91%", "Biến số chi phối (Loading)": "Boat (0.993)", "Ý nghĩa khoa học": "Sự sẵn có của phương tiện giao thông đường thủy di chuyển khẩn cấp"},
-        {"Nhóm chỉ số": "Adaptive Capacity (Thích ứng)", "Thành phần chính": "PC2", "Phương sai (%)": "16.76%", "Biến số chi phối (Loading)": "planning (0.826)", "Ý nghĩa khoa học": "Khả năng chủ động lập kế hoạch phòng chống và tổ chức diễn tập ứng phó"},
-        {"Nhóm chỉ số": "Adaptive Capacity (Thích ứng)", "Thành phần chính": "PC3", "Phương sai (%)": "12.73%", "Biến số chi phối (Loading)": "infrastructure_mag_score (0.734), score (0.582)", "Ý nghĩa khoa học": "Năng lực duy trì và mức độ vững chắc của hệ thống hạ tầng kỹ thuật phụ trợ"},
-        {"Nhóm chỉ số": "Adaptive Capacity Tích lũy (Lựa chọn)", "Thành phần chính": "PC1 + PC2 + PC3", "Phương sai (%)": "83.40%", "Biến số chi phối (Loading)": "Tổng phương sai giải thích của 3 PC đầu", "Ý nghĩa khoa học": "Tích hợp toàn diện năng lực thích ứng cấu trúc và phi cấu trúc (PC4 giải thích 10.21% bị loại)"}
-    ])
-    st.table(pca_school_df)
-    
-    st.markdown('<div class="sub-section-title">Diễn giải chi tiết ma trận hệ số tải (Loadings) và cấu trúc dữ liệu</div>', unsafe_allow_html=True)
-    st.markdown("""
-        <ul class="academic-list">
-            <li><b>Hợp phần Độ phơi nhiễm (Exposure):</b> Nghiên cứu giữ lại <b>PC1 và PC2</b> (tích lũy giải thích 81.60% phương sai). Trong đó, PC1 chịu chi phối tuyệt đối bởi nguy cơ ngập tại chỗ <i>flood_val</i> (0.961), phản ánh tổn thương vật lý trực tiếp lên công trình. PC2 chịu chi phối bởi nguy cơ ngập lân cận <i>flood_val_200m</i> (0.956), phản ánh rủi ro cô lập giao thông. Biến khoảng cách tới sông <i>dist_to_river_m</i> (0.920) nằm ở PC3 bị loại bỏ vì mô hình học máy viễn thám đã gián tiếp tích hợp yếu tố không gian này vào lớp ngập thực tế.</li>
-            <li><b>Hợp phần Độ nhạy cảm (Sensitivity):</b> Nghiên cứu giữ lại <b>PC1 và PC2</b> (tích lũy giải thích 75.60% phương sai). Thành phần PC1 tập trung mạnh vào biến <i>AssignedFloodShelter</i> (0.935), minh chứng những trường học được chọn làm điểm cứu trợ lũ chịu áp lực tổn thương kép rất cao khi thiên tai xảy ra. PC2 đại diện cho quy mô con người thông qua hệ số tải cao của <i>NoOfStaff</i> (0.723) và <i>NoOfClients</i> (0.635). Biến tuổi thọ công trình <i>YearOfBuilding</i> nằm tách biệt ở PC3 (0.947) bị loại bỏ nhằm ưu tiên các trọng số tập trung vào khía cạnh an sinh con người.</li>
-            <li><b>Hợp phần Năng lực thích ứng (Adaptive Capacity):</b> Nghiên cứu giữ lại <b>3 thành phần chính đầu tiên</b> (tích lũy giải thích 83.40% phương sai). Sự phân mảnh này cho thấy năng lực thích ứng của trường học chịu tác động đa dạng: PC1 đại diện cho phương tiện cứu nạn khẩn cấp với hệ số tải gần như tuyệt đối của <i>Boat</i> (0.993); PC2 đại diện cho tính chủ động quản lý thông qua biến <i>planning</i> (0.826); và PC3 đại diện cho độ kiên cố của hạ tầng kỹ thuật độc lập với sự chi phối của <i>infrastructure_mag_score</i> (0.734). Thành phần PC4 (giải thích 10.21%) được lược bỏ để tối ưu hóa mô hình toán.</li>
-        </ul>
-    """, unsafe_allow_html=True)
-# ==========================================
-    # ĐOẠN VIẾT THÊM: KẾT QUẢ PCA CHO HỆ THỐNG Y TẾ
-    # ==========================================
     st.markdown('---')
-    st.markdown('<div class="sub-section-title">Kết quả phân tích PCA cho hệ thống y tế (Trạm y tế & Bệnh viện)</div>', unsafe_allow_html=True)
-    st.markdown('<div class="academic-paragraph">Tương tự như hệ thống giáo dục, phân tích PCA được thực hiện riêng biệt cho các cơ sở y tế nhằm phản ánh đúng đặc thù vận hành khẩn cấp và năng lực chống chịu đặc trưng của ngành y tế trước rủi ro ngập lụt.</div>', unsafe_allow_html=True)
-    
-    st.markdown('<div class="sub-section-title">Bảng tổng hợp kết quả phân tích PCA cho hệ thống Y tế</div>', unsafe_allow_html=True)
-    
-    # Tạo bảng dữ liệu số liệu PCA cho hệ thống Y tế
-    pca_health_df = pd.DataFrame([
-        # EXPOSURE (Y TẾ)
-        {"Nhóm chỉ số": "Exposure (Phơi nhiễm)", "Thành phần chính": "PC1", "Phương sai (%)": "60.48%", "Biến số chi phối (Loading)": "flood_val_200m (0.673), dist_to_river_m (0.543)", "Ý nghĩa khoa học": "Rủi ro cô lập giao thông tiếp cận và khoảng cách hình học tới nguồn xả"},
-        {"Nhóm chỉ số": "Exposure (Phơi nhiễm)", "Thành phần chính": "PC2", "Phương sai (%)": "27.33%", "Biến số chi phối (Loading)": "dist_to_river_m (0.827)", "Ý nghĩa khoa học": "Không gian phân bổ dòng chảy lũ theo khoảng cách mạng lưới sông"},
-        {"Nhóm chỉ số": "Exposure Tích lũy (Lựa chọn)", "Thành phần chính": "PC1 + PC2", "Phương sai (%)": "87.80%", "Biến số chi phối (Loading)": "Tổng phương sai giải thích của cả 2 PC", "Ý nghĩa khoa học": "Giải thích trọn vẹn đặc trưng phơi nhiễm của hệ thống y tế tuyến cơ sở"},
+    st.markdown('<div class="sub-section-title">Bảng đối chiếu các yếu tố chi phối trọng số FVI: Trường học vs Y tế</div>', unsafe_allow_html=True)
+    st.markdown('<div class="academic-paragraph">Bảng số liệu dưới đây mô tả tỷ lệ đóng góp (phương sai giải thích) và các yếu tố đời thường đóng vai trò quyết định, chi phối mạnh nhất đến việc hình thành nên trọng số của mô hình.</div>', unsafe_allow_html=True)
+
+    # Khởi tạo bảng dữ liệu gộp tinh gọn, sử dụng ngôn ngữ đời thường
+    pca_compact_df = pd.DataFrame([
+        # --- ĐỘ PHƠI NHIỄM (EXPOSURE) ---
+        {
+            "Hợp phần FVI": "Exposure (Độ phơi nhiễm lũ)",
+            "Thành phần chính": "Yếu tố cốt lõi 1",
+            "Ngành Giáo dục (Trường học)": "57.36% | Ngập lụt trực tiếp tại vị trí trường",
+            "Ngành Y tế (Trạm y tế / Bệnh viện)": "60.48% | Ngập đường lân cận (bán kính 200m)"
+        },
+        {
+            "Hợp phần FVI": "Exposure (Độ phơi nhiễm lũ)",
+            "Thành phần chính": "Yếu tố cốt lõi 2",
+            "Ngành Giáo dục (Trường học)": "24.24% | Ngập đường lân cận (bán kính 200m)",
+            "Ngành Y tế (Trạm y tế / Bệnh viện)": "27.33% | Khoảng cách hình học tới sông chính"
+        },
+        {
+            "Hợp phần FVI": "MỨC ĐỘ GIẢI THÍCH TÍCH LŨY",
+            "Thành phần chính": "Tổng hợp mô hình",
+            "Ngành Giáo dục (Trường học)": "81.60% (Đủ độ tin cậy khoa học)",
+            "Ngành Y tế (Trạm y tế / Bệnh viện)": "87.80% (Giải thích trọn vẹn đặc trưng)"
+        },
         
-        # SENSITIVITY (Y TẾ)
-        {"Nhóm chỉ số": "Sensitivity (Độ nhạy cảm)", "Thành phần chính": "PC1", "Phương sai (%)": "37.50%", "Biến số chi phối (Loading)": "AssignedFloodShelter (0.659), NoOfClients (0.644)", "Ý nghĩa khoa học": "Áp lực tiếp nhận ca bệnh khẩn cấp và quy mô bệnh nhân phục vụ"},
-        {"Nhóm chỉ số": "Sensitivity (Độ nhạy cảm)", "Thành phần chính": "PC2", "Phương sai (%)": "28.67%", "Biến số chi phối (Loading)": "YearOfBuilding (0.843)", "Ý nghĩa khoa học": "Tốc độ xuống cấp kết cấu hạ tầng theo tuổi thọ công trình xây dựng"},
-        {"Nhóm chỉ số": "Sensitivity Tích lũy (Lựa chọn)", "Thành phần chính": "PC1 + PC2", "Phương sai (%)": "66.17%", "Biến số chi phối (Loading)": "Tổng phương sai giải thích của 2 PC đầu", "Ý nghĩa khoa học": "Tập trung vào áp lực tải bệnh nhân và chất lượng công trình (PC3 giải thích 17.34% bị loại)"},
+        # --- ĐỘ NHẠY CẢM (SENSITIVITY) ---
+        {
+            "Hợp phần FVI": "Sensitivity (Độ nhạy cảm)",
+            "Thành phần chính": "Yếu tố cốt lõi 1",
+            "Ngành Giáo dục (Trường học)": "51.20% | Vai trò là điểm sơ tán tập trung",
+            "Ngành Y tế (Trạm y tế / Bệnh viện)": "37.50% | Vai trò cứu trợ & Quy mô bệnh nhân"
+        },
+        {
+            "Hợp phần FVI": "Sensitivity (Độ nhạy cảm)",
+            "Thành phần chính": "Yếu tố cốt lõi 2",
+            "Ngành Giáo dục (Trường học)": "24.40% | Quy mô con người (Học sinh & Giáo viên)",
+            "Ngành Y tế (Trạm y tế / Bệnh viện)": "28.67% | Mức độ xuống cấp theo tuổi công trình"
+        },
+        {
+            "Hợp phần FVI": "MỨC ĐỘ GIẢI THÍCH TÍCH LŨY",
+            "Thành phần chính": "Tổng hợp mô hình",
+            "Ngành Giáo dục (Trường học)": "75.60% (Ưu tiên áp lực nhân sinh)",
+            "Ngành Y tế (Trạm y tế / Bệnh viện)": "66.17% (Kết hợp hạ tầng và tải bệnh nhân)"
+        },
         
-        # ADAPTIVITY (Y TẾ)
-        {"Nhóm chỉ số": "Adaptive Capacity (Thích ứng)", "Thành phần chính": "PC1", "Phương sai (%)": "53.91%", "Biến số chi phối (Loading)": "Boat (0.993)", "Ý nghĩa khoa học": "Năng lực di chuyển khẩn cấp bằng phương tiện đường thủy"},
-        {"Nhóm chỉ số": "Adaptive Capacity (Thích ứng)", "Thành phần chính": "PC2", "Phương sai (%)": "16.76%", "Biến số chi phối (Loading)": "planning (0.826)", "Ý nghĩa khoa học": "Mức độ sẵn sàng về phương án ứng phó và lập kế hoạch y tế khẩn cấp"},
-        {"Nhóm chỉ số": "Adaptive Capacity (Thích ứng)", "Thành phần chính": "PC3", "Phương sai (%)": "12.73%", "Biến số chi phối (Loading)": "infrastructure_mag_score (0.734), score (0.582)", "Ý nghĩa khoa học": "Tính độc lập và độ vững chắc của hạ tầng kỹ thuật (nguồn điện, nước dự phòng)"},
-        {"Nhóm chỉ số": "Adaptive Capacity Tích lũy (Lựa chọn)", "Thành phần chính": "PC1 + PC2 + PC3", "Phương sai (%)": "83.40%", "Biến số chi phối (Loading)": "Tổng phương sai giải thích của 3 PC đầu", "Ý nghĩa khoa học": "Phản ánh toàn diện năng lực thích ứng của trạm y tế (PC4 giải thích 10.21% bị loại)"}
+        # --- NĂNG LỰC THÍCH ỨNG (ADAPTIVITY) ---
+        {
+            "Hợp phần FVI": "Adaptivity (Năng lực thích ứng)",
+            "Thành phần chính": "Yếu tố cốt lõi 1",
+            "Ngành Giáo dục (Trường học)": "53.91% | Phương tiện đường thủy khẩn cấp (Ghe/Thuyền)",
+            "Ngành Y tế (Trạm y tế / Bệnh viện)": "53.91% | Phương tiện đường thủy khẩn cấp (Ghe/Thuyền)"
+        },
+        {
+            "Hợp phần FVI": "Adaptivity (Năng lực thích ứng)",
+            "Thành phần chính": "Yếu tố cốt lõi 2",
+            "Ngành Giáo dục (Trường học)": "16.76% | Tính chủ động lập kế hoạch & Diễn tập",
+            "Ngành Y tế (Trạm y tế / Bệnh viện)": "16.76% | Lập phương án tổ chức ứng phó y tế"
+        },
+        {
+            "Hợp phần FVI": "Adaptivity (Năng lực thích ứng)",
+            "Thành phần chính": "Yếu tố cốt lõi 3",
+            "Ngành Giáo dục (Trường học)": "12.73% | Độ kiên cố của hệ thống hạ tầng kỹ thuật",
+            "Ngành Y tế (Trạm y tế / Bệnh viện)": "12.73% | Nguồn điện và nước sạch dự phòng độc lập"
+        },
+        {
+            "Hợp phần FVI": "MỨC ĐỘ GIẢI THÍCH TÍCH LŨY",
+            "Thành phần chính": "Tổng hợp mô hình",
+            "Ngành Giáo dục (Trường học)": "83.40% (Đầy đủ cấu phần giải pháp)",
+            "Ngành Y tế (Trạm y tế / Bệnh viện)": "83.40% (Đảm bảo chuỗi y tế không đứt gãy)"
+        }
     ])
-    st.table(pca_health_df)
     
-    st.markdown('<div class="sub-section-title">Diễn giải chi tiết ma trận hệ số tải (Loadings) ngành Y tế</div>', unsafe_allow_html=True)
+    # Hiển thị bảng đối chiếu tinh gọn lên giao diện Streamlit
+    st.table(pca_compact_df)
+    
+    st.markdown('<div class="sub-section-title">Luận cứ và phát hiện khoa học cốt lõi</div>', unsafe_allow_html=True)
     st.markdown("""
         <ul class="academic-list">
-            <li><b>Hợp phần Độ phơi nhiễm (Exposure):</b> Giữ lại <b>PC1 và PC2</b> (tích lũy giải thích 87.80% phương sai). Khác với trường học, thành phần PC1 của y tế chịu ảnh hưởng mạnh bởi nguy cơ ngập mạng lưới đường lân cận <i>flood_val_200m</i> (0.673) và khoảng cách sông <i>dist_to_river_m</i> (0.543). Điều này hoàn toàn hợp lý về mặt y tế công cộng: đối với một cơ sở y tế, việc bị ngập sâu hay bị cô lập đường tiếp cận đều làm mất đi hoàn toàn khả năng cấp cứu khẩn cấp.</li>
-            <li><b>Hợp phần Độ nhạy cảm (Sensitivity):</b> Giữ lại <b>PC1 và PC2</b> (tích lũy giải thích 66.17% phương sai). PC1 đại diện cho áp lực nhân sinh khẩn cấp khi thiên tai xảy ra, thể hiện qua hệ số tải cao của biến chỉ định điểm cứu trợ <i>AssignedFloodShelter</i> (0.659) và quy mô bệnh nhân phục vụ <i>NoOfClients</i> (0.644). PC2 phản ánh rõ nét tính dễ bị tổn thương về mặt vật chất với sự chi phối độc lập của tuổi thọ công trình <i>YearOfBuilding</i> (0.843). Thành phần PC3 (giải thích 17.34%) liên quan đến cốt cao độ nền công trình bị loại bỏ để tập trung trọng số vào hai trục chính: áp lực tiếp nhận bệnh nhân và độ an toàn kết cấu.</li>
-            <li><b>Hợp phần Năng lực thích ứng (Adaptive Capacity):</b> Giữ lại <b>3 thành phần chính đầu tiên</b> (tích lũy giải thích 83.40% phương sai). Kết quả cho thấy năng lực tự chống chịu của các cơ sở y tế được phân bổ rất rõ ràng: PC1 ưu tiên tuyệt đối cho năng lực di chuyển cứu hộ đường thủy khẩn cấp thông qua <i>Boat</i> (0.993); PC2 đại diện cho tính chủ động tổ chức phương án phi cấu trình <i>planning</i> (0.826); và PC3 phản ánh tính bền vững của phần cứng hạ tầng phụ trợ độc lập <i>infrastructure_mag_score</i> (0.734) nhằm duy trì chuỗi phòng bệnh khi lưới điện đô thị bị cắt trong bão lũ.</li>
+            <li><b>Khác biệt lớn về Độ phơi nhiễm lũ:</b> Khả năng bị tổn thương của <b>Trường học</b> phụ thuộc trực tiếp vào việc bản thân khuôn viên trường có bị ngập sâu hay không (chiếm 57.36%). Ngược lại, <b>Cơ sở y tế</b> lại bị đe dọa lớn nhất bởi việc ngập các tuyến đường tiếp cận xung quanh trong bán kính 200m (chiếm 60.48%). Điều này phản ánh thực tế ngành y tế: nếu đường bị ngập cô lập, xe cứu thương không thể ra vào thì cơ sở y tế hoàn toàn bị tê liệt công năng khẩn cấp dù tòa nhà chính có khô ráo.</li>
+            <li><b>Áp lực kép về Độ nhạy cảm:</b> Cả hai ngành đều phản ánh một điểm chung rất rõ: cơ sở hạ tầng nào được nhà nước chọn làm điểm sơ tán hoặc cứu trợ lũ cho người dân sẽ phải chịu áp lực tổn thương và quá tải cực kỳ lớn khi thiên tai xảy ra (yếu tố chi phối hàng đầu). Tuy nhiên, trường học nhạy cảm hơn về quy mô con người (số lượng học sinh lớn cần bảo vệ), trong khi trạm y tế nhạy cảm ở mức độ xuống cấp, tuổi thọ của công trình xây dựng.</li>
+            <li><b>Sự đồng điệu trong Năng lực tự thích ứng:</b> Cấu trúc dữ liệu của cả hai ngành trùng khớp hoàn toàn về thứ tự ưu tiên các giải pháp chống chịu. Trọng số lớn nhất được mô hình gán cho phần cứng cứu nạn khẩn cấp tại chỗ (sự sẵn có của các phương tiện đường thủy), tiếp theo là phần mềm quản lý (chủ động diễn tập, lên phương án trước thiên tai) và cuối cùng là năng lực duy trì năng lượng độc lập (hệ thống máy phát điện, nước dự phòng) để sống sót khi đô thị bị cắt điện diện rộng.</li>
         </ul>
     """, unsafe_allow_html=True)
