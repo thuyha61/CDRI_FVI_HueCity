@@ -116,7 +116,6 @@ else:
     # 🏢 TAB 1: BẢN ĐỒ TƯƠNG TÁC ĐA LỚP & KẾT QUẢ KPI ĐỘNG
     # ==========================================================
     with tab_map:
-        # Bộ lọc nâng cao 4 cột song song - Đã đổi Key độc nhất hoàn toàn
         col_f1, col_f2, col_f3, col_f4 = st.columns(4)
         with col_f1:
             sel_sector = st.selectbox("Lĩnh vực hạ tầng:", ["Tất cả", "Y tế", "Giáo dục"], key="t4_tab1_filter_sector_unique")
@@ -142,7 +141,6 @@ else:
 
         st.markdown("<div class='sub-section-title'>Bản đồ số tích hợp ranh giới xã/phường và phân lớp chỉ số rủi ro</div>", unsafe_allow_html=True)
 
-        # Khởi tạo đối tượng đồ họa bản đồ đa tầng go.Figure
         fig_complex = go.Figure()
 
         # --- LỚP KHÔNG GIAN 1: RANH GIỚI PHÂN VÙNG PHƯỜNG HÀNH CHÍNH (GEOJSON) ---
@@ -152,13 +150,11 @@ else:
                 with open(geojson_path, "r", encoding="utf-8") as f:
                     geojson_data = json.load(f)
                 
-                # Ánh xạ thuộc tính 'id' trùng khớp với ranh giới trường 'tenXa_shor' trong GeoJSON
                 for feature in geojson_data['features']:
                     feature['id'] = feature['properties']['tenXa_shor']
                 
                 commune_names = [f['properties']['tenXa_shor'] for f in geojson_data['features']]
                 
-                # Vẽ lớp đa giác mờ đại diện khu vực nghiên cứu lên bản đồ số có màu
                 fig_complex.add_trace(go.Choroplethmapbox(
                     geojson=geojson_data,
                     locations=commune_names,
@@ -179,7 +175,6 @@ else:
         # --- LỚP KHÔNG GIAN 2: ĐIỂM VỊ TRÍ CƠ SỞ HẠ TẦNG THIẾT YẾU THEO LỚP CHỈ SỐ ---
         color_map_scheme = {"Cao": "#ef4444", "Tương đối cao": "#f97316", "Trung bình": "#eab308", "Thấp": "#22c55e"}
         
-        # Thiết lập nội dung Popup tương tác (Hover) hoàn toàn bằng tiếng Việt thuần túy
         hover_texts = []
         for idx, row in map_df.iterrows():
             text_block = (
@@ -195,7 +190,6 @@ else:
             )
             hover_texts.append(text_block)
 
-        # Vẽ điểm Marker dựa vào phân loại lớp chỉ số người dùng chọn
         if sel_indicator == "Tổng hợp FVI":
             for val_level in ["Cao", "Tương đối cao", "Trung bình", "Thấp"]:
                 level_df = map_df[map_df["Vulnerability"] == val_level]
@@ -223,43 +217,27 @@ else:
                 lon=map_df["CoordX"],
                 mode='markers',
                 marker=dict(
-                    size=14,
-                    color=map_df[target_col],
-                    colorscale=target_scale,
-                    showscale=True,
-                    opacity=0.95,
-                    colorbar=dict(
-                        title=dict(text=colorbar_title, font=dict(size=12)),
-                        thickness=18,
-                        x=0.96,
-                        len=0.7
-                    )
+                    size=14, color=map_df[target_col], colorscale=target_scale,
+                    showscale=True, opacity=0.95,
+                    colorbar=dict(title=dict(text=colorbar_title, font=dict(size=12)), thickness=18, x=0.96, len=0.7)
                 ),
-                text=hover_texts,
-                hoverinfo='text',
-                name=sel_indicator
+                text=hover_texts, hoverinfo='text', name=sel_indicator
             ))
 
-        # Áp dụng nền bản đồ có màu Open Street Map sinh động
         fig_complex.update_layout(
             mapbox=dict(
                 style="open-street-map",
                 center=dict(lat=df["CoordY"].mean() if not df.empty else 16.46, lon=df["CoordX"].mean() if not df.empty else 107.60),
                 zoom=12.0
             ),
-            margin={"r":0, "t":15, "l":0, "b":0},
-            height=540,
-            font_family="Roboto",
-            legend=dict(
-                title="Bảng chú giải rủi ro",
-                yanchor="top", y=0.98,
-                xanchor="left", x=0.02,
-                bgcolor="rgba(255, 255, 255, 0.85)"
-            )
+            margin={"r":0, "t":15, "l":0, "b":0}, height=540, font_family="Roboto",
+            legend=dict(title="Bảng chú giải rủi ro", yanchor="top", y=0.98, xanchor="left", x=0.02, bgcolor="rgba(255, 255, 255, 0.85)")
         )
         st.plotly_chart(fig_complex, use_container_width=True)
         
         # --- KHU VỰC THỐNG KÊ KPI ĐỔI MÀU ĐỘNG ---
+        st.markdown("<div class='sub-section-title'>Chỉ số tổng hợp theo phạm vi lựa chọn</div>", unsafe_allow_html=True)
+        
         total_filtered = len(map_df)
 
         if sel_indicator == "Tổng hợp FVI":
@@ -345,7 +323,7 @@ else:
             """
             st.markdown(kpi_html, unsafe_allow_html=True)
 
-        # --- BIỂU ĐỒ DONUT TRẢI TOÀN CHIỀU RỘNG (SẮP XẾP ĐÚNG THỨ TỰ THIÊN TAI) ---
+        # --- BIỂU ĐỒ DONUT TRẢI TOÀN CHIỀU RỘNG ---
         st.markdown("<div class='sub-section-title'>Tỷ lệ phân loại các mức độ tổn thương thực tế</div>", unsafe_allow_html=True)
         
         pie_counts = map_df["Vulnerability"].value_counts()
@@ -366,9 +344,31 @@ else:
         st.plotly_chart(fig_pie, use_container_width=True)
 
     # ==========================================================
-    # 📊 TAB 2: THỐNG KÊ MÔ TẢ CÁC YẾU TỐ ĐẦU VÀO ĐỘNG THEO LĨNH VỰC
+    # 📊 ĐÃ ĐƯA VỀ ĐÚNG VỊ TRÍ: TAB 2 - THỐNG KÊ MÔ TẢ CÁC YẾU TỐ ĐẦU VÀO
     # ==========================================================
-    # --- ĐẶC TRƯNG THỐNG KÊ BIẾN THÀNH PHẦN ĐỜI THƯỜNG THEO ĐÚNG NHÓM VÀ NGÀNH ---
+    with tab_descriptive:
+        st.markdown('<div class="sub-section-title">Thống kê mô tả dữ liệu đầu vào của các chỉ số</div>', unsafe_allow_html=True)
+        
+        col_desc1, col_desc2 = st.columns(2)
+        with col_desc1:
+            filter_sector = st.selectbox("Lọc lĩnh vực thống kê:", ["Tất cả", "Y tế", "Giáo dục"], key="t4_tab2_filter_sector_unique")
+        with col_desc2:
+            filter_indicator = st.selectbox("Nhóm cấu phần chỉ số:", ["Tất cả", "Exposure", "Sensitivity", "Adaptive"], key="t4_tab2_filter_indicator_unique")
+            
+        data_table = df.copy()
+        if filter_sector != "Tất cả":
+            data_table = data_table[data_table["TypeofOrg"] == filter_sector]
+            
+        cols_display = ["Name", "Commune", "TypeofOrg", "FVI", "Exposure", "Sensitivity", "Adaptive", "HeightFromTheRoad", "NoOfStaff", "NoOfClients"]
+        st.dataframe(data_table[cols_display].style.format({
+            "FVI": "{:.2f}", "Exposure": "{:.2f}", "Sensitivity": "{:.2f}", "Adaptive": "{:.2f}", "HeightFromTheRoad": "{:.1f}"
+        }), use_container_width=True)
+        
+        st.markdown('<div class="sub-section-title">Thống kê tóm tắt các tham số phân phối tổng hợp</div>', unsafe_allow_html=True)
+        summary_table = data_table[["FVI", "Exposure", "Sensitivity", "Adaptive", "HeightFromTheRoad"]].describe().T
+        st.table(summary_table[["min", "max", "mean", "std"]])
+
+        # --- CHI TIẾT PHÂN PHỐI BIẾN ĐỜI THƯỜNG PHÂN NHÓM ---
         st.markdown('---')
         st.markdown('<div class="sub-section-title">📊 Chi tiết thông số phân phối đặc trưng đầu vào theo phân nhóm FVI</div>', unsafe_allow_html=True)
         st.markdown('<div class="academic-paragraph">Các chỉ số thành phần dưới đây được phân loại theo cấu phần toán học của khung lý thuyết IPCC, trích xuất từ chuỗi số liệu thực địa 630 điểm vị trí mẫu năm 2025 tại Thành phố Huế.</div>', unsafe_allow_html=True)
