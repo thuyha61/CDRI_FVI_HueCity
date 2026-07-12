@@ -1,4 +1,3 @@
-```python:pages/1_Tom_tat_du_an.py
 import streamlit as st
 import pandas as pd
 from utils import inject_custom_css
