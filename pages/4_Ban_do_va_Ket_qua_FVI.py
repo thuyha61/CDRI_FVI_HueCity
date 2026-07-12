@@ -368,7 +368,7 @@ else:
     # ==========================================================
     # 📊 TAB 2: THỐNG KÊ MÔ TẢ CÁC YẾU TỐ ĐẦU VÀO ĐỘNG THEO LĨNH VỰC
     # ==========================================================
-# --- ĐẶC TRƯNG THỐNG KÊ BIẾN THÀNH PHẦN ĐỜI THƯỜNG THEO ĐÚNG NHÓM VÀ NGÀNH ---
+    # --- ĐẶC TRƯNG THỐNG KÊ BIẾN THÀNH PHẦN ĐỜI THƯỜNG THEO ĐÚNG NHÓM VÀ NGÀNH ---
         st.markdown('---')
         st.markdown('<div class="sub-section-title">📊 Chi tiết thông số phân phối đặc trưng đầu vào theo phân nhóm FVI</div>', unsafe_allow_html=True)
         st.markdown('<div class="academic-paragraph">Các chỉ số thành phần dưới đây được phân loại theo cấu phần toán học của khung lý thuyết IPCC, trích xuất từ chuỗi số liệu thực địa 630 điểm vị trí mẫu năm 2025 tại Thành phố Huế.</div>', unsafe_allow_html=True)
