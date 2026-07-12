@@ -325,8 +325,8 @@ else:
 
         # --- BIỂU ĐỒ DONUT TRẢI TOÀN CHIỀU RỘNG ---
         st.markdown("<div class='sub-section-title'>Tỷ lệ phân loại các mức độ tổn thương thực tế</div>", unsafe_allow_html=True)
-        
         pie_counts = map_df["Vulnerability"].value_counts()
+        
         ordered_levels = [lvl for val in ["Cao", "Tương đối cao", "Trung bình", "Thấp"] if (lvl := val) in pie_counts.index]
         ordered_values = [pie_counts[lvl] for lvl in ordered_levels]
         ordered_colors = [color_map_scheme[lvl] for lvl in ordered_levels]
@@ -343,7 +343,7 @@ else:
         )
         st.plotly_chart(fig_pie, use_container_width=True)
 
-# ==========================================================
+    # ==========================================================
     # 📊 TAB 2: THỐNG KÊ MÔ TẢ THEO TỪNG LĨNH VỰC VÀ NHÓM CHỈ SỐ FVI
     # ==========================================================
     with tab_descriptive:
@@ -394,22 +394,20 @@ else:
                 {"Thành phần cấu phần FVI": "Năng lực thích ứng (Adaptive)", "Biến số đầu vào": "Kế hoạch phương án ứng phó y tế chuyên ngành", "Đơn vị tính": "thang điểm (1-5)", "Trung bình (Mean)": "4.12", "Thấp nhất (Min)": "2.00", "Cao nhất (Max)": "5.00"}
             ])
             st.table(health_desc_df)
-            st.markdown('<div class="academic-quote"><p><b>Nhận xét đặc trưng Y tế:</b> Điểm nghẽn lớn nhất của ngành Y tế nằm ở thành phần Phơi nhiễm giao thông (Trung bình mạng lưới đường ngập lân cận lên tới 58.20%). Điều này chứng minh trạm y tế dễ bị cô lập đường tiếp cận cứu thương, đặt ra thách thức lớn cho chuỗi vận hành cứu hộ khẩn cấp y tế đô thị.</p></div>', unsafe_allow_html=True)    
+            st.markdown('<div class="academic-quote"><p><b>Nhận xét đặc trưng Y tế:</b> Điểm nghẽn lớn nhất của ngành Y tế nằm ở thành phần Phơi nhiễm giao thông (Trung bình mạng lưới đường ngập lân cận lên tới 58.20%). Điều này chứng minh trạm y tế dễ bị cô lập đường tiếp cận cứu thương, đặt ra thách thức lớn cho chuỗi vận hành cứu hộ khẩn cấp y tế đô thị.</p></div>', unsafe_allow_html=True)
 
-# ==========================================================
-    # 🔍 TAB 3: TRA CỨU CHI TIẾT TỪNG CƠ SỞ DỰA TRÊN ĐỊA CHỈ (ADDRESS)
+    # ==========================================================
+    # 🔍 TAB 3: TRA CỨU CHI TIẾT TỪNG CƠ SỞ DỰA TRÊN ĐẠI CHỈ (ADDRESS)
     # ==========================================================
     with tab_detail_facility:
         st.markdown('<div class="sub-section-title">Tra cứu chi tiết từng cơ sở hạ tầng thiết yếu</div>', unsafe_allow_html=True)
         
-        # ĐÃ CẬP NHẬT: Thay đổi danh sách chọn từ Tên công trình sang Địa chỉ chi tiết
         sel_address = st.selectbox(
             "Chọn địa chỉ cơ sở cần tra cứu rủi ro:", 
             df["Address"].unique(), 
             key="t4_tab3_facility_address_selector_unique"
         )
         
-        # Trích xuất hàng dữ liệu dựa trên địa chỉ được người dùng lựa chọn
         row_facility = df[df["Address"] == sel_address].iloc[0]
         
         col_info1, col_info2 = st.columns(2)
@@ -441,7 +439,6 @@ else:
                 y=[m_exposure, m_sensitivity, m_adaptive], marker_color='#94a3b8'
             ))
             
-            # ĐÃ CẬP NHẬT: Tiêu đề biểu đồ động lấy theo Tên cơ sở hạ tầng tương ứng với địa chỉ đó
             fig_bar_compare.update_layout(
                 barmode='group', 
                 title=f"So sánh các cấu phần FVI của {row_facility['Name']}", 
