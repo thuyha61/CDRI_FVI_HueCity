@@ -35,9 +35,9 @@ with tab_indicator_solutions:
     st.markdown("""
         | Cấu phần rủi ro | Mục tiêu giảm thiểu | Đề xuất giải pháp kỹ thuật ưu tiên |
         |---|---|---|
-        | **Độ phơi nhiễm (Exposure)** | Giảm mức độ tiếp xúc vật lý của hạ tầng với vùng ngập | • Nâng cao độ nền công trình chính so với mặt đường lân cận.<br>• Nâng cấp hệ thống mương gom thoát nước nội khu ra sông chính.<br>• Thiết lập hệ thống đê quai bảo vệ cục bộ khu vực trọng yếu. |
-        | **Độ nhạy cảm (Sensitivity)** | Giảm mức độ thiệt hại tài sản khi nước tràn vào công trình | • Bố trí thiết bị kỹ thuật, kho lưu trữ và trạm biến áp lên tầng 2.<br>• Thay đổi sang sử dụng các loại vật liệu xây dựng chịu nước bền vững.<br>• Định rõ lối thoát hiểm kết cấu hỗ trợ nhóm người yếu thế. |
-        | **Năng lực thích ứng (Adaptive)** | Tăng tốc khả năng khôi phục hoạt động tự lực khi ngập xảy ra | • Trang bị máy nổ phát điện độc lập đặt ở cao độ an toàn.<br>• Dự trữ lương thực, thiết bị vật tư y tế sơ cấp cứu, máy bơm và áo phao.<br>• Tổ chức huấn luyện và diễn tập kịch bản ứng phó hàng năm. |
+        | **Độ phơi nhiễm (Exposure)** | Giảm mức độ tiếp xúc vật lý của hạ tầng với vùng ngập | • Nâng cao độ nền công trình chính so với mặt đường lân cận.<br> • Nâng cấp hệ thống mương gom thoát nước nội khu ra sông chính.<br> • Thiết lập hệ thống đê quai bảo vệ cục bộ khu vực trọng yếu. |
+        | **Độ nhạy cảm (Sensitivity)** | Giảm mức độ thiệt hại tài sản khi nước tràn vào công trình | • Bố trí thiết bị kỹ thuật, kho lưu trữ và trạm biến áp lên tầng 2.<br> • Thay đổi sang sử dụng các loại vật liệu xây dựng chịu nước bền vững.<br> • Định rõ lối thoát hiểm kết cấu hỗ trợ nhóm người yếu thế. |
+        | **Năng lực thích ứng (Adaptive)** | Tăng tốc khả năng khôi phục hoạt động tự lực khi ngập xảy ra | • Trang bị máy nổ phát điện độc lập đặt ở cao độ an toàn.<br> • Dự trữ lương thực, thiết bị vật tư y tế sơ cấp cứu, máy bơm và áo phao.<br> • Tổ chức huấn luyện và diễn tập kịch bản ứng phó hàng năm. |
     """)
 
 with tab_group_recommendations:
