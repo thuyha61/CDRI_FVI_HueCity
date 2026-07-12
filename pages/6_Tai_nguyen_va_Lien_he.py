@@ -6,12 +6,16 @@ inject_custom_css()
 
 st.markdown('<div class="section-title">Tài nguyên và thông tin dự án</div>', unsafe_allow_html=True)
 
+# Khai báo các tab
 tab_resources, tab_partners, tab_cit_contact = st.tabs([
     "TÀI LIỆU VÀ DỮ LIỆU",
     "NHÓM THỰC HIỆN VÀ ĐỐI TÁC",
     "TRÍCH DẪN VÀ LIÊN HỆ"
 ])
 
+# ==========================================
+# TAB 1: TÀI LIỆU VÀ DỮ LIỆU
+# ==========================================
 with tab_resources:
     st.markdown('<div class="sub-section-title">Danh mục các tài liệu và sản phẩm dữ liệu mở của dự án</div>', unsafe_allow_html=True)
     st.markdown('<div class="academic-paragraph">Các sản phẩm nghiên cứu phát triển dưới đây được cung cấp nhằm thúc đẩy khoa học dữ liệu mở và tăng cường khả năng tiếp cận tái sử dụng thông tin nghiên cứu rủi ro ngập lụt.</div>', unsafe_allow_html=True)
@@ -24,12 +28,15 @@ with tab_resources:
     ])
     st.table(docs_table)
 
+# ==========================================
+# TAB 2: NHÓM THỰC HIỆN VÀ ĐỐI TÁC
+# ==========================================
 with tab_partners:
     st.markdown('<div class="sub-section-title">Đơn vị chủ trì thực hiện nghiên cứu</div>', unsafe_allow_html=True)
     st.markdown("""
         <div class="academic-paragraph">
             <b>Viện Quy hoạch Thủy lợi (Institute of Water Resources Planning – IWRP)</b><br>
-            Là đơn vị khoa học công nghệ trực thuộc Trung tâm Quy hoạch và Điều tra Tài nguyên nước quốc gia - Bộ Nông nghiệp và Môi trường Việt Nam. Viện chịu trách nhiệm xây dựng toàn bộ khung phương pháp luận FVI, triển khai điều tra đo đạc thực địa bão lụt tại thành phố Huế, chạy mô hình thống kê đa biến PCA và lập trình xây dựng cổng thông tin số hóa tương tác.
+            Là đơn vị khoa học công nghệ trực thuộc Bộ Nông nghiệp và Phát triển Nông thôn Việt Nam. Viện chịu trách nhiệm xây dựng toàn bộ khung phương pháp luận FVI, triển khai điều tra đo đạc thực địa bão lụt tại thành phố Huế, chạy mô hình thống kê đa biến PCA và lập trình xây dựng cổng thông tin số hóa tương tác.
         </div>
     """, unsafe_allow_html=True)
     
@@ -61,7 +68,30 @@ with tab_partners:
                 <div class="academic-paragraph" style="font-size:12px; margin-bottom:0px;">Viện Quy hoạch Thủy lợi (IWRP)<br>Phụ trách lập trình bản đồ không gian địa lý, xử lý ảnh vệ tinh Sentinel-1 SAR và chạy thuật toán học máy.</div>
             </div>
         """, unsafe_allow_html=True)
-        
+
+# ==========================================
+# TAB 3: TRÍCH DẪN VÀ LIÊN HỆ (Đã bổ sung)
+# ==========================================
+with tab_cit_contact:
+    st.markdown('<div class="sub-section-title">Hướng dẫn trích dẫn học thuật</div>', unsafe_allow_html=True)
+    st.markdown('<div class="academic-paragraph">Để ghi nhận nỗ lực nghiên cứu và bản quyền dữ liệu mở, vui lòng trích dẫn ứng dụng/báo cáo này theo định dạng sau khi sử dụng kết quả cho các công bố khoa học độc lập:</div>', unsafe_allow_html=True)
+    
+    # Định dạng APA tiêu chuẩn
+    st.markdown("**Định dạng APA:**")
+    st.info("Nguyen, Q. P., & IWRP Technical Team. (2026). *Application of Principal Component Analysis (PCA) for Flood Vulnerability Index (FVI) Mapping in Hue City*. Institute of Water Resources Planning (IWRP) & CDRI Fellowship Programme.")
+    
+    # Khung code BibTeX cho các nhà nghiên cứu dùng LaTeX
+    st.markdown("**Định dạng BibTeX:**")
+    st.code("""@misc{iwrp_hue_fvi_2026,
+  author        = {Nguyen, Quynh Phuong and IWRP Technical Team},
+  title        = {Application of Principal Component Analysis (PCA) for Flood Vulnerability Index (FVI) Mapping in Hue City},
+  year         = {2026},
+  publisher    = {Institute of Water Resources Planning (IWRP)},
+  howpublished = {Interactive Web Application},
+  note         = {Supported by CDRI Fellowship Programme 2025-2026}
+}""", language="latex")
+
+    st.markdown('---')
     st.markdown('<div class="sub-section-title">Thông tin liên hệ chính thức</div>', unsafe_allow_html=True)
     st.markdown("""
         * **Đơn vị thực hiện chủ trì:** Viện Quy hoạch Thủy lợi (IWRP)
