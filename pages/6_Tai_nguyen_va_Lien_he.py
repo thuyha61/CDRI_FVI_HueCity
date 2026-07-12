@@ -29,7 +29,7 @@ with tab_partners:
     st.markdown("""
         <div class="academic-paragraph">
             <b>Viện Quy hoạch Thủy lợi (Institute of Water Resources Planning – IWRP)</b><br>
-            Là đơn vị khoa học công nghệ trực thuộc Bộ Nông nghiệp và Phát triển nông thôn Việt Nam. Viện chịu trách nhiệm xây dựng toàn bộ khung phương pháp luận FVI, triển khai điều tra đo đạc thực địa bão lụt tại tỉnh Thừa Thiên Huế, chạy mô hình thống kê đa biến PCA và lập trình xây dựng cổng thông tin số hóa tương tác.
+            Là đơn vị khoa học công nghệ trực thuộc Trung tâm Quy hoạch và Điều tra Tài nguyên nước quốc gia - Bộ Nông nghiệp và Môi trường Việt Nam. Viện chịu trách nhiệm xây dựng toàn bộ khung phương pháp luận FVI, triển khai điều tra đo đạc thực địa bão lụt tại thành phố Huế, chạy mô hình thống kê đa biến PCA và lập trình xây dựng cổng thông tin số hóa tương tác.
         </div>
     """, unsafe_allow_html=True)
     
@@ -37,7 +37,7 @@ with tab_partners:
     st.markdown("""
         <div class="academic-paragraph">
             <b>Coalition for Disaster Resilient Infrastructure (CDRI)</b><br>
-            Nghiên cứu khoa học này vinh dự nhận nguồn tài trợ từ Chương trình CDRI Fellowship Programme 2025–2026 nhằm mục tiêu đề xuất các giải pháp nâng cao khả năng tự chống chịu của hệ thống cơ sở hạ tầng đô thị toàn cầu trước tác động của biến đổi khí hậu.
+            Dự án nghiên cứu này vinh dự nhận nguồn tài trợ từ Chương trình CDRI Fellowship Programme 2025–2026 nhằm mục tiêu đề xuất các giải pháp nâng cao khả năng tự chống chịu của hệ thống cơ sở hạ tầng đô thị toàn cầu trước tác động của biến đổi khí hậu.
         </div>
     """, unsafe_allow_html=True)
     
@@ -47,7 +47,7 @@ with tab_partners:
     with col_per1:
         st.markdown("""
             <div class="card-team">
-                <div class="card-team-title">Đỗ Thị Thúy Hà</div>
+                <div class="card-team-title">Nguyễn Quỳnh Phương</div>
                 <div class="card-team-sub">Chủ nhiệm dự án nghiên cứu</div>
                 <div class="academic-paragraph" style="font-size:12px; margin-bottom:0px;">Viện Quy hoạch Thủy lợi (IWRP)<br>Chịu trách nhiệm chung điều phối dự án, xây dựng khung phương pháp chỉ số tổn thương FVI học thuật.</div>
             </div>
@@ -62,28 +62,10 @@ with tab_partners:
             </div>
         """, unsafe_allow_html=True)
         
-    with col_per3:
-        st.markdown("""
-            <div class="card-team">
-                <div class="card-team-title">Cộng tác viên Thừa Thiên Huế</div>
-                <div class="card-team-sub">Điều phối viên Khảo sát địa phương</div>
-                <div class="academic-paragraph" style="font-size:12px; margin-bottom:0px;">Sở Giáo dục & Sở Y tế Thừa Thiên Huế<br>Hỗ trợ nhóm nghiên cứu tiếp cận trực tiếp 31 cơ sở y tế - trường học địa phương trong điều kiện thời tiết lụt bão.</div>
-            </div>
-        """, unsafe_allow_html=True)
-
-with tab_cit_contact:
-    st.markdown('<div class="sub-section-title">Quy chuẩn định dạng trích dẫn nghiên cứu khoa học</div>', unsafe_allow_html=True)
-    st.markdown("""
-        <div class="highlight-box">
-            Khi sử dụng bất kỳ dữ liệu số, bản đồ ngập lụt đô thị hoặc điểm kết quả chỉ số FVI hiển thị trên trang thông tin điện tử này, vui lòng trích dẫn đầy đủ theo quy chuẩn học thuật sau:<br><br>
-            <i>Đỗ Thị Thúy Hà và cộng sự (2026). Bản đồ rủi ro ngập lụt theo ngành nhằm tăng cường ứng phó và thích ứng với biến đổi khí hậu tại Thành phố Huế. Viện Quy hoạch Thủy lợi, Chương trình CDRI Fellowship 2025–2026.</i>
-        </div>
-    """, unsafe_allow_html=True)
-    
     st.markdown('<div class="sub-section-title">Thông tin liên hệ chính thức</div>', unsafe_allow_html=True)
     st.markdown("""
         * **Đơn vị thực hiện chủ trì:** Viện Quy hoạch Thủy lợi (IWRP)
-        * **Đại diện nhóm nghiên cứu:** Đỗ Thị Thúy Hà
+        * **Đại diện nhóm nghiên cứu:** Nguyễn Quỳnh Phương
         * **Địa điểm trụ sở công tác:** Thành phố Hà Nội, Việt Nam
         * **Thời điểm cập nhật dữ liệu tự động:** <b>Ngày 12 tháng 07 năm 2026</b>
     """)
