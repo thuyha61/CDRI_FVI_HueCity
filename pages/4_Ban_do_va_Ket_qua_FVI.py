@@ -19,10 +19,9 @@ else:
     tab_map, tab_descriptive, tab_detail_facility = st.tabs([
         "BẢN ĐỒ TƯƠNG TÁC & TỔNG QUAN KẾT QUẢ",
         "THỐNG KÊ DỮ LIỆU ĐẦU VÀO",
-        "TRA CỨU CHI TIẾT TỪNG CƠ SỞ"
-    ])
+        "TRA CỨU CHI TIẾT TỪNG CƠ SỞ"])
     
-# ==========================================================
+    # ==========================================================
     # TẦNG HIỂN THỊ 1: BẢN ĐỒ TƯƠNG TÁC ĐA LỚP & KPI ĐỔI MÀU ĐỘNG
     # ==========================================================
     with tab_map:
