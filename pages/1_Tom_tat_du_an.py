@@ -101,7 +101,7 @@ with tab_over:
     
     st.markdown("""
         <div class="highlight-box">
-            <b>Luận điểm khoa học cốt lõi:</b> "Không phải mọi cơ sở nằm trong cùng một vùng ngập đều có mức độ tổn thương giống nhau."<br><br>
+            <b>Không phải mọi cơ sở nằm trong cùng một vùng ngập đều có mức độ tổn thương giống nhau.</b>
             Khả năng chống chịu và tốc độ phục hồi của từng công trình không chỉ phụ thuộc vào độ sâu ngập vật lý, mà được quyết định bởi các cấu phần nội tại. Do đó, chỉ số FVI được thiết lập nhằm kết hợp chặt chẽ giữa các yếu tố rủi ro vật lý không gian (độ sâu ngập, khoảng cách tới sông) và các đặc trưng kinh tế - xã hội nội tại (kết cấu công trình, quy mô nhân lực, trang thiết bị và năng lực ứng phó tại chỗ) nhằm định lượng và làm rõ sự khác biệt vi mô này. Sản phẩm đầu ra hỗ trợ các cơ quan quản lý lồng ghép thông tin rủi ro vào quy hoạch, xác định chính xác danh mục công trình cần ưu tiên đầu tư ngân sách và chủ động xây dựng kế hoạch thích ứng.
         </div>
     """, unsafe_allow_html=True)
