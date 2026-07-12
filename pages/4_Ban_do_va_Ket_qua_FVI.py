@@ -394,14 +394,24 @@ else:
                 {"Thành phần cấu phần FVI": "Năng lực thích ứng (Adaptive)", "Biến số đầu vào": "Kế hoạch phương án ứng phó y tế chuyên ngành", "Đơn vị tính": "thang điểm (1-5)", "Trung bình (Mean)": "4.12", "Thấp nhất (Min)": "2.00", "Cao nhất (Max)": "5.00"}
             ])
             st.table(health_desc_df)
-            st.markdown('<div class="academic-quote"><p><b>Nhận xét đặc trưng Y tế:</b> Điểm nghẽn lớn nhất của ngành Y tế nằm ở thành phần Phơi nhiễm giao thông (Trung bình mạng lưới đường ngập lân cận lên tới 58.20%). Điều này chứng minh trạm y tế dễ bị cô lập đường tiếp cận cứu thương, đặt ra thách thức lớn cho chuỗi vận hành cứu hộ khẩn cấp y tế đô thị.</p></div>', unsafe_allow_html=True)    # ==========================================================
-    # 🔍 TAB 3: TRA CỨU CHI TIẾT TỪNG CƠ SỞ (TAB DETAIL)
+            st.markdown('<div class="academic-quote"><p><b>Nhận xét đặc trưng Y tế:</b> Điểm nghẽn lớn nhất của ngành Y tế nằm ở thành phần Phơi nhiễm giao thông (Trung bình mạng lưới đường ngập lân cận lên tới 58.20%). Điều này chứng minh trạm y tế dễ bị cô lập đường tiếp cận cứu thương, đặt ra thách thức lớn cho chuỗi vận hành cứu hộ khẩn cấp y tế đô thị.</p></div>', unsafe_allow_html=True)    
+
+# ==========================================================
+    # 🔍 TAB 3: TRA CỨU CHI TIẾT TỪNG CƠ SỞ DỰA TRÊN ĐỊA CHỈ (ADDRESS)
     # ==========================================================
     with tab_detail_facility:
         st.markdown('<div class="sub-section-title">Tra cứu chi tiết từng cơ sở hạ tầng thiết yếu</div>', unsafe_allow_html=True)
-        sel_facility = st.selectbox("Chọn tên cơ sở cần tra cứu rủi ro:", df["Name"].unique(), key="t4_tab3_facility_selector_unique")
         
-        row_facility = df[df["Name"] == sel_facility].iloc[0]
+        # ĐÃ CẬP NHẬT: Thay đổi danh sách chọn từ Tên công trình sang Địa chỉ chi tiết
+        sel_address = st.selectbox(
+            "Chọn địa chỉ cơ sở cần tra cứu rủi ro:", 
+            df["Address"].unique(), 
+            key="t4_tab3_facility_address_selector_unique"
+        )
+        
+        # Trích xuất hàng dữ liệu dựa trên địa chỉ được người dùng lựa chọn
+        row_facility = df[df["Address"] == sel_address].iloc[0]
+        
         col_info1, col_info2 = st.columns(2)
         with col_info1:
             st.markdown(f"""
@@ -430,13 +440,19 @@ else:
                 name='Trung bình toàn đô thị', x=headers,
                 y=[m_exposure, m_sensitivity, m_adaptive], marker_color='#94a3b8'
             ))
-            fig_bar_compare.update_layout(barmode='group', title=f"So sánh các cấu phần FVI của {sel_facility}", font_family="Roboto")
+            
+            # ĐÃ CẬP NHẬT: Tiêu đề biểu đồ động lấy theo Tên cơ sở hạ tầng tương ứng với địa chỉ đó
+            fig_bar_compare.update_layout(
+                barmode='group', 
+                title=f"So sánh các cấu phần FVI của {row_facility['Name']}", 
+                font_family="Roboto"
+            )
             st.plotly_chart(fig_bar_compare, use_container_width=True)
             
         st.markdown('<div class="sub-section-title">Đánh giá chuyên sâu và Nhận xét tự động</div>', unsafe_allow_html=True)
         if row_facility['Vulnerability'] == "Cao":
-            st.error(f"CẢNH BÁO NGUY CƠ CAO: Cơ sở {row_facility['Name']} có mức độ tổn thương ngập lụt đô thị rất cao (FVI = {row_facility['FVI']:.2f}). Đề nghị chính quyền địa phương đưa cơ sở này vào danh sách ưu tiên ngân sách nâng nền cấu trúc công trình chính, cải thiện hệ thống bơm thoát nước lân cận trước mùa lũ năm nay.")
+            st.error(f"CẢNH BÁO NGUY CƠ CAO: Cơ sở {row_facility['Name']} tại địa chỉ {row_facility['Address']} có mức độ tổn thương ngập lụt đô thị rất cao (FVI = {row_facility['FVI']:.2f}). Đề nghị chính quyền địa phương đưa cơ sở này vào danh sách ưu tiên ngân sách nâng nền cấu trúc công trình chính, cải thiện hệ thống bơm thoát nước lân cận trước mùa lũ năm nay.")
         elif row_facility['Vulnerability'] == "Tương đối cao":
-            st.warning(f"KHUYẾN NGHỊ: Cơ sở {row_facility['Name']} có chỉ số rủi ro ngập lụt tương đối cao (FVI = {row_facility['FVI']:.2f}). Đơn vị quản lý cần xây dựng ngay phương án di dời kho lưu trữ thiết bị, thuốc men lên tầng hai và lập kế hoạch phối hợp với lực lượng cứu hộ địa phương khi có cảnh báo lũ.")
+            st.warning(f"KHUYẾN NGHỊ: Cơ sở {row_facility['Name']} tại địa chỉ {row_facility['Address']} có chỉ số rủi ro ngập lụt tương đối cao (FVI = {row_facility['FVI']:.2f}). Đơn vị quản lý cần xây dựng ngay phương án di dời kho lưu trữ thiết bị, thuốc men lên tầng hai và lập kế hoạch phối hợp với lực lượng cứu hộ địa phương khi có cảnh báo lũ.")
         else:
-            st.success(f"AN TOÀN: Cơ sở {row_facility['Name']} có mức độ tổn thương thiên tai thấp hoặc trung bình, kết cấu hạ tầng có năng lực tự chống chịu cơ bản tốt. Cần tiếp tục duy trì trạng thái hoạt động bảo trì định kỳ.")
+            st.success(f"AN TOÀN: Cơ sở {row_facility['Name']} tại địa chỉ {row_facility['Address']} có mức độ tổn thương thiên tai thấp hoặc trung bình, kết cấu hạ tầng có năng lực tự chống chịu cơ bản tốt. Cần tiếp tục duy trì trạng thái hoạt động bảo trì định kỳ.")
