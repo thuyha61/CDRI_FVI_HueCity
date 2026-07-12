@@ -343,22 +343,12 @@ else:
         )
         st.plotly_chart(fig_pie, use_container_width=True)
 
-    # ==========================================================
-    # 📊 TAB 2: THỐNG KÊ MÔ TẢ CÁC YẾU TỐ ĐẦU VÀO ĐỘNG THEO LĨNH VỰC
+# ==========================================================
+    # 📊 TAB 2: THỐNG KÊ MÔ TẢ THEO TỪNG LĨNH VỰC VÀ NHÓM CHỈ SỐ FVI
     # ==========================================================
     with tab_descriptive:
-         
-        data_table = df.copy()
-        if filter_sector != "Tất cả":
-            data_table = data_table[data_table["TypeofOrg"] == filter_sector]
-        st.markdown('<div class="sub-section-title">Thống kê tóm tắt các tham số phân phối tổng hợp</div>', unsafe_allow_html=True)
-        summary_table = data_table[["FVI", "Exposure", "Sensitivity", "Adaptive", "HeightFromTheRoad"]].describe().T
-        st.table(summary_table[["min", "max", "mean", "std"]])
-
-        # --- CHI TIẾT PHÂN PHỐI BIẾN ĐỜI THƯỜNG PHÂN NHÓM ---
-        st.markdown('---')
         st.markdown('<div class="sub-section-title">📊 Chi tiết thông số phân phối đặc trưng đầu vào theo phân nhóm FVI</div>', unsafe_allow_html=True)
-        st.markdown('<div class="academic-paragraph">Các chỉ số thành phần dưới đây được phân loại theo cấu phần toán học của khung lý thuyết IPCC, trích xuất từ chuỗi số liệu thực địa 630 điểm vị trí mẫu năm 2025 tại Thành phố Huế.</div>', unsafe_allow_html=True)
+        st.markdown('<div class="academic-paragraph">Các chỉ số thành phần dưới đây được phân loại cụ thể theo cấu phần toán học của khung lý thuyết IPCC (Bao gồm Phơi nhiễm, Nhạy cảm, Thích ứng) cho từng lĩnh vực hạ tầng thiết yếu, trích xuất từ chuỗi số liệu thực địa 630 điểm vị trí mẫu tại Thành phố Huế.</div>', unsafe_allow_html=True)
 
         sel_sub_sector = st.selectbox(
             "Lựa chọn phân ngành cấu phần để xem số liệu chi tiết:", 
@@ -404,8 +394,7 @@ else:
                 {"Thành phần cấu phần FVI": "Năng lực thích ứng (Adaptive)", "Biến số đầu vào": "Kế hoạch phương án ứng phó y tế chuyên ngành", "Đơn vị tính": "thang điểm (1-5)", "Trung bình (Mean)": "4.12", "Thấp nhất (Min)": "2.00", "Cao nhất (Max)": "5.00"}
             ])
             st.table(health_desc_df)
-            st.markdown('<div class="academic-quote"><p><b>Nhận xét đặc trưng Y tế:</b> Điểm nghẽn lớn nhất của ngành Y tế nằm ở thành phần Phơi nhiễm giao thông (Trung bình mạng lưới đường ngập lân cận lên tới 58.20%). Điều này chứng minh trạm y tế dễ bị cô lập đường tiếp cận cứu thương, đặt ra thách thức lớn cho chuỗi vận hành cứu hộ khẩn cấp y tế đô thị.</p></div>', unsafe_allow_html=True)
-    # ==========================================================
+            st.markdown('<div class="academic-quote"><p><b>Nhận xét đặc trưng Y tế:</b> Điểm nghẽn lớn nhất của ngành Y tế nằm ở thành phần Phơi nhiễm giao thông (Trung bình mạng lưới đường ngập lân cận lên tới 58.20%). Điều này chứng minh trạm y tế dễ bị cô lập đường tiếp cận cứu thương, đặt ra thách thức lớn cho chuỗi vận hành cứu hộ khẩn cấp y tế đô thị.</p></div>', unsafe_allow_html=True)    # ==========================================================
     # 🔍 TAB 3: TRA CỨU CHI TIẾT TỪNG CƠ SỞ (TAB DETAIL)
     # ==========================================================
     with tab_detail_facility:
