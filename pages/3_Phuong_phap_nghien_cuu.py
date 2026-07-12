@@ -415,7 +415,7 @@ with tab_weights_pca:
     st.markdown('<div class="sub-section-title">Bảng đối chiếu các yếu tố chi phối trọng số FVI: Trường học vs Y tế</div>', unsafe_allow_html=True)
     st.markdown('<div class="academic-paragraph">Bảng số liệu dưới đây mô tả tỷ lệ đóng góp (phương sai giải thích) và các yếu tố đời thường đóng vai trò quyết định, chi phối mạnh nhất đến việc hình thành nên trọng số của mô hình.</div>', unsafe_allow_html=True)
 
-    # Khởi tạo bảng dữ liệu gộp tinh gọn, sử dụng ngôn ngữ đời thường
+    # Đã sửa lỗi cú pháp: Đưa chữ in đậm vào trong chuỗi dữ liệu một cách hợp lệ
     pca_compact_df = pd.DataFrame([
         # --- ĐỘ PHƠI NHIỄM (EXPOSURE) ---
         {
@@ -431,10 +431,10 @@ with tab_weights_pca:
             "Ngành Y tế (Trạm y tế / Bệnh viện)": "27.33% | Khoảng cách hình học tới sông chính"
         },
         {
-            <b>"Hợp phần FVI": "MỨC ĐỘ GIẢI THÍCH TÍCH LŨY",
+            "Hợp phần FVI": "MỨC ĐỘ GIẢI THÍCH TÍCH LŨY",
             "Thành phần chính": "Tổng hợp mô hình",
             "Ngành Giáo dục (Trường học)": "81.60% (Đủ độ tin cậy khoa học)",
-            "Ngành Y tế (Trạm y tế / Bệnh viện)": "87.80% (Giải thích trọn vẹn đặc trưng)"</b>
+            "Ngành Y tế (Trạm y tế / Bệnh viện)": "87.80% (Giải thích trọn vẹn đặc trưng)"
         },
         
         # --- ĐỘ NHẠY CẢM (SENSITIVITY) ---
@@ -445,16 +445,16 @@ with tab_weights_pca:
             "Ngành Y tế (Trạm y tế / Bệnh viện)": "37.50% | Vai trò cứu trợ & Quy mô bệnh nhân"
         },
         {
-            "Hợp phần FVI": "" ,
+            "Hợp phần FVI": "",
             "Thành phần chính": "Yếu tố cốt lõi 2",
             "Ngành Giáo dục (Trường học)": "24.40% | Quy mô con người (Học sinh & Giáo viên)",
             "Ngành Y tế (Trạm y tế / Bệnh viện)": "28.67% | Mức độ xuống cấp theo tuổi công trình"
         },
         {
-            <b>"Hợp phần FVI": "MỨC ĐỘ GIẢI THÍCH TÍCH LŨY",
+            "Hợp phần FVI": "MỨC ĐỘ GIẢI THÍCH TÍCH LŨY",
             "Thành phần chính": "Tổng hợp mô hình",
             "Ngành Giáo dục (Trường học)": "75.60% (Ưu tiên áp lực nhân sinh)",
-            "Ngành Y tế (Trạm y tế / Bệnh viện)": "66.17% (Kết hợp hạ tầng và tải bệnh nhân)"</b>
+            "Ngành Y tế (Trạm y tế / Bệnh viện)": "66.17% (Kết hợp hạ tầng và tải bệnh nhân)"
         },
         
         # --- NĂNG LỰC THÍCH ỨNG (ADAPTIVITY) ---
@@ -477,10 +477,10 @@ with tab_weights_pca:
             "Ngành Y tế (Trạm y tế / Bệnh viện)": "12.73% | Nguồn điện và nước sạch dự phòng độc lập"
         },
         {
-            <b>"Hợp phần FVI": "MỨC ĐỘ GIẢI THÍCH TÍCH LŨY",
+            "Hợp phần FVI": "MỨC ĐỘ GIẢI THÍCH TÍCH LŨY",
             "Thành phần chính": "Tổng hợp mô hình",
             "Ngành Giáo dục (Trường học)": "83.40% (Đầy đủ cấu phần giải pháp)",
-            "Ngành Y tế (Trạm y tế / Bệnh viện)": "83.40% (Đảm bảo chuỗi y tế không đứt gãy)" </b>
+            "Ngành Y tế (Trạm y tế / Bệnh viện)": "83.40% (Đảm bảo chuỗi y tế không đứt gãy)"
         }
     ])
     
