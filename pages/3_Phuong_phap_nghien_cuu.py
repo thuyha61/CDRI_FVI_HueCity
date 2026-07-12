@@ -425,7 +425,7 @@ with tab_weights_pca:
             "Ngành Y tế (Trạm y tế / Bệnh viện)": "60.48% | Ngập đường lân cận (bán kính 200m)"
         },
         {
-            "Hợp phần FVI": ",
+            "Hợp phần FVI": "",
             "Thành phần chính": "Yếu tố cốt lõi 2",
             "Ngành Giáo dục (Trường học)": "24.24% | Ngập đường lân cận (bán kính 200m)",
             "Ngành Y tế (Trạm y tế / Bệnh viện)": "27.33% | Khoảng cách hình học tới sông chính"
@@ -445,7 +445,7 @@ with tab_weights_pca:
             "Ngành Y tế (Trạm y tế / Bệnh viện)": "37.50% | Vai trò cứu trợ & Quy mô bệnh nhân"
         },
         {
-            "Hợp phần FVI": ,
+            "Hợp phần FVI": "" ,
             "Thành phần chính": "Yếu tố cốt lõi 2",
             "Ngành Giáo dục (Trường học)": "24.40% | Quy mô con người (Học sinh & Giáo viên)",
             "Ngành Y tế (Trạm y tế / Bệnh viện)": "28.67% | Mức độ xuống cấp theo tuổi công trình"
@@ -465,13 +465,13 @@ with tab_weights_pca:
             "Ngành Y tế (Trạm y tế / Bệnh viện)": "53.91% | Phương tiện đường thủy khẩn cấp (Ghe/Thuyền)"
         },
         {
-            "Hợp phần FVI": ,
+            "Hợp phần FVI": "",
             "Thành phần chính": "Yếu tố cốt lõi 2",
             "Ngành Giáo dục (Trường học)": "16.76% | Tính chủ động lập kế hoạch & Diễn tập",
             "Ngành Y tế (Trạm y tế / Bệnh viện)": "16.76% | Lập phương án tổ chức ứng phó y tế"
         },
         {
-            "Hợp phần FVI":,
+            "Hợp phần FVI": "",
             "Thành phần chính": "Yếu tố cốt lõi 3",
             "Ngành Giáo dục (Trường học)": "12.73% | Độ kiên cố của hệ thống hạ tầng kỹ thuật",
             "Ngành Y tế (Trạm y tế / Bệnh viện)": "12.73% | Nguồn điện và nước sạch dự phòng độc lập"
