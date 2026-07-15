@@ -68,9 +68,9 @@ st.markdown("""
         <div class="hero-title-vn">Bản đồ rủi ro ngập lụt theo ngành nhằm tăng cường ứng phó và thích ứng với biến đổi khí hậu tại Thành phố Huế</div>
         <div class="hero-title-en">Sectoral Flood Risk Mapping to Enhance Climate Change Response and Adaptation in Hue City, Vietnam</div>
         <div class="hero-meta">
-            Nghiên cứu thuộc Chương trình <b>CDRI Fellowship 2025–2026</b><br>
-            Đơn vị thực hiện: <b>Viện Quy hoạch Thủy lợi (Institute of Water Resources Planning – IWRP)</b><br>
-            Đơn vị tài trợ: <b>Coalition for Disaster Resilient Infrastructure (CDRI)</b><br>
+            Nghiên cứu thuộc Chương trình <b>Học bổng CDRI Fellowship 2025–2026</b><br>
+            Đơn vị thực hiện: <b>Viện Quy hoạch Thủy lợi </b><br>
+            Đơn vị tài trợ: <b>Liên minh Cơ sở hạ tầng thích ứng thảm hoa (Coalition for Disaster Resilient Infrastructure - CDRI)</b><br>
             Địa điểm nghiên cứu: <b>Thành phố Huế, Việt Nam</b>
         </div>
     </div>
