@@ -81,7 +81,7 @@ col_quick1, col_quick2, col_quick3 = st.columns(3)
 with col_quick1:
     st.markdown("""
     <div style="background-color: #e0f2fe; padding: 10px; border-radius: 5px; border-left: 5px solid #0284c7;">
-    🗺️ <b><a href="https://cdri-fvi-huecity2026.streamlit.app/Ban_do_va_Ket_qua_FVI" target="_blank" style="text-decoration: none; color: #0369a1;">Khám phá bản đồ tương tác tại đây</a></b>
+    🗺️ <b><a href="https://fvi-huecity2026.streamlit.app/Ban_do_va_Ket_qua_FVI" target="_blank" style="text-decoration: none; color: #0369a1;">Khám phá bản đồ tương tác tại đây</a></b>
     </div>
     """, unsafe_allow_html=True)
 with col_quick2:
