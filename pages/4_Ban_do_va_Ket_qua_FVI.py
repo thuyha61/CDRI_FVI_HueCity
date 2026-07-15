@@ -139,7 +139,7 @@ else:
         if sel_comm != "Tất cả":
             map_df = map_df[map_df["Commune"] == sel_comm]
 
-        st.markdown("<div class='sub-section-title'>Bản đồ số tích hợp ranh giới xã/phường và phân lớp chỉ số rủi ro</div>", unsafe_allow_html=True)
+        st.markdown("<div class='sub-section-title'>Bản đồ Chỉ số tính dễ bị tổn thương lũ lụt FVI</div>", unsafe_allow_html=True)
 
         fig_complex = go.Figure()
 
@@ -173,7 +173,7 @@ else:
             st.warning("Không tìm thấy tệp không gian data/AOI_Hue.geojson trong cấu trúc thư mục.")
 
         # --- LỚP KHÔNG GIAN 2: ĐIỂM VỊ TRÍ CƠ SỞ HẠ TẦNG THIẾT YẾU THEO LỚP CHỈ SỐ ---
-        color_map_scheme = {"Cao": "#ef4444", "Tương đối cao": "#f97316", "Trung bình": "#eab308", "Thấp": "#22c55e"}
+        color_map_scheme = {"Cao": "#a855f7", "Tương đối cao": "#f97316", "Trung bình": "#eab308", "Thấp": "#22c55e"}
         
         hover_texts = []
         for idx, row in map_df.iterrows():
@@ -253,7 +253,7 @@ else:
                     <div class="kpi-value">{total_filtered}</div>
                     <div class="kpi-subtitle">Tổng số: {len(df)}</div>
                 </div>
-                <div class="kpi-box" style="background-color: #fef2f2; color: #991b1b; border-top: 4px solid #ef4444;">
+                <div class="kpi-box" style="background-color: #fef2f2; color: #991b1b; border-top: 4px solid #a855f7;">
                     <div class="kpi-title">Mức CAO</div>
                     <div class="kpi-value">{count_cao}</div>
                     <div class="kpi-subtitle">Ưu tiên khẩn cấp</div>
