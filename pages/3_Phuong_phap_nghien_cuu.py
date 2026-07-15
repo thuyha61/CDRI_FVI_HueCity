@@ -151,12 +151,6 @@ with tab_theory:
     st.latex(r"Flood\ Vulnerability = f(Exposure,\ Sensitivity,\ Adaptive\ Capacity)")
     st.markdown('<div class="academic-paragraph">Trong đó, mức độ tổn thương tăng khi Exposure và Sensitivity tăng, đồng thời giảm khi Adaptive Capacity được cải thiện.</div>', unsafe_allow_html=True)
 
-    st.markdown("""
-    <div class="academic-quote">
-        <p><b>Gợi ý sơ đồ trực quan:</b> Mẫu sơ đồ ba thành phần cấu phần (Exposure, Sensitivity, Adaptive Capacity) hội tụ đồng hướng về chỉ số trung tâm FVI.</p>
-    </div>
-    """, unsafe_allow_html=True)
-
 # ==========================================
 # TAB 2: XÂY DỰNG CHỈ SỐ FVI
 # ==========================================
