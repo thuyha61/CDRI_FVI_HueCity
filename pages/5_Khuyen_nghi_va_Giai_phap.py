@@ -22,7 +22,7 @@ with tab_priority:
         | **Mức độ Cao** | Rất cao (Ưu tiên số 1) | Đầu tư nâng cấp công trình trong ngắn hạn; xây dựng kịch bản ứng phó khẩn cấp; trang bị máy bơm công suất lớn. |
         | **Mức độ Tương đối cao** | Cao (Ưu tiên số 2) | Rà soát cơ sở vật chất kỹ thuật; tăng cường kịch bản huấn luyện tự thích ứng tại chỗ cho cán bộ. |
         | **Mức độ Trung bình** | Trung bình | Duy trì theo dõi trạng thái định kỳ; khắc phục các khiếm khuyết kỹ thuật hạ tầng nhỏ hiện tại. |
-        | **Mức độ Thấp** | Thấp / Duy trì | Tiếp tục phát huy năng lực chống chịu bền vũg vốn có; làm bài học điển hình nâng cấp. |
+        | **Mức độ Thấp** | Thấp / Duy trì | Tiếp tục phát huy năng lực chống chịu bền vững vốn có; làm bài học điển hình nâng cấp. |
     """)
     st.markdown("""
         <div class="highlight-box">
