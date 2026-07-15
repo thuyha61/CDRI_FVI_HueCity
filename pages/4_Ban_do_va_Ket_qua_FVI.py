@@ -122,7 +122,7 @@ else:
         with col_f2:
             sel_vul = st.selectbox("Mức độ tổn thương:", ["Tất cả", "Cao", "Tương đối cao", "Trung bình", "Thấp"], key="t4_tab1_filter_vul_unique")
         with col_f3:
-            sel_comm = st.selectbox("Phường nghiên cứu:", ["Tất cả", "Thuận Hòa", "Phú Xuân", "Vỹ Dạ", "Mỹ Thượng", "Dương Nỗ"], key="t4_tab1_filter_commune_unique")
+            sel_comm = st.selectbox("Phường nghiên cứu:", ["Tất cả", "Thuận Hóa", "Phú Xuân", "Vỹ Dạ", "Mỹ Thượng", "Dương Nỗ"], key="t4_tab1_filter_commune_unique")
         with col_f4:
             sel_indicator = st.selectbox(
                 "Hiển thị lớp chỉ số:", 
