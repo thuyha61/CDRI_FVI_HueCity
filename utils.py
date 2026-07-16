@@ -255,10 +255,10 @@ def load_project_data():
             
         except Exception as e:
             # Fallback nếu tính toán gặp lỗi bất ngờ
-            #df["Vulnerability"] = df["FVI"].apply(lambda x: "Cao" if x >= 0.70 else ("Tương đối cao" if x >= 0.50 else ("Trung bình" if x >= 0.25 else "Thấp")))
+            df["Vulnerability"] = df["FVI"].apply(lambda x: "Cao" if x >= 0.70 else ("Tương đối cao" if x >= 0.50 else ("Trung bình" if x >= 0.25 else "Thấp")))
     else:
         # Nếu số lượng giá trị phân biệt quá ít, chia tạm theo ngưỡng trị cứng
-        #df["Vulnerability"] = df["FVI"].apply(lambda x: "Cao" if x >= 0.70 else "Thấp")
+        df["Vulnerability"] = df["FVI"].apply(lambda x: "Cao" if x >= 0.70 else "Thấp")
     # ---------------------------------------------------------
         
     return df
