@@ -106,17 +106,15 @@ def inject_custom_css():
 
 def pure_jenks_breaks(data_list, n_classes=4):
     """
-    Thuật toán Jenks Natural Breaks viết bằng Python thuần, không dùng thư viện ngoài.
+    Thuật toán Jenks Natural Breaks viết bằng Python thuần.
     Trả về danh sách các điểm phân lớp (breaks).
     """
-    # Sắp xếp và loại bỏ các giá trị NaN
     data_list = sorted([x for x in data_list if not np.isnan(x)])
     n_data = len(data_list)
     
     if n_data <= n_classes:
         return [min(data_list)] + data_list + [max(data_list)] * (n_classes - n_data)
 
-    # Khởi tạo ma trận
     mat1 = np.zeros((n_data + 1, n_classes + 1))
     mat2 = np.zeros((n_data + 1, n_classes + 1))
     
@@ -151,7 +149,6 @@ def pure_jenks_breaks(data_list, n_classes=4):
                         mat1[l][j] = variance + mat1[i4][j - 1]
                         mat2[l][j] = i3
 
-    # Lấy các điểm đứt gãy ngược từ ma trận
     k = n_data
     kclass = [0.0] * (n_classes + 1)
     kclass[n_classes] = data_list[n_data - 1]
@@ -166,6 +163,54 @@ def pure_jenks_breaks(data_list, n_classes=4):
         
     return kclass
 
+def calculate_dynamic_breaks_for_sector(df_sector, labels, num_classes=4):
+    """
+    Hàm phụ trợ tính breaks động và phân loại cho từng phân khúc ngành
+    """
+    fvi_values = df_sector["FVI"].dropna().tolist()
+    unique_fvi_count = len(set(fvi_values))
+    
+    # Trường hợp lý tưởng: Dữ liệu đa dạng
+    if unique_fvi_count >= num_classes:
+        try:
+            breaks = pure_jenks_breaks(fvi_values, n_classes=num_classes)
+            
+            def classify_vulnerability_jenks(score):
+                for i in range(num_classes):
+                    if score <= breaks[i+1]:
+                        return labels[i]
+                return labels[-1]
+                
+            df_sector["Vulnerability"] = df_sector["FVI"].apply(classify_vulnerability_jenks)
+            return df_sector, breaks
+        except Exception:
+            pass
+            
+    # Dự phòng 1: Dùng Quantiles phân vị động
+    try:
+        df_sector["Vulnerability"] = pd.qcut(df_sector["FVI"], q=num_classes, labels=labels, duplicates='drop')
+        # Mô phỏng mốc tương đối
+        quantiles = [df_sector["FVI"].min()] + [df_sector["FVI"].quantile(q) for q in [0.25, 0.5, 0.75, 1.0]]
+        return df_sector, list(set(quantiles))
+    except Exception:
+        # Dự phòng 2: Phân cắt theo Min-Max thực tế của ngành
+        min_val = df_sector["FVI"].min() if not df_sector.empty else 0.0
+        max_val = df_sector["FVI"].max() if not df_sector.empty else 1.0
+        if max_val > min_val:
+            step = (max_val - min_val) / num_classes
+            dynamic_breaks = [min_val + step * i for i in range(num_classes + 1)]
+            
+            def classify_dynamic_equal(score):
+                for i in range(num_classes):
+                    if score <= dynamic_breaks[i+1]:
+                        return labels[i]
+                return labels[-1]
+            df_sector["Vulnerability"] = df_sector["FVI"].apply(classify_dynamic_equal)
+            return df_sector, dynamic_breaks
+        else:
+            df_sector["Vulnerability"] = "Trung bình"
+            return df_sector, [0.0, 0.25, 0.5, 0.75, 1.0]
+
 @st.cache_data
 def load_project_data():
     """Đọc và chuẩn hóa dữ liệu từ thư mục data/"""
@@ -175,7 +220,6 @@ def load_project_data():
     df_yte = pd.DataFrame()
     df_gd = pd.DataFrame()
     
-    # Đọc dữ liệu y tế
     if os.path.exists(yte_path):
         try:
             df_yte = pd.read_excel(yte_path)
@@ -184,7 +228,6 @@ def load_project_data():
         except Exception as e:
             st.error(f"Lỗi khi đọc file y tế: {e}")
             
-    # Đọc dữ liệu giáo dục
     if os.path.exists(gd_path):
         try:
             df_gd = pd.read_excel(gd_path)
@@ -193,95 +236,62 @@ def load_project_data():
         except Exception as e:
             st.error(f"Lỗi khi đọc file giáo dục: {e}")
             
-    # Gộp 2 nguồn dữ liệu
     if not df_yte.empty or not df_gd.empty:
         df = pd.concat([df_yte, df_gd], ignore_index=True)
     else:
-        # Trả về tập dữ liệu trống có cấu trúc chuẩn nếu không tìm thấy file vật lý
-        st.warning("Không tìm thấy các file dữ liệu Excel trong thư mục data/. Đang khởi tạo dữ liệu mẫu.")
+        st.warning("Không tìm thấy các file dữ liệu Excel trong thư mục data/.")
         return pd.DataFrame(columns=["Name", "Commune", "TypeofOrg", "FVI", "Exposure", "Sensitivity", "Adaptive", "CoordX", "CoordY"])
 
-    # Xử lý chuẩn hóa tên cơ sở
     if "OrganizationType" in df.columns:
         df["Name"] = df["OrganizationType"].fillna(df["TypeofOrg"])
     else:
         df["Name"] = df["TypeofOrg"]
         
-    # Ép kiểu số cho các trường dữ liệu GIS & PCA
     for col in ["FVI", "exp_score", "sen_score", "ada_score", "CoordX", "CoordY", "HeightFromTheRoad"]:
         if col in df.columns:
             df[col] = pd.to_numeric(df[col], errors='coerce')
             
-    # Xử lý các giá trị khuyết thiếu (NaN)
     df["FVI"] = df["FVI"].fillna(0.0)
     df["Exposure"] = df["exp_score"].fillna(0.0)
     df["Sensitivity"] = df["sen_score"].fillna(0.0)
     df["Adaptive"] = df["ada_score"].fillna(0.0)
     df["HeightFromTheRoad"] = df["HeightFromTheRoad"].fillna(0)
     
-    # Khớp tên phường từ viết tắt sang dạng đầy đủ
-    commune_map = {
-        "TH": "Thuận Hóa",
-        "PX": "Phú Xuân",
-        "VD": "Vỹ Dạ",
-        "MT": "Mỹ Thượng",
-        "DN": "Dương Nỗ"
-    }
+    commune_map = {"TH": "Thuận Hóa", "PX": "Phú Xuân", "VD": "Vỹ Dạ", "MT": "Mỹ Thượng", "DN": "Dương Nỗ"}
     if "Commune" in df.columns:
         df["Commune"] = df["Commune"].astype(str).str.strip().replace(commune_map)
     else:
         df["Commune"] = "Khác"
         
-    # --- PHẦN SỬA ĐỔI: JENKS CHUẨN - KHÔNG DÙNG CHỐT CỐ ĐỊNH SAI LỆCH ---
-    fvi_values = df["FVI"].dropna().tolist()
-    unique_fvi_count = len(set(fvi_values))
-    
+    # --- PHẦN SỬA ĐỔI CHÍNH: CHIA LỚP JENKS ĐỘC LẬP TỪNG NGÀNH ---
     labels = ["Thấp", "Trung bình", "Tương đối cao", "Cao"]
-    num_classes = 4
     
-    # Đảm bảo dữ liệu đủ đa dạng để phân thành 4 nhóm
-    if unique_fvi_count >= num_classes:
-        try:
-            # Tính toán các điểm đứt gãy tự nhiên động bằng thuật toán Jenks
-            breaks = pure_jenks_breaks(fvi_values, n_classes=num_classes)
-            
-            def classify_vulnerability_jenks(score):
-                for i in range(num_classes):
-                    if score <= breaks[i+1]:
-                        return labels[i]
-                return labels[-1]
-                
-            df["Vulnerability"] = df["FVI"].apply(classify_vulnerability_jenks)
-            
-        except Exception:
-            # PHƯƠNG ÁN DỰ PHÒNG 1: Nếu thuật toán Jenks thuần gặp lỗi do dữ liệu, 
-            # chúng ta chuyển sang phân vị động (Quantiles) từ pandas thay vì dùng số chốt cứng 0.70.
-            try:
-                df["Vulnerability"] = pd.qcut(df["FVI"], q=num_classes, labels=labels, duplicates='drop')
-            except Exception:
-                # PHƯƠNG ÁN DỰ PHÒNG 2: Chia khoảng đều (Equal Intervals) dựa trên Min-Max động của bộ dữ liệu
-                min_val = df["FVI"].min()
-                max_val = df["FVI"].max()
-                if max_val > min_val:
-                    step = (max_val - min_val) / num_classes
-                    dynamic_breaks = [min_val + step * i for i in range(num_classes + 1)]
-                    
-                    def classify_dynamic_equal(score):
-                        for i in range(num_classes):
-                            if score <= dynamic_breaks[i+1]:
-                                return labels[i]
-                        return labels[-1]
-                    df["Vulnerability"] = df["FVI"].apply(classify_dynamic_equal)
-                else:
-                    df["Vulnerability"] = "Trung bình"
-    else:
-        # Nếu bộ dữ liệu cực nhỏ (ví dụ chỉ có 1-2 dòng dữ liệu), tự động gán nhãn theo thứ hạng thực tế
-        # bằng cách chia đôi dựa trên trung vị (median) của chính bộ dữ liệu đó
-        median_val = df["FVI"].median()
-        df["Vulnerability"] = df["FVI"].apply(lambda x: "Cao" if x >= median_val else "Thấp")
-    # -----------------------------------------------------------------
+    # Chia tách dữ liệu theo loại ngành
+    df_yte_sub = df[df["TypeofOrg"] == "Y tế"].copy()
+    df_gd_sub = df[df["TypeofOrg"] == "Giáo dục"].copy()
+    df_other_sub = df[~df["TypeofOrg"].isin(["Y tế", "Giáo dục"])].copy()
+    
+    # Tính toán độc lập mốc và phân loại cho Y tế
+    df_yte_sub, yte_breaks = calculate_dynamic_breaks_for_sector(df_yte_sub, labels)
+    
+    # Tính toán độc lập mốc và phân loại cho Giáo dục
+    df_gd_sub, gd_breaks = calculate_dynamic_breaks_for_sector(df_gd_sub, labels)
+    
+    # Xử lý các nhóm khác (nếu có)
+    if not df_other_sub.empty:
+        df_other_sub["Vulnerability"] = "Trung bình"
         
-    return df
+    # Gộp kết quả đã được gán nhãn riêng rẽ về lại Dataframe chung
+    df_final = pd.concat([df_yte_sub, df_gd_sub, df_other_sub], ignore_index=True)
+    
+    # Lưu trữ mốc đứt gãy vào bộ nhớ session_state của Streamlit để hiển thị ngoài UI
+    st.session_state["jenks_breaks_report"] = {
+        "Y tế": [round(b, 4) for b in yte_breaks],
+        "Giáo dục": [round(b, 4) for b in gd_breaks]
+    }
+    # -------------------------------------------------------------
+        
+    return df_final
 
 @st.cache_data
 def load_aoi_geojson():
@@ -295,3 +305,34 @@ def load_aoi_geojson():
             st.error(f"Lỗi tải GeoJSON: {e}")
             return None
     return None
+
+# --- VÍ DỤ PHẦN HIỂN THỊ TRÊN GIAO DIỆN CHÍNH (ĐỂ BẠN THAM KHẢO CÁCH XUẤT RA BAN ĐỒ) ---
+def display_breaks_on_ui():
+    """Hàm phụ hiển thị các khoảng đứt gãy toán học ra màn hình Streamlit"""
+    if "jenks_breaks_report" in st.session_state:
+        report = st.session_state["jenks_breaks_report"]
+        
+        st.markdown('<div class="section-title">Ngưỡng Đứt Gãy Tự Nhiên (Jenks Natural Breaks) Theo Ngành</div>', unsafe_allow_html=True)
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            st.markdown(f"""
+            <div class="highlight-box" style="border-left-color: #ef4444;">
+                <strong>🏥 NGÀNH Y TẾ (FVI Breaks):</strong><br/>
+                • Thấp: &le; {report['Y tế'][1]}<br/>
+                • Trung bình: {report['Y tế'][1]} &rarr; {report['Y tế'][2]}<br/>
+                • Tương đối cao: {report['Y tế'][2]} &rarr; {report['Y tế'][3]}<br/>
+                • Cao: &gt; {report['Y tế'][3]}
+            </div>
+            """, unsafe_allow_html=True)
+            
+        with col2:
+            st.markdown(f"""
+            <div class="highlight-box" style="border-left-color: #10b981;">
+                <strong>🎓 NGÀNH GIÁO DỤC (FVI Breaks):</strong><br/>
+                • Thấp: &le; {report['Giáo dục'][1]}<br/>
+                • Trung bình: {report['Giáo dục'][1]} &rarr; {report['Giáo dục'][2]}<br/>
+                • Tương đối cao: {report['Giáo dục'][2]} &rarr; {report['Giáo dục'][3]}<br/>
+                • Cao: &gt; {report['Giáo dục'][3]}
+            </div>
+            """, unsafe_allow_html=True)
