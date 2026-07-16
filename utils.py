@@ -159,7 +159,7 @@ def load_project_data():
     
     # Khớp tên phường từ viết tắt sang dạng đầy đủ
     commune_map = {
-        "TH": "Thuận Hòa",
+        "TH": "Thuận Hóa",
         "PX": "Phú Xuân",
         "VD": "Vỹ Dạ",
         "MT": "Mỹ Thượng",
