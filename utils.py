@@ -151,11 +151,11 @@ def load_project_data():
             df[col] = pd.to_numeric(df[col], errors='coerce')
             
     # Xử lý các giá trị khuyết thiếu (NaN)
-    df["FVI"] = df["FVI"].fillna(0.0)
-    df["Exposure"] = df["exp_score"].fillna(0.0)
-    df["Sensitivity"] = df["sen_score"].fillna(0.0)
-    df["Adaptive"] = df["ada_score"].fillna(0.0)
-    df["HeightFromTheRoad"] = df["HeightFromTheRoad"].fillna(0.5)
+    #df["FVI"] = df["FVI"].fillna(0.0)
+    #df["Exposure"] = df["exp_score"].fillna(0.0)
+    #df["Sensitivity"] = df["sen_score"].fillna(0.0)
+    #df["Adaptive"] = df["ada_score"].fillna(0.0)
+    df["HeightFromTheRoad"] = df["HeightFromTheRoad"].fillna(0)
     
     # Khớp tên phường từ viết tắt sang dạng đầy đủ
     commune_map = {
