@@ -109,14 +109,14 @@ def pure_jenks_breaks(data_list, n_classes=4):
     Thuật toán Jenks Natural Breaks viết bằng Python thuần, không dùng thư viện ngoài.
     Trả về danh sách các điểm phân lớp (breaks).
     """
-    # Sắp xếp dữ liệu đầu vào
+    # Sắp xếp và loại bỏ các giá trị NaN
     data_list = sorted([x for x in data_list if not np.isnan(x)])
     n_data = len(data_list)
     
     if n_data <= n_classes:
         return [min(data_list)] + data_list + [max(data_list)] * (n_classes - n_data)
 
-    # Khởi tạo ma trận rỗng
+    # Khởi tạo ma trận
     mat1 = np.zeros((n_data + 1, n_classes + 1))
     mat2 = np.zeros((n_data + 1, n_classes + 1))
     
@@ -232,19 +232,19 @@ def load_project_data():
     else:
         df["Commune"] = "Khác"
         
-    # --- PHẦN PHÂN CHIA THEO THUẬT TOÁN JENKS THUẦN (4 LỚP) ---
+    # --- PHẦN SỬA ĐỔI: JENKS CHUẨN - KHÔNG DÙNG CHỐT CỐ ĐỊNH SAI LỆCH ---
     fvi_values = df["FVI"].dropna().tolist()
     unique_fvi_count = len(set(fvi_values))
     
     labels = ["Thấp", "Trung bình", "Tương đối cao", "Cao"]
-    num_classes = 4 # Cố định 4 nhóm như yêu cầu
+    num_classes = 4
     
+    # Đảm bảo dữ liệu đủ đa dạng để phân thành 4 nhóm
     if unique_fvi_count >= num_classes:
         try:
-            # Gọi hàm tính breaks tự viết ở trên
+            # Tính toán các điểm đứt gãy tự nhiên động bằng thuật toán Jenks
             breaks = pure_jenks_breaks(fvi_values, n_classes=num_classes)
             
-            # Hàm gán nhãn dựa trên các breaks tìm được
             def classify_vulnerability_jenks(score):
                 for i in range(num_classes):
                     if score <= breaks[i+1]:
@@ -253,13 +253,33 @@ def load_project_data():
                 
             df["Vulnerability"] = df["FVI"].apply(classify_vulnerability_jenks)
             
-        except Exception as e:
-            # Fallback nếu tính toán gặp lỗi bất ngờ
-            df["Vulnerability"] = df["FVI"].apply(lambda x: "Cao" if x >= 0.70 else ("Tương đối cao" if x >= 0.50 else ("Trung bình" if x >= 0.25 else "Thấp")))
+        except Exception:
+            # PHƯƠNG ÁN DỰ PHÒNG 1: Nếu thuật toán Jenks thuần gặp lỗi do dữ liệu, 
+            # chúng ta chuyển sang phân vị động (Quantiles) từ pandas thay vì dùng số chốt cứng 0.70.
+            try:
+                df["Vulnerability"] = pd.qcut(df["FVI"], q=num_classes, labels=labels, duplicates='drop')
+            except Exception:
+                # PHƯƠNG ÁN DỰ PHÒNG 2: Chia khoảng đều (Equal Intervals) dựa trên Min-Max động của bộ dữ liệu
+                min_val = df["FVI"].min()
+                max_val = df["FVI"].max()
+                if max_val > min_val:
+                    step = (max_val - min_val) / num_classes
+                    dynamic_breaks = [min_val + step * i for i in range(num_classes + 1)]
+                    
+                    def classify_dynamic_equal(score):
+                        for i in range(num_classes):
+                            if score <= dynamic_breaks[i+1]:
+                                return labels[i]
+                        return labels[-1]
+                    df["Vulnerability"] = df["FVI"].apply(classify_dynamic_equal)
+                else:
+                    df["Vulnerability"] = "Trung bình"
     else:
-        # Nếu số lượng giá trị phân biệt quá ít, chia tạm theo ngưỡng trị cứng
-        df["Vulnerability"] = df["FVI"].apply(lambda x: "Cao" if x >= 0.70 else "Thấp")
-    # ---------------------------------------------------------
+        # Nếu bộ dữ liệu cực nhỏ (ví dụ chỉ có 1-2 dòng dữ liệu), tự động gán nhãn theo thứ hạng thực tế
+        # bằng cách chia đôi dựa trên trung vị (median) của chính bộ dữ liệu đó
+        median_val = df["FVI"].median()
+        df["Vulnerability"] = df["FVI"].apply(lambda x: "Cao" if x >= median_val else "Thấp")
+    # -----------------------------------------------------------------
         
     return df
 
