@@ -78,7 +78,7 @@ with tab_cit_contact:
     
     # Định dạng APA tiêu chuẩn
     st.markdown("**Định dạng APA:**")
-    st.info("Nguyen, Q. P., Do, T.H., Dinh, X.H. & IWRP Technical Team. (2026). *Application of Principal Component Analysis (PCA) for Flood Vulnerability Index (FVI) Mapping in Hue City*. Institute of Water Resources Planning (IWRP) & CDRI Fellowship Programme.")
+    st.info("Ha, T.L., Nguyen, Q. P., Do, T.H., Dinh, X.H. & IWRP Technical Team. (2026). *Application of Principal Component Analysis (PCA) for Flood Vulnerability Index (FVI) Mapping in Hue City*. Institute of Water Resources Planning (IWRP) & CDRI Fellowship Programme.")
     
 
     st.markdown('---')
