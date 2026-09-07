@@ -155,8 +155,7 @@ else:
                 
                 commune_names = [f['properties']['tenXa_shor'] for f in geojson_data['features']]
                 
-                # CẬP NHẬT CHO PLOTLY 7.0.0
-                fig_complex.add_trace(go.Choroplethmap(
+                fig_complex.add_trace(go.Choroplethmapbox(
                     geojson=geojson_data,
                     locations=commune_names,
                     z=[1] * len(commune_names),
@@ -196,8 +195,7 @@ else:
                 level_df = map_df[map_df["Vulnerability"] == val_level]
                 level_texts = [hover_texts[i] for i, r in enumerate(map_df.index) if map_df.loc[r, "Vulnerability"] == val_level]
                 
-                # CẬP NHẬT CHO PLOTLY 7.0.0
-                fig_complex.add_trace(go.Scattermap(
+                fig_complex.add_trace(go.Scattermapbox(
                     lat=level_df["CoordY"],
                     lon=level_df["CoordX"],
                     mode='markers',
@@ -214,8 +212,7 @@ else:
             }
             target_col, target_scale, colorbar_title = indicator_mapping[sel_indicator]
             
-            # CẬP NHẬT CHO PLOTLY 7.0.0
-            fig_complex.add_trace(go.Scattermap(
+            fig_complex.add_trace(go.Scattermapbox(
                 lat=map_df["CoordY"],
                 lon=map_df["CoordX"],
                 mode='markers',
@@ -227,9 +224,8 @@ else:
                 text=hover_texts, hoverinfo='text', name=sel_indicator
             ))
 
-        # CẬP NHẬT CHO PLOTLY 7.0.0 (mapbox -> map)
         fig_complex.update_layout(
-            map=dict(
+            mapbox=dict(
                 style="open-street-map",
                 center=dict(lat=df["CoordY"].mean() if not df.empty else 16.46, lon=df["CoordX"].mean() if not df.empty else 107.60),
                 zoom=12.0
