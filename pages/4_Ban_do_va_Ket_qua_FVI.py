@@ -226,7 +226,7 @@ else:
 
         fig_complex.update_layout(
             mapbox=dict(
-                style="carto-positron",
+                style="open-street-map",
                 center=dict(lat=df["CoordY"].mean() if not df.empty else 16.46, lon=df["CoordX"].mean() if not df.empty else 107.60),
                 zoom=12.0
             ),
