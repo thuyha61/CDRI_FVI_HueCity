@@ -226,11 +226,21 @@ else:
 
         fig_complex.update_layout(
             mapbox=dict(
-                style="open-street-map",
+                style="white-bg", # Vô hiệu hóa hoàn toàn hệ thống đòi API Token
+                layers=[
+                    dict(
+                        sourcetype="raster",
+                        # Nạp trực tiếp máy chủ gạch (tiles) của Carto Positron siêu nhẹ
+                        source=["https://basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"],
+                        below="traces" # Đảm bảo bản đồ nền nằm dưới các điểm dữ liệu
+                    )
+                ],
                 center=dict(lat=df["CoordY"].mean() if not df.empty else 16.46, lon=df["CoordX"].mean() if not df.empty else 107.60),
                 zoom=12.0
             ),
-            margin={"r":0, "t":15, "l":0, "b":0}, height=540, font_family="Roboto",
+            margin={"r":0, "t":15, "l":0, "b":0}, 
+            height=540, 
+            font_family="Roboto",
             legend=dict(title="Bảng chú giải rủi ro", yanchor="top", y=0.98, xanchor="left", x=0.02, bgcolor="rgba(255, 255, 255, 0.85)")
         )
         st.plotly_chart(fig_complex, use_container_width=True)
