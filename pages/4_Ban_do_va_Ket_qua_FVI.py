@@ -6,6 +6,10 @@ import json
 import os
 from utils import inject_custom_css, load_project_data
 
+import plotly
+st.error(f"🔍 Phiên bản Plotly đang chạy thực tế: {plotly.__version__}")
+st.error(f"📂 Đường dẫn thư viện đang gọi: {plotly.__file__}")
+
 # ==========================================================
 # 1. KHỞI TẠO CẤU HÌNH GIAO DIỆN & TÙY BIẾN CSS NỘI BỘ
 # ==========================================================
