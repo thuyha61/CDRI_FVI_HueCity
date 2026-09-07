@@ -224,9 +224,13 @@ else:
                 text=hover_texts, hoverinfo='text', name=sel_indicator
             ))
 
+        # ==========================================
+        # SỬA LỖI BẢN ĐỒ NỀN Ở ĐÂY
+        # Đưa mapbox_style ra cấu hình riêng biệt, dùng 'carto-positron'
+        # ==========================================
         fig_complex.update_layout(
+            mapbox_style="carto-positron", 
             mapbox=dict(
-                style="open-street-map",
                 center=dict(lat=df["CoordY"].mean() if not df.empty else 16.46, lon=df["CoordX"].mean() if not df.empty else 107.60),
                 zoom=12.0
             ),
