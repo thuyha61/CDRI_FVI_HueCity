@@ -2,6 +2,6 @@ streamlit
 pandas
 openpyxl
 numpy
-plotly>=5.18.0
+plotly<7.0.0
 geopandas
 jenkspy
